@@ -290,29 +290,16 @@ static const char ctype_type[] = {
 	c_graph | c_punct, //
 	};
 
-#define ctype_chktype(_C_, _TYPE_) (((ctype_type[_C_] & (_TYPE_)) > 0) ? 1 : 0)
-
-static const char ctype_lower[] = {
-	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-	'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-	'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-	'y', 'z',
-	};
+#define ctype_chktype(_C_, _TYPE_) \
+	(((ctype_type[_C_] & (_TYPE_)) > 0) ? 1 : 0)
 
 #define ctype_tolower(_C_) \
 	((((_C_) < 'A') || ((_C_) > 'Z')) ? (_C_) : \
-	(ctype_lower[(_C_) - 'A'] & 0xff))
-
-static const char ctype_upper[] = {
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-	'Y', 'Z',
-	};
+	((((_C_) - 'A') + 'a') % 0xff))
 
 #define ctype_toupper(_C_) \
 	((((_C_) < 'a') || ((_C_) > 'z')) ? (_C_) : \
-	ctype_upper[(_C_) - 'a'])
+	((((_C_) - 'a') + 'A') % 0xff))
 
 int isalnum(
 	__in int c
