@@ -38,7 +38,7 @@
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 1
+#define _lib_rev 2
 #define _lib_wk 1534
 
 // library version string
@@ -48,20 +48,20 @@
 
 /* 
  * Reference parameter
- * @param _param_ identifier
+ * @param param identifier
  */
-#define _ref(_param_) (void) _param_
+#define _ref(param) (void) param
 
 /*
  * String concatination
- * @param _param_ identifier
+ * @param param identifier
  */
-#define _str(_param_) # _param_
+#define _str(param) # param
 
 /*
  * Value to string conversion
- * @param _param_ identifier
+ * @param param identifier
  */
-#define _valstr(_param_) _str(_param_)
+#define _valstr(param) _str(param)
 
 #endif // LIBDEF_H_

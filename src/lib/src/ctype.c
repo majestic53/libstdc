@@ -288,16 +288,16 @@ static const char ctype_type[] = {
 	c_graph | c_punct, //
 	};
 
-#define ctype_chktype(_C_, _TYPE_) \
-	(((ctype_type[_C_] & (_TYPE_)) > 0) ? 1 : 0)
+#define ctype_chktype(c, type) \
+	(((ctype_type[c] & (type)) > 0) ? 1 : 0)
 
-#define ctype_tolower(_C_) \
-	((((_C_) < 'A') || ((_C_) > 'Z')) ? (_C_) : \
-	((((_C_) - 'A') + 'a') % 0xff))
+#define ctype_tolower(c) \
+	((((c) < 'A') || ((c) > 'Z')) ? (c) : \
+	((((c) - 'A') + 'a') % 0xff))
 
-#define ctype_toupper(_C_) \
-	((((_C_) < 'a') || ((_C_) > 'z')) ? (_C_) : \
-	((((_C_) - 'a') + 'A') % 0xff))
+#define ctype_toupper(c) \
+	((((c) < 'a') || ((c) > 'z')) ? (c) : \
+	((((c) - 'a') + 'A') % 0xff))
 
 int isalnum(
 	__in int c

@@ -24,7 +24,7 @@
 #define CHAR_BIT 8
 
 // char type range
-#define CHAR_MIN (-0x80)
+#define CHAR_MIN (-CHAR_MAX - 1)
 #define CHAR_MAX 0x7f
 
 // int type range
@@ -32,7 +32,7 @@
 #define INT_MAX LONG_MAX
 
 // long type range
-#define LONG_MIN (-0x80000000l)
+#define LONG_MIN (-LONG_MAX - 1l)
 #define LONG_MAX 0x7fffffffl
 
 // maximum character length
@@ -43,7 +43,7 @@
 #define SCHAR_MAX CHAR_MAX
 
 // short type range
-#define SHRT_MIN (-0x8000)
+#define SHRT_MIN (-SHRT_MAX - 1)
 #define SHRT_MAX 0x7fff
 
 // unsigned char type range
