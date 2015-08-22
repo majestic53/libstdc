@@ -19,17 +19,15 @@
 
 #include "../include/ctype.h"
 
-enum {
-	c_alpha = 0x1,
-	c_cntrl = 0x2,
-	c_digit = 0x4,
-	c_graph = 0x8,
-	c_lower = 0x10,
-	c_punct = 0x20,
-	c_space = 0x30,
-	c_upper = 0x40,
-	c_xdigit = 0x80,
-};
+#define c_alpha 0x1
+#define c_cntrl 0x2
+#define c_digit 0x4
+#define c_graph 0x8
+#define c_lower 0x10
+#define c_punct 0x20
+#define c_space 0x30
+#define c_upper 0x40
+#define c_xdigit 0x80
 
 static const char ctype_type[] = {
 	c_cntrl, // null

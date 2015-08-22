@@ -29,14 +29,17 @@ all: build archive
 archive:
 	@echo ""
 	@echo "--- BUILDING LIBRARY -----------------------"
-	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o
+	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
 
-build: assert.o ctype.o
+build: assert.o ctype.o errno.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
 	$(CC) $(CC_FLAGS) -c $(DIR_SRC)assert.c -o $(DIR_BUILD)assert.o
 
 ctype.o: $(DIR_SRC)ctype.c $(DIR_INC)ctype.h
 	$(CC) $(CC_FLAGS) -c $(DIR_SRC)ctype.c -o $(DIR_BUILD)ctype.o
+
+errno.o: $(DIR_SRC)errno.c $(DIR_INC)errno.h
+	$(CC) $(CC_FLAGS) -c $(DIR_SRC)errno.c -o $(DIR_BUILD)errno.o

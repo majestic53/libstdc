@@ -17,14 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
+#ifndef ERRNO_H_
+#define ERRNO_H_
 
-int 
-main(void)
-{
-	int result = 0;
+// domain error
+#define EDOM 1
 
-	// TODO
+// range error
+#define ERANGE 2
 
-	return result;
-}
+// check system call error code
+#define errno _errno
+
+// system call error container
+extern int _errno;
+
+#endif // ERRNO_H_

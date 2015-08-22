@@ -17,14 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
+#include "../include/errno.h"
 
-int 
-main(void)
-{
-	int result = 0;
-
-	// TODO
-
-	return result;
-}
+int _errno = 0;

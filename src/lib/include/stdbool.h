@@ -17,14 +17,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
+#ifndef STDBOOL_H_
+#define STDBOOL_H_
 
-int 
-main(void)
-{
-	int result = 0;
+#ifndef __cplusplus
 
-	// TODO
+// bool type is defined
+#define __bool_true_false_are_defined 1
 
-	return result;
-}
+// bool type
+#define bool _BOOL
+
+// bool values
+#define false 0
+#define true 1
+
+// define bool type
+typedef unsigned char _Bool;
+#else
+
+// use predefined bool type
+typedef bool _Bool;
+#endif // __cplusplus
+
+#endif // STDBOOL_H_

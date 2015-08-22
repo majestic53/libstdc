@@ -20,56 +20,48 @@
 #ifndef LIBDEF_H_
 #define LIBDEF_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
-// read parameter macro
+// read parameter
 #ifndef __in
 #define __in
 #endif // __in
 
-// write parameter macro
+// write parameter
 #ifndef __out
 #define __out
 #endif // __out
 
-// read/write parameter macro
+// read/write parameter
 #ifndef __inout
 #define __inout
 #endif // __inout
 
-// library version macros
+// library version
 #define _lib_maj 0
 #define _lib_min 1
 #define _lib_rev 1
 #define _lib_wk 1534
 
-// library version string macro
+// library version string
 #define _lib_ver \
 	_valstr(_lib_maj) "." _valstr(_lib_min) "." \
 	_valstr(_lib_wk) "." _valstr(_lib_rev)
 
 /* 
- * Reference parameter macro
+ * Reference parameter
  * @param _param_ identifier
  */
 #define _ref(_param_) (void) _param_
 
 /*
- * String concatination macro
+ * String concatination
  * @param _param_ identifier
  */
 #define _str(_param_) # _param_
 
 /*
- * Value to string conversion macro
+ * Value to string conversion
  * @param _param_ identifier
  */
 #define _valstr(_param_) _str(_param_)
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
 
 #endif // LIBDEF_H_

@@ -22,10 +22,6 @@
 
 #include "libdef.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
 #ifndef NDEBUG
 
 /*
@@ -45,6 +41,10 @@ extern "C" {
 // assert ignored when NDEBUG is defined
 #define assert(ignore) ((void) 0)
 #endif // NDEBUG
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 /*
  * Assert if predicate expression is false
