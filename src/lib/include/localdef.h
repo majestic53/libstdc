@@ -17,13 +17,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/assert.h"
+#ifndef LOCALDEF_H_
+#define LOCALDEF_H_
 
-void 
-_assert(
-	__in const char *expression
-	)
-{
-	//fprintf(stderr, "%s\n", expression);
-	//abort();
+#include "ctype.h"
+
+// minimal locale
+#define lc_info_c { \
+	"C", \
+	{ \
+	}, \
+	{ \
+	}, \
+	{ \
+		".", \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		_nullstr, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+		CHAR_MAX, \
+	}, \
+	{ \
+	}, \
 }
+
+// default locale
+#define lc_info_usa { \
+	"", \
+	{ \
+	}, \
+	{ \
+	}, \
+	{ \
+		".", \
+		",", \
+		"\3", \
+		"USD", \
+		"$", \
+		".", \
+		",", \
+		"\3", \
+		"+", \
+		"-", \
+		2, \
+		2, \
+		1, \
+		0, \
+		1, \
+		0, \
+		SIGN_POSN_IMMED_PREC, \
+		SIGN_POSN_IMMED_PREC, \
+	}, \
+	{ \
+	}, \
+}
+
+#endif // LOCALDEF_H_

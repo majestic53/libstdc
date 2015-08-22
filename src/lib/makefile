@@ -29,11 +29,11 @@ all: build archive
 archive:
 	@echo ""
 	@echo "--- BUILDING LIBRARY -----------------------"
-	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o
+	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)string.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
 
-build: assert.o ctype.o errno.o
+build: assert.o ctype.o errno.o locale.o string.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
 	$(CC) $(CC_FLAGS) -c $(DIR_SRC)assert.c -o $(DIR_BUILD)assert.o
@@ -43,3 +43,9 @@ ctype.o: $(DIR_SRC)ctype.c $(DIR_INC)ctype.h
 
 errno.o: $(DIR_SRC)errno.c $(DIR_INC)errno.h
 	$(CC) $(CC_FLAGS) -c $(DIR_SRC)errno.c -o $(DIR_BUILD)errno.o
+
+locale.o: $(DIR_SRC)locale.c $(DIR_INC)locale.h
+	$(CC) $(CC_FLAGS) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o
+
+string.o: $(DIR_SRC)string.c $(DIR_INC)string.h
+	$(CC) $(CC_FLAGS) -c $(DIR_SRC)string.c -o $(DIR_BUILD)string.o

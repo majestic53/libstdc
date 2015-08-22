@@ -17,13 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/assert.h"
+#include "../include/libdef.h"
+#include "../include/string.h"
 
-void 
-_assert(
-	__in const char *expression
-	)
-{
-	//fprintf(stderr, "%s\n", expression);
-	//abort();
-}
+// TODO

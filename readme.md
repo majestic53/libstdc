@@ -13,6 +13,10 @@ Changelog
 =========
 
 ##Version 0.1.1534
+*Updated: 8/22/2015*
+
+* Added additional library headers (locale, string (parital))
+
 *Updated: 8/21/2015*
 
 * Added additional library headers (errno, float, limits, stdbool, stdint)

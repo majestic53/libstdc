@@ -104,15 +104,15 @@
 // radix representation
 #define FLT_RADIX 2
 
-enum {
-	FLT_RNDS_INDET = -1,
-	FLT_RNDS_TO_ZERO,
-	FLT_RNDS_TO_NEAR,
-	FLT_RNDS_TO_POS_INF,
-	FLT_RNDS_TO_NEG_INF,
-};
-
 // rounding mode
 #define FLT_ROUNDS FLT_RNDS_TO_NEAR
+
+enum {
+	FLT_RNDS_INDET = -1, // indeterminate
+	FLT_RNDS_TO_ZERO, // towards zero
+	FLT_RNDS_TO_NEAR, // to nearest
+	FLT_RNDS_TO_POS_INF, // towards positive infinity
+	FLT_RNDS_TO_NEG_INF, // towards negative infinity
+};
 
 #endif // FLOAT_H_
