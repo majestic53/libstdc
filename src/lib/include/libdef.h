@@ -20,40 +20,44 @@
 #ifndef LIBDEF_H_
 #define LIBDEF_H_
 
-// end-of-file value
-#define _eof 0
+// common types
+#define _bool unsigned char
+#define _int8_t signed char
+#define _int16_t signed short
+#define _int32_t signed long
+#define _ptrdiff_t int
+#define _size_t unsigned int
+#define _uint8_t unsigned char
+#define _uint16_t unsigned short
+#define _uint32_t unsigned long
+#define _wchar_t unsigned short
 
-// read parameter
+// common values
+#define _eof (0)
+#define _null ((void *) 0)
+#define _nullstr ""
+
+// parameter flags
 #ifndef __in
 #define __in
 #endif // __in
-
-// read/write parameter
 #ifndef __inout
 #define __inout
 #endif // __inout
+#ifndef __out
+#define __out
+#endif // __out
 
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 4
+#define _lib_rev 6
 #define _lib_wk 1534
 
 // library version string
 #define _lib_ver \
 	_valstr(_lib_maj) "." _valstr(_lib_min) "." \
 	_valstr(_lib_wk) "." _valstr(_lib_rev)
-
-// null value
-#define _null ((void *) 0)
-
-// empty string
-#define _nullstr ""
-
-// write parameter
-#ifndef __out
-#define __out
-#endif // __out
 
 /* 
  * Reference parameter

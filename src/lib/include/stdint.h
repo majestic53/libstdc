@@ -121,33 +121,117 @@
 #define UINTMAX_C(value) UINT32_C(value)
 
 // signed integer type definitions
-typedef signed char int8_t;
-typedef signed short int16_t;
-typedef signed long int32_t;
-typedef int8_t int_fast8_t;
-typedef int16_t int_fast16_t;
-typedef int32_t int_fast32_t;
-typedef int8_t int_least8_t;
-typedef int16_t int_least16_t;
-typedef int32_t int_least32_t;
+#ifndef _INT8_T
+#define _INT8_T
+typedef _int8_t int8_t;
+#endif // _INT8_T
 
-// unsigned integer type definitions
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned long uint32_t;
-typedef uint8_t uint_fast8_t;
-typedef uint16_t uint_fast16_t;
-typedef uint32_t uint_fast32_t;
-typedef uint8_t uint_least8_t;
-typedef uint16_t uint_least16_t;
-typedef uint32_t uint_least32_t;
+#ifndef _INT16T
+#define _INT16_T
+typedef _int16_t int16_t;
+#endif // _INT16_T
+
+#ifndef _INT32T
+#define _INT32_T
+typedef _int32_t int32_t;
+#endif // _INT32_T
+
+#ifndef _INT_FAST8_T
+#define _INT_FAST8_T
+typedef int8_t int_fast8_t;
+#endif // _INT_FAST8_T
+
+#ifndef _INT_FAST16_T
+#define _INT_FAST16_T
+typedef int16_t int_fast16_t;
+#endif // _INT_FAST16_T
+
+#ifndef _INT_FAST32_T
+#define _INT_FAST32_T
+typedef int32_t int_fast32_t;
+#endif // _INT_FAST32_T
+
+#ifndef _INT_LEAST8_T
+#define _INT_LEAST8_T
+typedef int8_t int_least8_t;
+#endif // _INT_LEAST8_T
+
+#ifndef _INT_LEAST16_T
+#define _INT_LEAST16_T
+typedef int16_t int_least16_t;
+#endif // _INT_LEAST16_T
+
+#ifndef _INT_LEAST32_T
+#define _INT_LEAST32_T
+typedef int32_t int_least32_t;
+#endif // _INT_LEAST32_T
 
 // signed integer type definition
-typedef int32_t intptr_t;
+#ifndef _INTMAX_T
+#define _INTMAX_T
 typedef int32_t intmax_t;
+#endif // _INTMAX_T
+
+#ifndef _INTPTR_T
+#define _INTPTR_T
+typedef int32_t intptr_t;
+#endif // _INTPTR_T
+
+// unsigned integer type definitions
+#ifndef _UINT8_T
+#define _UINT8_T
+typedef _uint8_t uint8_t;
+#endif // _UINT8_T
+
+#ifndef _UINT16_T
+#define _UINT16_T
+typedef _uint16_t uint16_t;
+#endif // _UINT16_T
+
+#ifndef _UINT32_T
+#define _UINT32_T
+typedef _uint32_t uint32_t;
+#endif // _UINT32_T
+
+#ifndef _UINT_FAST8_T
+#define _UINT_FAST8_T
+typedef uint8_t uint_fast8_t;
+#endif // _UINT_FAST8_T
+
+#ifndef _UINT_FAST16_T
+#define _UINT_FAST16_T
+typedef uint16_t uint_fast16_t;
+#endif // _UINT_FAST16_T
+
+#ifndef _UINT_FAST32_T
+#define _UINT_FAST32_T
+typedef uint32_t uint_fast32_t;
+#endif // _UINT_FAST32_T
+
+#ifndef _UINT_LEAST8_T
+#define _UINT_LEAST8_T
+typedef uint8_t uint_least8_t;
+#endif // _UINT_LEAST8_T
+
+#ifndef _UINT_LEAST16_T
+#define _UINT_LEAST16_T
+typedef uint16_t uint_least16_t;
+#endif // _UINT_LEAST16_T
+
+#ifndef _UINT_LEAST32_T
+#define _UINT_LEAST32_T
+typedef uint32_t uint_least32_t;
+#endif // _UINT_LEAST32_T
 
 // unsigned integer type definition
-typedef uint32_t uintptr_t;
+#ifndef _UINTMAX_T
+#define _UINTMAX_T
 typedef uint32_t uintmax_t;
+#endif // _UINTMAX_T
+
+#ifndef _UINTPTR_T
+#define _UINTPTR_T
+typedef uint32_t uintptr_t;
+#endif // _UINTPTR_T
 
 #endif // STDINT_H_

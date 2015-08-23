@@ -30,15 +30,15 @@ enum {
 #define lc_info_max LC_INFO_C
 
 typedef struct __attribute__((__packed__)) {
-	// TODO: add collate changes
+	// TODO: add collate members
 } lccoll;
 
 typedef struct __attribute__((__packed__)) {
-	// TODO: add time changes
+	// TODO: add time members
 } lctime;
 
 typedef struct __attribute__((__packed__)) {
-	// TODO: add ctype changes
+	// TODO: add ctype members
 } lctype;
 
 typedef struct __attribute__((__packed__)) {
@@ -60,12 +60,12 @@ static const lcinfo *lc_info_st[] = {
 	((type) > lc_info_max ? lc_info_st[0] : \
 	lc_info_st[type])
 
-static lcinfo _locale = lc_info_usa;
+static lcinfo locale = lc_info_usa;
 
 struct lconv *
 localeconv(void)
 {
-	return (struct lconv *) &_locale.conv;
+	return (struct lconv *) &locale.conv;
 }
 
 int 
@@ -80,7 +80,7 @@ setlocale_collate(
 		goto exit;
 	}
 
-	// TODO: add collate changes
+	// TODO: change collate members
 
 exit:
 	return result;
@@ -98,7 +98,7 @@ setlocale_ctype(
 		goto exit;
 	}
 
-	// TODO: add ctype changes
+	// TODO: change ctype members
 
 exit:
 	return result;
@@ -116,21 +116,21 @@ setlocale_monetary(
 		goto exit;
 	}
 
-	_locale.conv.int_curr_symbol = info->conv.int_curr_symbol;
-	_locale.conv.currency_symbol = info->conv.currency_symbol;
-	_locale.conv.mon_decimal_point = info->conv.mon_decimal_point;
-	_locale.conv.mon_thousands_sep = info->conv.mon_thousands_sep;
-	_locale.conv.mon_grouping = info->conv.mon_grouping;
-	_locale.conv.positive_sign = info->conv.positive_sign;
-	_locale.conv.negative_sign = info->conv.negative_sign;
-	_locale.conv.int_frac_digits = info->conv.int_frac_digits;
-	_locale.conv.frac_digits = info->conv.frac_digits;
-	_locale.conv.p_cs_precedes = info->conv.p_cs_precedes;
-	_locale.conv.p_sep_by_space = info->conv.p_sep_by_space;
-	_locale.conv.n_cs_precedes = info->conv.n_cs_precedes;
-	_locale.conv.n_sep_by_space = info->conv.n_sep_by_space;
-	_locale.conv.p_sign_posn = info->conv.p_sign_posn;
-	_locale.conv.n_sign_posn = info->conv.n_sign_posn;
+	locale.conv.int_curr_symbol = info->conv.int_curr_symbol;
+	locale.conv.currency_symbol = info->conv.currency_symbol;
+	locale.conv.mon_decimal_point = info->conv.mon_decimal_point;
+	locale.conv.mon_thousands_sep = info->conv.mon_thousands_sep;
+	locale.conv.mon_grouping = info->conv.mon_grouping;
+	locale.conv.positive_sign = info->conv.positive_sign;
+	locale.conv.negative_sign = info->conv.negative_sign;
+	locale.conv.int_frac_digits = info->conv.int_frac_digits;
+	locale.conv.frac_digits = info->conv.frac_digits;
+	locale.conv.p_cs_precedes = info->conv.p_cs_precedes;
+	locale.conv.p_sep_by_space = info->conv.p_sep_by_space;
+	locale.conv.n_cs_precedes = info->conv.n_cs_precedes;
+	locale.conv.n_sep_by_space = info->conv.n_sep_by_space;
+	locale.conv.p_sign_posn = info->conv.p_sign_posn;
+	locale.conv.n_sign_posn = info->conv.n_sign_posn;
 
 exit:
 	return result;
@@ -148,9 +148,9 @@ setlocale_numeric(
 		goto exit;
 	}
 
-	_locale.conv.decimal_point = info->conv.decimal_point;
-	_locale.conv.thousands_sep = info->conv.thousands_sep;
-	_locale.conv.grouping = info->conv.grouping;
+	locale.conv.decimal_point = info->conv.decimal_point;
+	locale.conv.thousands_sep = info->conv.thousands_sep;
+	locale.conv.grouping = info->conv.grouping;
 
 exit:
 	return result;
@@ -168,7 +168,7 @@ setlocale_time(
 		goto exit;
 	}
 
-	// TODO: add time changes
+	// TODO: change time members
 
 exit:
 	return result;

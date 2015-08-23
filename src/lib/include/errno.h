@@ -20,11 +20,7 @@
 #ifndef ERRNO_H_
 #define ERRNO_H_
 
-// domain error
-#define EDOM 1
-
-// range error
-#define ERANGE 2
+#include "errdef.h"
 
 // check system call error code
 #define errno _errno

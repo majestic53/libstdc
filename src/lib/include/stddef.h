@@ -17,27 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../lib/include/assert.h"
-#include "../lib/include/ctype.h"
-#include "../lib/include/errdef.h"
-#include "../lib/include/errno.h"
-#include "../lib/include/float.h"
-#include "../lib/include/iso646.h"
-#include "../lib/include/libdef.h"
-#include "../lib/include/limits.h"
-#include "../lib/include/locale.h"
-#include "../lib/include/locdef.h"
-#include "../lib/include/stdbool.h"
-#include "../lib/include/stddef.h"
-#include "../lib/include/stdint.h"
-#include "../lib/include/string.h"
+#ifndef STDDEF_H_
+#define STDDEF_H_
 
-int 
-main(void)
-{
-	int result = 0;
+#include "libdef.h"
 
-	// TODO
+// null definition
+#define NULL _null
 
-	return result;
-}
+// TODO: offsetof
+
+// ptrdiff_t defition
+#ifndef _PTRDIFF_T
+#define _PTRDIFF_T
+typedef _ptrdiff_t ptrdiff_t;
+#endif // _PTRDIFF_T
+
+// size_t definition
+#ifndef _SIZE_T
+#define _SIZE_T
+typedef _size_t size_t;
+#endif // _SIZE_T
+
+// wide character definition
+#ifndef _WCHAR_T
+#define _WCHAR_T
+typedef _wchar_t wchar_t;
+#endif // _WCHAR_T
+
+#endif // STDDEF_H_

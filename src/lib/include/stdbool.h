@@ -23,8 +23,17 @@
 #ifndef __cplusplus
 
 // define bool type
-typedef unsigned char _BOOL;
+#ifndef ___BOOL
+#define ___BOOL
+typedef _bool _BOOL;
+#endif // ___BOOL
 #endif // __cplusplus
+
+// bool type
+#ifndef __BOOL
+#define __BOOL
+typedef _Bool bool;
+#endif // __BOOL
 
 // bool type is defined
 #define __bool_true_false_are_defined 1
@@ -32,8 +41,5 @@ typedef unsigned char _BOOL;
 // bool values
 #define false 0
 #define true 1
-
-// bool type
-typedef _Bool bool;
 
 #endif // STDBOOL_H_

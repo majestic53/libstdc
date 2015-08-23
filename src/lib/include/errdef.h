@@ -17,27 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../lib/include/assert.h"
-#include "../lib/include/ctype.h"
-#include "../lib/include/errdef.h"
-#include "../lib/include/errno.h"
-#include "../lib/include/float.h"
-#include "../lib/include/iso646.h"
-#include "../lib/include/libdef.h"
-#include "../lib/include/limits.h"
-#include "../lib/include/locale.h"
-#include "../lib/include/locdef.h"
-#include "../lib/include/stdbool.h"
-#include "../lib/include/stddef.h"
-#include "../lib/include/stdint.h"
-#include "../lib/include/string.h"
+#ifndef ERRDEF_H_
+#define ERRDEF_H_
 
-int 
-main(void)
-{
-	int result = 0;
+// domain error
+#define EDOM 1
+#define EDOM_STR "Domain error"
 
-	// TODO
+// range error
+#define ERANGE 2
+#define ERANGE_STR "Range error"
 
-	return result;
-}
+#endif // ERRDEF_H_

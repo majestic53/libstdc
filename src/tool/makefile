@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 CC=clang
-CC_FLAGS=-march=native -std=c99 -O3 -Wall
+CC_FLAGS=-m32 -std=c99 -O3 -Wall
 DIR_BIN=./../../bin/
 DIR_BUILD=./../../build/
 DIR_INC=./include/

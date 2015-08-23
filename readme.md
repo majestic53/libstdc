@@ -13,6 +13,10 @@ Changelog
 =========
 
 ##Version 0.1.1534
+*Updated:8/23/2015*
+
+* Added additional library headers (string, stddef (partial))
+
 *Updated: 8/22/2015*
 
 * Added additional library headers (iso646, locale, string (parital))

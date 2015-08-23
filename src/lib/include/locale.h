@@ -46,6 +46,8 @@ enum {
 extern "C" {
 #endif // __cplusplus
 
+#ifndef _LCONV
+#define _LCONV
 typedef struct __attribute__((__packed__)) {
 	char *decimal_point; // decimal point character
 	char *thousands_sep; // thousands place seperator character
@@ -66,6 +68,7 @@ typedef struct __attribute__((__packed__)) {
 	char p_sign_posn; // position of sign for non-negative monetary values
 	char n_sign_posn; // position of sign for negative monetary values
 } lconv;
+#endif // _LCONV
 
 /*
  * Retrieve locale information
