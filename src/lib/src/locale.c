@@ -19,8 +19,7 @@
 
 #include "../include/limits.h"
 #include "../include/locale.h"
-#include "../include/localdef.h"
-#include "../include/stdbool.h"
+#include "../include/locdef.h"
 #include "../include/string.h"
 
 enum {
@@ -43,11 +42,11 @@ typedef struct __attribute__((__packed__)) {
 } lctype;
 
 typedef struct __attribute__((__packed__)) {
-	char *name;
-	lccoll coll; // LC_COLLATE
-	lctype type; // LC_TYPE
-	lconv conv; // LC_MONETARY/LC_NUMERIC
-	lctime time; // LL_TIME
+	char *name; // locale name
+	lccoll coll; // collate settings
+	lctype type; // ctype settings
+	lconv conv; // monetary/numeric settings
+	lctime time; // time settings
 } lcinfo;
 
 static const lcinfo lc_c = lc_info_c;
@@ -69,15 +68,15 @@ localeconv(void)
 	return (struct lconv *) &_locale.conv;
 }
 
-bool 
+int 
 setlocale_collate(
 	__in const lcinfo *info
 	)
 {
-	bool result = true;
+	int result = 1;
 
 	if(!info) {
-		result =false;
+		result = 0;
 		goto exit;
 	}
 
@@ -87,15 +86,15 @@ exit:
 	return result;
 }
 
-bool 
+int 
 setlocale_ctype(
 	__in const lcinfo *info
 	)
 {
-	bool result = true;
+	int result = 1;
 
 	if(!info) {
-		result =false;
+		result = 0;
 		goto exit;
 	}
 
@@ -105,15 +104,15 @@ exit:
 	return result;
 }
 
-bool 
+int 
 setlocale_monetary(
 	__in const lcinfo *info
 	)
 {
-	bool result = true;
+	int result = 1;
 
 	if(!info) {
-		result = false;
+		result = 0;
 		goto exit;
 	}
 
@@ -137,15 +136,15 @@ exit:
 	return result;
 }
 
-bool 
+int 
 setlocale_numeric(
 	__in const lcinfo *info
 	)
 {
-	bool result = true;
+	int result = 1;
 
 	if(!info) {
-		result =false;
+		result = 0;
 		goto exit;
 	}
 
@@ -157,15 +156,15 @@ exit:
 	return result;
 }
 
-bool 
+int 
 setlocale_time(
 	__in const lcinfo *info
 	)
 {
-	bool result = true;
+	int result = 1;
 
 	if(!info) {
-		result =false;
+		result = 0;
 		goto exit;
 	}
 
@@ -175,12 +174,12 @@ exit:
 	return result;
 }
 
-bool 
+int 
 setlocale_all(
 	__in const lcinfo *info
 	)
 {
-	bool result = true;
+	int result = 1;
 
 	result = setlocale_collate(info);
 	if(!result) {
@@ -217,10 +216,9 @@ setlocale(
 	__in const char *locale
 	)
 {	
-	bool set = false;
 	char *result = NULL;
 	lcinfo *info = NULL;
-	int lc = LC_INFO_DEF;
+	int lc = LC_INFO_DEF, set = 0;
 
 	if(!locale) {
 		result = lc_info_struct(LC_INFO_DEF)->name;
@@ -229,17 +227,13 @@ setlocale(
 
 	for(; lc <= lc_info_max; ++lc) {
 
-		if(!strcmp(locale, lc_info_struct(lc)->name)) {
+		info = (lcinfo *) lc_info_struct(lc);
+		if(!strcmp(locale, info->name)) {
 			break;
 		}
 	}
 
 	if(lc > lc_info_max) {
-		goto exit;
-	}
-
-	info = (lcinfo *) lc_info_struct(lc);
-	if(!info) {
 		goto exit;
 	}
 

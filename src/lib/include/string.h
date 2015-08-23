@@ -22,54 +22,113 @@
 
 #include "libdef.h"
 
+// null definition
 #define NULL _null
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-typedef unsigned int size_t;
+// size_t definition
+typedef __SIZE_TYPE__ size_t;
 
+/*
+ * Locate byte in memory block
+ * @param s valid pointer to memory block
+ * @param c byte value to locate
+ * @param n number of bytes to search
+ * @return a valid pointer to the first occurance of the byte
+ * 	in the memory block, else returns NULL
+ */
 void *memchr(
 	__in const void *s,
 	__in int c,
 	__in size_t n
 	);
 
+/*
+ * Compare two memory blocks
+ * @param s1 valid pointer to first memory block
+ * @param s2 valid pointer to second memory block
+ * @param n number of bytes to compare
+ * @return 0 if both memory blocks are equal, else return non-zero:
+ * 	<0 if non-matching byte s1[N] < s2[N]
+ * 	>0 if non-matching byte s1[N] > s2[N]
+ */
 int memcmp(
 	__in const void *s1,
 	__in const void *s2,
 	__in size_t n
 	);
 
+/*
+ * Copy one memory block into another
+ * @param s1 valid pointer to destination memory block
+ * @param s2 valid pointer to source memory block
+ * @param n number of bytes to copy
+ * @return valid pointer to destination memory block
+ */
 void *memcpy(
-	__in void *s1,
+	__inout void *s1,
 	__in const void *s2,
 	__in size_t n
 	);
 
+/*
+ * Move one memory block into another
+ * @param s1 valid pointer to destination memory block
+ * @param s2 valid pointer to source memory block
+ * @param n number of bytes to move
+ * @return valid pointer to destination memory block
+ */
 void *memmove(
 	__inout void *s1,
 	__in const void *s2,
 	__in size_t n
 	);
 
+/*
+ * Fill memory block with byte value
+ * @param s valid pointer to memory block
+ * @param c byte value to fill
+ * @param n number of bytes to fill
+ * @return valid pointer to memory block
+ */
 void *memset(
 	__inout void *s,
 	__in int c,
 	__in size_t n
 	);
 
+/*
+ * Concatinate two strings
+ * @param s1 valid pointer to a string
+ * @param s2 valid pointer to a string
+ * @return valid pointer to string
+ */
 char *strcat(
 	__inout char *s1,
 	__in const char *s2
 	);
 
+/*
+ * Locate character in string
+ * @param s valid pointer to a string
+ * @param c character to locate
+ * @return a valid pointer to the first occurance of the character
+ * 	in the string, else returns NULL
+ */
 char *strchr(
 	__in const char *s,
-	__in size_t c
+	__in int c
 	);
 
+/*
+ * Determine span to character in string
+ * @param s1 valid pointer to a string
+ * @param s2 valid pointer to a string
+ * @return length of the first string not contained in the second
+ */
 size_t strcspn(
 	__in const char *s1,
 	__in const char *s2
@@ -137,7 +196,7 @@ char *strstr(
 	);
 
 char *strtok(
-	__in char *s1,
+	__inout char *s1,
 	__in const char *s2
 	);
 

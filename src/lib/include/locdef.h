@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOCALDEF_H_
-#define LOCALDEF_H_
+#ifndef LOCDEF_H_
+#define LOCDEF_H_
 
 #include "ctype.h"
 
@@ -84,4 +84,4 @@
 	}, \
 }
 
-#endif // LOCALDEF_H_
+#endif // LOCDEF_H_

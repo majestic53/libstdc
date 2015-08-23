@@ -20,6 +20,9 @@
 #ifndef LIBDEF_H_
 #define LIBDEF_H_
 
+// end-of-file value
+#define _eof 0
+
 // read parameter
 #ifndef __in
 #define __in
@@ -33,7 +36,7 @@
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 3
+#define _lib_rev 4
 #define _lib_wk 1534
 
 // library version string
