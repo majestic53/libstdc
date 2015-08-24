@@ -22,6 +22,10 @@
 
 #include "libdef.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // null definition
 #define NULL _null
 
@@ -32,10 +36,6 @@
  */
 #define offsetof(type, member) \
 	((size_t) &((type *) 0)->member)
-
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
 
 // ptrdiff_t defition
 #ifndef _PTRDIFF_T

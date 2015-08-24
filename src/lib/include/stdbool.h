@@ -20,6 +20,10 @@
 #ifndef STDBOOL_H_
 #define STDBOOL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // bool type is defined
 #define __bool_true_false_are_defined 1
 
@@ -41,5 +45,9 @@ typedef _bool _BOOL;
 #define __BOOL
 typedef _Bool bool;
 #endif // __BOOL
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // STDBOOL_H_

@@ -22,10 +22,18 @@
 
 #include "errdef.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // check system call error code
 #define errno _errno
 
 // system call error container
-extern int _errno;
+int _errno;
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // ERRNO_H_

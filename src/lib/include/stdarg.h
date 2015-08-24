@@ -22,6 +22,10 @@
 
 #include "libdef.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 /*
  * Determine variable argument byte length
  * @param arg variable argument
@@ -49,10 +53,6 @@
  * @param ap variable argument list
  */
 #define va_end(ap) (ap = _null)
-
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
 
 // variable argument list definition
 #ifndef _VA_LIST

@@ -23,6 +23,10 @@
 #include "libdef.h"
 #include "limits.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // signed 8-bit integer type range
 #define INT8_MAX CHAR_MAX
 #define INT8_MIN CHAR_MIN
@@ -119,10 +123,6 @@
  * @param value castable value
  */
 #define UINTMAX_C(value) UINT32_C(value)
-
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
 
 // signed integer type definitions
 #ifndef _INT8_T

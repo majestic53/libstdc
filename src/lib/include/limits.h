@@ -20,6 +20,10 @@
 #ifndef LIMITS_H_
 #define LIMITS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // bits in char type
 #define CHAR_BIT 8
 
@@ -57,5 +61,9 @@
 
 // minimum unsigned short type range
 #define USHRT_MAX 0xffffu
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // LIMITS_H_

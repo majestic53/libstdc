@@ -29,19 +29,19 @@ enum {
 
 #define lc_info_max LC_INFO_C
 
-typedef struct __attribute__((__packed__)) {
+typedef struct {
 	// TODO: add collate members
 } lccoll;
 
-typedef struct __attribute__((__packed__)) {
+typedef struct {
 	// TODO: add time members
 } lctime;
 
-typedef struct __attribute__((__packed__)) {
+typedef struct {
 	// TODO: add ctype members
 } lctype;
 
-typedef struct __attribute__((__packed__)) {
+typedef struct {
 	char *name; // locale name
 	lccoll coll; // collate settings
 	lctype type; // ctype settings

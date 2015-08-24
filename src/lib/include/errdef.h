@@ -20,6 +20,10 @@
 #ifndef ERRDEF_H_
 #define ERRDEF_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // domain error
 #define EDOM 1
 #define EDOM_STR "Domain error"
@@ -27,5 +31,9 @@
 // range error
 #define ERANGE 2
 #define ERANGE_STR "Range error"
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // ERRDEF_H_

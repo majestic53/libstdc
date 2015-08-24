@@ -20,6 +20,10 @@
 #ifndef FLOAT_H_
 #define FLOAT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // maximum number of decimal digits in double (base 10)
 #define DBL_DIG 15
 
@@ -114,5 +118,9 @@ enum {
 	FLT_RNDS_TO_POS_INF, // towards positive infinity
 	FLT_RNDS_TO_NEG_INF, // towards negative infinity
 };
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // FLOAT_H_

@@ -20,6 +20,10 @@
 #ifndef ISO646_H_
 #define ISO646_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // operator replacements
 #define and &&
 #define and_eq &=
@@ -32,5 +36,9 @@
 #define or_eq |=
 #define xor ^
 #define xor_eq ^=
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // ISO646_H_

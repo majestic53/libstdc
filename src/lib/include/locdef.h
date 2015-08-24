@@ -22,6 +22,10 @@
 
 #include "ctype.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // minimal locale
 #define lc_info_c { \
 	"C", \
@@ -83,5 +87,9 @@
 	{ \
 	}, \
 }
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // LOCDEF_H_

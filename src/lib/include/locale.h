@@ -22,6 +22,10 @@
 
 #include "libdef.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // null definition
 #define NULL _null
 
@@ -42,13 +46,9 @@ enum {
 	SIGN_POSN_IMMED_SUCC, // sign immediatly succeeds value and curreny_symbol
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
 #ifndef _LCONV
 #define _LCONV
-typedef struct __attribute__((__packed__)) {
+typedef struct {
 	char *decimal_point; // decimal point character
 	char *thousands_sep; // thousands place seperator character
 	char *grouping;	// amount of digits that format a thousands seperated group

@@ -20,6 +20,10 @@
 #ifndef LIBDEF_H_
 #define LIBDEF_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // common types
 #define _bool unsigned char
 #define _int8_t signed char
@@ -76,5 +80,9 @@
  * @param param identifier
  */
 #define _valstr(param) _str(param)
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // LIBDEF_H_
