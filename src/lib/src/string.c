@@ -428,8 +428,6 @@ exit:
 	return result;
 }
 
-#include <stdio.h>
-
 char *
 strstr(
 	__in const char *s1,

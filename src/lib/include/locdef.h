@@ -88,6 +88,44 @@ extern "C" {
 	}, \
 }
 
+enum {
+	LC_INFO_DEF = 0,
+	LC_INFO_C,
+};
+
+#define lc_info_max LC_INFO_C
+
+typedef struct {
+	// TODO: add collate members
+} lccoll;
+
+typedef struct {
+	// TODO: add time members
+} lctime;
+
+typedef struct {
+	// TODO: add ctype members
+} lctype;
+
+typedef struct {
+	char *name; // locale name
+	lccoll coll; // collate settings
+	lctype type; // ctype settings
+	lconv conv; // monetary/numeric settings
+	lctime time; // time settings
+} lcinfo;
+
+static const lcinfo lc_c = lc_info_c;
+static const lcinfo lc_def = lc_info_usa;
+
+static const lcinfo *lc_info_st[] = {
+	&lc_c, &lc_def,
+};
+
+#define lc_info_struct(type) \
+	((type) > lc_info_max ? lc_info_st[0] : \
+	lc_info_st[type])
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
