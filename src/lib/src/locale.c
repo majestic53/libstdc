@@ -179,7 +179,7 @@ setlocale_all(
 	__in const lcinfo *info
 	)
 {
-	int result = 1;
+	int result;
 
 	result = setlocale_collate(info);
 	if(!result) {

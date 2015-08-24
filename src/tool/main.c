@@ -28,6 +28,7 @@
 #include "../lib/include/locale.h"
 #include "../lib/include/locdef.h"
 #include "../lib/include/stdbool.h"
+#include "../lib/include/stdarg.h"
 #include "../lib/include/stddef.h"
 #include "../lib/include/stdint.h"
 #include "../lib/include/string.h"

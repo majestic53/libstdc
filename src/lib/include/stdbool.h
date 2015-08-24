@@ -20,6 +20,13 @@
 #ifndef STDBOOL_H_
 #define STDBOOL_H_
 
+// bool type is defined
+#define __bool_true_false_are_defined 1
+
+// bool values
+#define false 0
+#define true 1
+
 #ifndef __cplusplus
 
 // define bool type
@@ -34,12 +41,5 @@ typedef _bool _BOOL;
 #define __BOOL
 typedef _Bool bool;
 #endif // __BOOL
-
-// bool type is defined
-#define __bool_true_false_are_defined 1
-
-// bool values
-#define false 0
-#define true 1
 
 #endif // STDBOOL_H_

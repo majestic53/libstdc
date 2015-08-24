@@ -15,11 +15,11 @@ Changelog
 ##Version 0.1.1534
 *Updated:8/23/2015*
 
-* Added additional library headers (string, stddef (partial))
+* Added additional library headers (string, stdarg (parcial), stddef)
 
 *Updated: 8/22/2015*
 
-* Added additional library headers (iso646, locale, string (parital))
+* Added additional library headers (iso646, locale, string (parcial))
 
 *Updated: 8/21/2015*
 

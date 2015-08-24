@@ -17,46 +17,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STDDEF_H_
-#define STDDEF_H_
+#ifndef STDARG_H_
+#define STDARG_H_
 
 #include "libdef.h"
 
-// null definition
-#define NULL _null
+/*
+ * Determine variable argument byte length
+ * @param arg variable argument
+ */
+#define _va_arg_len(arg) \
+	((sizeof(arg) + (sizeof(int) - 1)) & ~(sizeof(int) - 1))
 
 /*
- * Determine the offset of a struct member
- * @param type struct type
- * @param member struct member name
+ * Locate next argument in list
+ * @param ap variable argument list
+ * @param type argument type name
  */
-#define offsetof(type, member) \
-	((size_t) &((type *) 0)->member)
+#define va_arg(ap, type) // TODO
+
+/*
+ * Initialize argument list
+ * @param ap variable argument list
+ * @param format variable argument format
+ */
+#define va_start(ap, format) \
+	(ap = (va_list) (((char *) &format) + _va_arg_len(format)))
+
+/*
+ * Uninitialize argument list
+ * @param ap variable argument list
+ */
+#define va_end(ap) (ap = _null)
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-// ptrdiff_t defition
-#ifndef _PTRDIFF_T
-#define _PTRDIFF_T
-typedef _ptrdiff_t ptrdiff_t;
-#endif // _PTRDIFF_T
-
-// size_t definition
-#ifndef _SIZE_T
-#define _SIZE_T
-typedef _size_t size_t;
-#endif // _SIZE_T
-
-// wide character definition
-#ifndef _WCHAR_T
-#define _WCHAR_T
-typedef _wchar_t wchar_t;
-#endif // _WCHAR_T
+// variable argument list definition
+#ifndef _VA_LIST
+#define _VA_LIST
+typedef void *va_list;
+#endif // _VA_LIST
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // STDDEF_H_
+#endif // STDARG_H_

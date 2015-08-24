@@ -120,6 +120,10 @@
  */
 #define UINTMAX_C(value) UINT32_C(value)
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // signed integer type definitions
 #ifndef _INT8_T
 #define _INT8_T
@@ -233,5 +237,9 @@ typedef uint32_t uintmax_t;
 #define _UINTPTR_T
 typedef uint32_t uintptr_t;
 #endif // _UINTPTR_T
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // STDINT_H_
