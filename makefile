@@ -26,6 +26,7 @@ EXE=stdc
 LOG_MEM=val_err.log
 LOG_STAT=stat_err.log
 LOG_CLOC=cloc_stat.log
+# DBG=... -> generate debugging symbols
 
 all: build
 
@@ -46,7 +47,11 @@ _lib:
 	@echo '============================================'
 	@echo 'BUILDING LIBRARIES'
 	@echo '============================================'
-	cd $(DIR_LIB) && make build -j $(JOB_SLOTS)
+ifndef DBG
+	cd $(DIR_LIB) && make build -j $(JOB_SLOTS) # release
+else
+	cd $(DIR_LIB) && make CC_DBG=0 build -j $(JOB_SLOTS) # debug
+endif # DBG
 	cd $(DIR_LIB) && make archive
 
 _exe:
@@ -54,7 +59,11 @@ _exe:
 	@echo '============================================'
 	@echo 'BUILDING EXECUTABLES'
 	@echo '============================================'
-	cd $(DIR_TOOL) && make build -j $(JOB_SLOTS)
+ifndef DBG
+	cd $(DIR_TOOL) && make build -j $(JOB_SLOTS) # release
+else
+	cd $(DIR_TOOL) && make CC_DBG=0 build -j $(JOB_SLOTS) # debug
+endif # DBG
 
 ### TESTING ###
 

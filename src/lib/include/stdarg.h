@@ -28,25 +28,18 @@ extern "C" {
 
 /*
  * Determine variable argument byte length
- * @param arg variable argument
+ * @param type argument type name
  */
-#define _va_arg_len(arg) \
-	((sizeof(arg) + (sizeof(int) - 1)) & ~(sizeof(int) - 1))
+#define _va_sizeof(type) \
+	((sizeof(type) + (sizeof(int) - 1)) & ~(sizeof(int) - 1))
 
 /*
  * Locate next argument in list
  * @param ap variable argument list
  * @param type argument type name
  */
-#define va_arg(ap, type) // TODO
-
-/*
- * Initialize argument list
- * @param ap variable argument list
- * @param format variable argument format
- */
-#define va_start(ap, format) \
-	(ap = (va_list) (((char *) &format) + _va_arg_len(format)))
+#define va_arg(ap, type) \
+	(*(type *) ((ap += _va_sizeof(type)) - _va_sizeof(type)))
 
 /*
  * Uninitialize argument list
@@ -54,10 +47,18 @@ extern "C" {
  */
 #define va_end(ap) (ap = _null)
 
+/*
+ * Initialize argument list
+ * @param ap variable argument list
+ * @param format variable argument format
+ */
+#define va_start(ap, format) \
+	(ap = ((va_list) (&format + _va_sizeof(format) + 1)))
+
 // variable argument list definition
 #ifndef _VA_LIST
 #define _VA_LIST
-typedef void *va_list;
+typedef _va_list va_list;
 #endif // _VA_LIST
 
 #ifdef __cplusplus

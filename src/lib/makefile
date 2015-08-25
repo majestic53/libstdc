@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 CC=clang
-CC_FLAGS=-m32 -std=c99 -O3 -Wall
+CC_FLAGS_DBG=-m32 -std=c99 -g
+CC_FLAGS_REL=-m32 -std=c99 -O3 -Wall
 DIR_BIN=./../../bin/
 DIR_BUILD=./../../build/
 DIR_INC=./include/
@@ -36,16 +37,36 @@ archive:
 build: assert.o ctype.o errno.o locale.o string.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
-	$(CC) $(CC_FLAGS) -c $(DIR_SRC)assert.c -o $(DIR_BUILD)assert.o
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)assert.c -o $(DIR_BUILD)assert.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)assert.c -o $(DIR_BUILD)assert.o # debug
+endif # CC_DBG
 
 ctype.o: $(DIR_SRC)ctype.c $(DIR_INC)ctype.h
-	$(CC) $(CC_FLAGS) -c $(DIR_SRC)ctype.c -o $(DIR_BUILD)ctype.o
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)ctype.c -o $(DIR_BUILD)ctype.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)ctype.c -o $(DIR_BUILD)ctype.o # debug
+endif # CC_DBG
 
 errno.o: $(DIR_SRC)errno.c $(DIR_INC)errno.h
-	$(CC) $(CC_FLAGS) -c $(DIR_SRC)errno.c -o $(DIR_BUILD)errno.o
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)errno.c -o $(DIR_BUILD)errno.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)errno.c -o $(DIR_BUILD)errno.o # debug
+endif # CC_DBG
 
 locale.o: $(DIR_SRC)locale.c $(DIR_INC)locale.h
-	$(CC) $(CC_FLAGS) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o # debug
+endif # CC_DBG
 
 string.o: $(DIR_SRC)string.c $(DIR_INC)string.h
-	$(CC) $(CC_FLAGS) -c $(DIR_SRC)string.c -o $(DIR_BUILD)string.o
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)string.c -o $(DIR_BUILD)string.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)string.c -o $(DIR_BUILD)string.o # debug
+endif # CC_DBG

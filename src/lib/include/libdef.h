@@ -34,6 +34,7 @@ extern "C" {
 #define _uint8_t unsigned char
 #define _uint16_t unsigned short
 #define _uint32_t unsigned long
+#define _va_list unsigned char *
 #define _wchar_t unsigned short
 
 // common values
@@ -55,8 +56,8 @@ extern "C" {
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 6
-#define _lib_wk 1534
+#define _lib_rev 1
+#define _lib_wk 1535
 
 // library version string
 #define _lib_ver \

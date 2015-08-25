@@ -12,8 +12,13 @@ Table of Contents
 Changelog
 =========
 
+##Version 0.1.1535
+*Updated: 8/24/2015*
+
+* Added library header (stdarg)
+
 ##Version 0.1.1534
-*Updated:8/23/2015*
+*Updated: 8/23/2015*
 
 * Added additional library headers (string, stdarg (parcial), stddef)
 

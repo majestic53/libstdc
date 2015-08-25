@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 CC=clang
-CC_FLAGS=-m32 -std=c99 -O3 -Wall
+CC_FLAGS_DBG=-m32 -std=c99 -g
+CC_FLAGS_REL=-m32 -std=c99 -O3 -Wall
 DIR_BIN=./../../bin/
 DIR_BUILD=./../../build/
 DIR_INC=./include/
@@ -29,7 +30,11 @@ all: build
 
 build:
 	@echo ""
-	@echo "--- BUILDING TOOL --------------------------" 
-	$(CC) $(CC_FLAGS) $(DIR_TOP)main.c $(DIR_BIN)$(LIB) -o $(DIR_BIN)$(EXE)
+	@echo "--- BUILDING TOOL --------------------------"
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) $(DIR_TOP)main.c $(DIR_BIN)$(LIB) -o $(DIR_BIN)$(EXE) # release
+else
+	$(CC) $(CC_FLAGS_DBG) $(DIR_TOP)main.c $(DIR_BIN)$(LIB) -o $(DIR_BIN)$(EXE) # debug
+endif # CC_DBG
 	@echo "--- DONE -----------------------------------"
 	@echo ""
