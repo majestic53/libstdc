@@ -17,30 +17,78 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../lib/include/assert.h"
-#include "../lib/include/ctype.h"
-#include "../lib/include/errdef.h"
-#include "../lib/include/errno.h"
-#include "../lib/include/float.h"
-#include "../lib/include/iso646.h"
-#include "../lib/include/libdef.h"
-#include "../lib/include/limits.h"
-#include "../lib/include/locale.h"
-#include "../lib/include/locdef.h"
-#include "../lib/include/setjmp.h"
-#include "../lib/include/stdbool.h"
-#include "../lib/include/stdarg.h"
-#include "../lib/include/stddef.h"
-#include "../lib/include/stdint.h"
-#include "../lib/include/string.h"
-#include "../lib/include/time.h"
+#include "../include/time.h"
 
-int 
-main(void)
+char *
+asctime(
+	__in const tm *timeptr
+	)
 {
-	int result = 0;
-
 	// TODO
-	
-	return result;
+}
+
+clock_t 
+clock(void)
+{
+	// TODO
+}
+
+char *
+ctime(
+	__in const time_t *timer
+	)
+{
+	// TODO
+}
+
+double 
+difftime(
+	__in time_t time1,
+	__in time_t time0
+	)
+{
+	// TODO
+}
+
+tm *
+gmtime(
+	__in const time_t *timer
+	)
+{
+	// TODO
+}
+
+tm *
+localtime(
+	__in const time_t *timer
+	)
+{
+	// TODO
+}
+
+time_t 
+mktime(
+	__inout tm *timeptr
+	)
+{
+	// TODO
+}
+
+size_t 
+strftime(
+	__inout char *s,
+	__in size_t maxsize,
+	__in const char *format,
+	__in const tm *timeptr
+	)
+{
+	// TODO
+}
+
+time_t 
+time(
+	__inout time_t *timer
+	)
+{
+	// TODO
 }

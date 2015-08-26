@@ -15,7 +15,7 @@ Changelog
 ##Version 0.1.1535
 *Updated: 8/25/2015*
 
-* Added library header (setjmp)
+* Added library header (setjmp, time (partial))
 
 *Updated: 8/24/2015*
 
@@ -24,11 +24,11 @@ Changelog
 ##Version 0.1.1534
 *Updated: 8/23/2015*
 
-* Added additional library headers (string, stdarg (parcial), stddef)
+* Added additional library headers (string, stdarg (partial), stddef)
 
 *Updated: 8/22/2015*
 
-* Added additional library headers (iso646, locale, string (parcial))
+* Added additional library headers (iso646, locale, string (partial))
 
 *Updated: 8/21/2015*
 

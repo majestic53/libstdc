@@ -26,12 +26,15 @@ extern "C" {
 
 // common types
 #define _bool unsigned char
+#define _clock_t unsigned int
 #define _int8_t signed char
 #define _int16_t signed short
 #define _int32_t signed long
 #define _jmp_buf unsigned int
 #define _ptrdiff_t int
 #define _size_t unsigned int
+#define _time_t unsigned long
+#define _tm int
 #define _uint8_t unsigned char
 #define _uint16_t unsigned short
 #define _uint32_t unsigned long
@@ -44,6 +47,7 @@ extern "C" {
 #define _nullstr ""
 
 // environment values
+#define _clocks_per_sec 1000000
 #define _jmp_buf_len 8
 
 // parameter flags
@@ -60,7 +64,7 @@ extern "C" {
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 2
+#define _lib_rev 3
 #define _lib_wk 1535
 
 // library version string

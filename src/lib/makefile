@@ -31,11 +31,11 @@ all: build archive
 archive:
 	@echo ""
 	@echo "--- BUILDING LIBRARY -----------------------"
-	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)string.o
+	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)string.o $(DIR_BUILD)time.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
 
-build: assert.o ctype.o errno.o locale.o setjmp.o string.o
+build: assert.o ctype.o errno.o locale.o setjmp.o string.o time.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
 ifndef CC_DBG
@@ -77,4 +77,11 @@ ifndef CC_DBG
 	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)string.c -o $(DIR_BUILD)string.o # release
 else
 	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)string.c -o $(DIR_BUILD)string.o # debug
+endif # CC_DBG
+
+time.o: $(DIR_SRC)time.c $(DIR_INC)time.h
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)time.c -o $(DIR_BUILD)time.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)time.c -o $(DIR_BUILD)time.o # debug
 endif # CC_DBG
