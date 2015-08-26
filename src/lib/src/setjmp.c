@@ -17,23 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ERRNO_H_
-#define ERRNO_H_
+#include "../include/envdef.h"
+#include "../include/setjmp.h"
 
-#include "errdef.h"
+jmp_buf _env[] = env_empty;
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
-// check system call error code
-#define errno _errno
-
-// system call error container
-extern int _errno;
-
-#ifdef __cplusplus
+void 
+_longjmp(
+	__in jmp_buf env,
+	__in int val
+	)
+{
+	env_asm_longjmp(env, val);
 }
-#endif // __cplusplus
 
-#endif // ERRNO_H_
+int 
+_setjmp(
+	__inout jmp_buf env
+	)
+{
+	env_asm_setjmp(env);
+	return 0;
+}

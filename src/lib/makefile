@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 CC=clang
+CC_FLAGS_ASM=-masm=intel
 CC_FLAGS_DBG=-m32 -std=c99 -g
 CC_FLAGS_REL=-m32 -std=c99 -O3 -Wall
 DIR_BIN=./../../bin/
@@ -30,11 +31,11 @@ all: build archive
 archive:
 	@echo ""
 	@echo "--- BUILDING LIBRARY -----------------------"
-	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)string.o
+	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)string.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
 
-build: assert.o ctype.o errno.o locale.o string.o
+build: assert.o ctype.o errno.o locale.o setjmp.o string.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
 ifndef CC_DBG
@@ -62,6 +63,13 @@ ifndef CC_DBG
 	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o # release
 else
 	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o # debug
+endif # CC_DBG
+
+setjmp.o: $(DIR_SRC)setjmp.c $(DIR_INC)setjmp.h
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) $(CC_FLAGS_ASM) -c $(DIR_SRC)setjmp.c -o $(DIR_BUILD)setjmp.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) $(CC_FLAGS_ASM) -c $(DIR_SRC)setjmp.c -o $(DIR_BUILD)setjmp.o # debug
 endif # CC_DBG
 
 string.o: $(DIR_SRC)string.c $(DIR_INC)string.h

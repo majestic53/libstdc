@@ -29,6 +29,7 @@ extern "C" {
 #define _int8_t signed char
 #define _int16_t signed short
 #define _int32_t signed long
+#define _jmp_buf unsigned int
 #define _ptrdiff_t int
 #define _size_t unsigned int
 #define _uint8_t unsigned char
@@ -38,9 +39,12 @@ extern "C" {
 #define _wchar_t unsigned short
 
 // common values
-#define _eof (0)
+#define _eof '\0'
 #define _null ((void *) 0)
 #define _nullstr ""
+
+// environment values
+#define _jmp_buf_len 8
 
 // parameter flags
 #ifndef __in
@@ -56,7 +60,7 @@ extern "C" {
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 1
+#define _lib_rev 2
 #define _lib_wk 1535
 
 // library version string
