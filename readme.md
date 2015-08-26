@@ -13,6 +13,10 @@ Changelog
 =========
 
 ##Version 0.1.1535
+*Updated: 8/25/2015*
+
+* Added library header (setjmp)
+
 *Updated: 8/24/2015*
 
 * Added library header (stdarg)
