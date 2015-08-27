@@ -42,7 +42,7 @@ setlocale_collate(
 		goto exit;
 	}
 
-	// TODO: change collate members
+	result = (memcpy(&locale.coll, &info->coll, sizeof(lccoll)) != NULL);
 
 exit:
 	return result;
@@ -60,7 +60,7 @@ setlocale_ctype(
 		goto exit;
 	}
 
-	// TODO: change ctype members
+	result = (memcpy(&locale.type, &info->type, sizeof(lctype)) != NULL);
 
 exit:
 	return result;
@@ -123,14 +123,14 @@ setlocale_time(
 	__in const lcinfo *info
 	)
 {
-	int result = 1;
+	int result;
 
 	if(!info) {
 		result = 0;
 		goto exit;
 	}
 
-	// TODO: change time members
+	result = (memcpy(&locale.time, &info->time, sizeof(lctime)) != NULL);
 
 exit:
 	return result;

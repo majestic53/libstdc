@@ -54,6 +54,7 @@ extern "C" {
 		CHAR_MAX, \
 	}, \
 	{ \
+		"GMT", \
 	}, \
 }
 
@@ -85,6 +86,7 @@ extern "C" {
 		SIGN_POSN_IMMED_PREC, \
 	}, \
 	{ \
+		"PST", \
 	}, \
 }
 
@@ -100,6 +102,7 @@ typedef struct {
 } lccoll;
 
 typedef struct {
+	char tzone[_tzone_len]; // time zone
 	// TODO: add time members
 } lctime;
 

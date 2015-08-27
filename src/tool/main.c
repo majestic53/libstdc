@@ -39,8 +39,6 @@ int
 main(void)
 {
 	int result = 0;
-
-	// TODO
 	
 	return result;
 }

@@ -65,41 +65,76 @@ typedef struct {
 } tm;
 #endif // _TM
 
-// TODO
+/*
+ * Convert time to string
+ * @param timeptr valid pointer to time container
+ * @return string representation of time container
+ */
 char *asctime(
 	__in const tm *timeptr
 	);
 
-// TODO
+/*
+ * Retrieve current clock
+ * @return clock container, else returns -1
+ */
 clock_t clock(void);
 
-// TODO
+/*
+ * Convert time container to string
+ * @param timer valid pointer to time value
+ * @return string representation of time value
+ */
 char *ctime(
 	__in const time_t *timer
 	);
 
-// TODO
+/*
+ * Calculate the difference between two times
+ * @param time1 second time value
+ * @param time0 first time value
+ * @return differnce between supplied time contains
+ */
 double difftime(
 	__in time_t time1,
 	__in time_t time0
 	);
 
-// TODO
+/*
+ * Convert time container to UTC
+ * @param timer valid pointer to time_t value
+ * @return valid pointer to UTC time container
+ */
 tm *gmtime(
 	__in const time_t *timer
 	);
 
-// TODO
+/*
+ * Convert time container to locale time
+ * @param timer valid pointer to time_t value
+ * @return valid pointer to local time container
+ */
 tm *localtime(
 	__in const time_t *timer
 	);
 
-// TODO
+/*
+ * Convert time container to time_t value
+ * @param timeptr valid pointer to time container
+ * @return time_t value, else returns -1
+ */
 time_t mktime(
 	__inout tm *timeptr
 	);
 
-// TODO
+/* 
+ * Format time as string
+ * @param s valid pointer to string
+ * @param maxsize max string character length
+ * @param format valid pointer to format string
+ * @param timeptr valid pointer to time container
+ * @return length of formatted string
+ */
 size_t strftime(
 	__inout char *s,
 	__in size_t maxsize,
@@ -107,7 +142,11 @@ size_t strftime(
 	__in const tm *timeptr
 	);
 
-// TODO
+/*
+ * Retrieve current time
+ * @param timer valid pointer to time value
+ * @return time container, else returns -1
+ */
 time_t time(
 	__inout time_t *timer
 	);

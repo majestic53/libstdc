@@ -45,10 +45,13 @@ extern "C" {
 #define _eof '\0'
 #define _null ((void *) 0)
 #define _nullstr ""
+#define _unknown "?"
 
 // environment values
+#define _asc_str_len 26
 #define _clocks_per_sec 1000000
 #define _jmp_buf_len 8
+#define _tzone_len 4
 
 // parameter flags
 #ifndef __in
@@ -64,7 +67,7 @@ extern "C" {
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 3
+#define _lib_rev 4
 #define _lib_wk 1535
 
 // library version string

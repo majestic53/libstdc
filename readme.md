@@ -13,6 +13,10 @@ Changelog
 =========
 
 ##Version 0.1.1535
+*Updated: 8/26/2015*
+
+* Further implmented library header (time)
+
 *Updated: 8/25/2015*
 
 * Added library header (setjmp, time (partial))
