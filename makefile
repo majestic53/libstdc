@@ -18,6 +18,7 @@
 JOB_SLOTS=4
 DIR_BIN=./bin/
 DIR_BUILD=./build/
+DIR_EXT=./src/ext/
 DIR_LIB=./src/lib/
 DIR_LOG=./log/
 DIR_SRC=./src/
@@ -53,6 +54,12 @@ else
 	cd $(DIR_LIB) && make CC_DBG=0 build -j $(JOB_SLOTS) # debug
 endif # DBG
 	cd $(DIR_LIB) && make archive
+ifndef DBG
+	cd $(DIR_EXT) && make build -j $(JOB_SLOTS) # release
+else
+	cd $(DIR_EXT) && make CC_DBG=0 build -j $(JOB_SLOTS) # debug
+endif # DBG
+	cd $(DIR_EXT) && make archive
 
 _exe:
 	@echo ''

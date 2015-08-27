@@ -15,6 +15,7 @@ Changelog
 ##Version 0.1.1535
 *Updated: 8/26/2015*
 
+* Added extension library
 * Further implmented library header (time)
 
 *Updated: 8/25/2015*

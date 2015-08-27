@@ -30,7 +30,7 @@ all: build archive
 
 archive:
 	@echo ""
-	@echo "--- BUILDING LIBRARY -----------------------"
+	@echo "--- BUILDING STANDARD LIBRARY --------------"
 	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)string.o $(DIR_BUILD)time.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
