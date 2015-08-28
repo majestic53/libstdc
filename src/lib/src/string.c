@@ -442,7 +442,7 @@ strstr(
 		if(*ch1 == *ch2) {
 
 			chk1 = ch1;
-			while(chk1 != EOF) {
+			while(*chk1 != EOF) {
 
 				if(*chk1 != *ch2) {
 					break;

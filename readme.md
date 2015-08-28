@@ -13,6 +13,10 @@ Changelog
 =========
 
 ##Version 0.1.1535
+*Updated: 8/27/2015*
+
+* Implemented additional time routines (partial)
+
 *Updated: 8/26/2015*
 
 * Added extension library

@@ -26,14 +26,14 @@ extern "C" {
 
 // common types
 #define _bool unsigned char
-#define _clock_t unsigned int
+#define _clock_t long
 #define _int8_t signed char
 #define _int16_t signed short
 #define _int32_t signed long
 #define _jmp_buf unsigned int
 #define _ptrdiff_t int
 #define _size_t unsigned int
-#define _time_t unsigned long
+#define _time_t long
 #define _tm int
 #define _uint8_t unsigned char
 #define _uint16_t unsigned short
@@ -67,13 +67,19 @@ extern "C" {
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 4
+#define _lib_rev 5
 #define _lib_wk 1535
 
 // library version string
 #define _lib_ver \
 	_valstr(_lib_maj) "." _valstr(_lib_min) "." \
 	_valstr(_lib_wk) "." _valstr(_lib_rev)
+
+/*
+ * Invalid type value
+ * @param type scalar type
+ */
+#define _inv(type) ((type) -1)
 
 /* 
  * Reference parameter

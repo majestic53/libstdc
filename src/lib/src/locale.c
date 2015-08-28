@@ -22,8 +22,6 @@
 #include "../include/locdef.h"
 #include "../include/string.h"
 
-static lcinfo locale = lc_info_usa;
-
 struct lconv *
 localeconv(void)
 {

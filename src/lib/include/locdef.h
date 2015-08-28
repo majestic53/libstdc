@@ -21,6 +21,7 @@
 #define LOCDEF_H_
 
 #include "ctype.h"
+#include "limits.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,11 +56,12 @@ extern "C" {
 	}, \
 	{ \
 		"GMT", \
+		0, \
 	}, \
 }
 
 // default locale
-#define lc_info_usa { \
+#define lc_info_usa_pst { \
 	"", \
 	{ \
 	}, \
@@ -87,12 +89,13 @@ extern "C" {
 	}, \
 	{ \
 		"PST", \
+		-8, \
 	}, \
 }
 
 enum {
-	LC_INFO_DEF = 0,
-	LC_INFO_C,
+	LC_INFO_DEF = 0, // default locale
+	LC_INFO_C, // c locale
 };
 
 #define lc_info_max LC_INFO_C
@@ -103,6 +106,7 @@ typedef struct {
 
 typedef struct {
 	char tzone[_tzone_len]; // time zone
+	int tzone_off; // time zone offset (from GMT)
 	// TODO: add time members
 } lctime;
 
@@ -118,13 +122,19 @@ typedef struct {
 	lctime time; // time settings
 } lcinfo;
 
+// supported locales
 static const lcinfo lc_c = lc_info_c;
-static const lcinfo lc_def = lc_info_usa;
+static const lcinfo lc_def = lc_info_usa_pst;
+static lcinfo locale = lc_info_usa_pst;
 
 static const lcinfo *lc_info_st[] = {
 	&lc_c, &lc_def,
 };
 
+/*
+ * Retrieve a valid pointer to a supported locale
+ * @param type locale type
+ */
 #define lc_info_struct(type) \
 	((type) > lc_info_max ? lc_info_st[0] : \
 	lc_info_st[type])

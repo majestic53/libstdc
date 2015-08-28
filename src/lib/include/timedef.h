@@ -74,6 +74,13 @@ extern "C" {
 #define tm_tag_year 'Y'
 #define tm_tag_year_len 4
 
+// time offsets
+#define tm_epoch_leap 26 // seconds
+#define tm_epoch_start 70 // 1970
+#define tm_sec_per_year 31536000.0
+#define tm_sec_per_day 86400.0
+#define tm_sec_per_hour 3600.0
+#define tm_sec_per_min 60.0
 
 // time value ranges
 #define tm_dst_active 1
@@ -90,15 +97,32 @@ extern "C" {
 #define tm_sec_min 0
 #define tm_wday_max 6
 #define tm_wday_min 0
+#define tm_week_max 52
+#define tm_week_min 1
 #define tm_yday_max 365
 #define tm_yday_min 0
 #define tm_year_min 1900
 
 /*
- * Offset from 01/01/1990 - 01/01/1970 in seconds
+ * Offset from 01/01/1900 to 01/01/1970 in seconds
  * 	(((70 * 365) + 17) * 86400)
  */
-#define epoch_offset 0x83aa7e80
+#define tm_epoch_offset \
+	(((tm_epoch_start * tm_yday_max) + tm_epoch_leap) * tm_sec_per_day)
+
+/*
+ * Determine if a year is a leap year
+ * @param year year to check against
+ */
+#define tm_year_leap(year) \
+	((!((year) % 4)) && (((year) % 100) || (!((year) + tm_year_min))))
+
+/*
+ * Determine the number of days in a year
+ * @param year year to check against
+ */
+#define tm_year_day(year) \
+	(tm_year_leap(year) ? (tm_yday_max + 1) : tm_yday_max)
 
 // full month string strings
 static const char *mon_full_str[] = {

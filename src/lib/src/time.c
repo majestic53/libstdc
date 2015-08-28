@@ -17,6 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../include/locale.h"
+#include "../include/locdef.h"
 //#include "../include/stdio.h"
 #include "../include/string.h"
 #include "../include/time.h"
@@ -25,7 +27,7 @@
 #define EOF _eof
 
 size_t 
-_strftime_len(
+strftime_len(
 	__in const char tag,
 	__in _tm hint
 	)
@@ -119,12 +121,29 @@ exit:
 	return result;
 }
 
-char *
-asctime(
-	__in const tm *timeptr
+_tm 
+week_num(
+	__in _tm yday,
+	__in _tm wday
 	)
 {
-	/*sprintf(asc_str, "%s %s %02u %02u:%02u:%02u %04u\n", 
+	_tm result = ((yday - wday) + 10) / 7;
+
+	if(result < tm_week_min) {
+		result = tm_week_max;
+	} else if(result > tm_week_max) {
+		result = tm_week_min;
+	}
+
+	return result;
+}
+
+char *
+asctime(
+	__in const struct tm *timeptr
+	)
+{
+	/*sprintf(asc_str, "%.3s %.3s %02u %02u:%02u:%02u %04u\n", 
 		wday_string(timeptr->tm_wday),
 		mon_string(timeptr->tm_mon),
 		timeptr->tm_mday,
@@ -157,13 +176,13 @@ difftime(
 	__in time_t time0
 	)
 {
-	time0 -= epoch_offset;
-	time1 -= epoch_offset;
+	time0 -= tm_epoch_offset;
+	time1 -= tm_epoch_offset;
 
 	return (double) (time1 > time0) ? (time1 - time0) : (-1 * (time0 - time1));
 }
 
-tm *
+struct tm *
 gmtime(
 	__in const time_t *timer
 	)
@@ -173,28 +192,42 @@ gmtime(
 	return &tm_time;
 }
 
-tm *
+struct tm *
 localtime(
 	__in const time_t *timer
 	)
 {
-	// TODO
-
-	return &tm_time;
+	time_t loc = *timer - (locale.time.tzone_off * tm_sec_per_hour);
+	return gmtime(&loc);
 }
 
 time_t 
 mktime(
-	__inout tm *timeptr
+	__inout struct tm *timeptr
 	)
 {
-	time_t result;
+	time_t iter = tm_epoch_start, leap = 0, result = 0;
 
-	// TODO
-	result = 0;
-	// ---
+	for(; iter <= timeptr->tm_year; ++iter) {
 
-	return result;
+		if(tm_year_leap(tm_year_min + iter)) {
+			++leap;
+		}
+	}
+
+	result = (((timeptr->tm_year - tm_epoch_start) * tm_sec_per_year)
+		+ ((timeptr->tm_yday + leap + 1) * tm_sec_per_day)
+		+ (timeptr->tm_hour * tm_sec_per_hour)
+		+ (timeptr->tm_min * tm_sec_per_min)
+		+ timeptr->tm_sec);
+
+	if(timeptr->tm_isdst) {
+		result -= tm_sec_per_hour;
+	}
+
+	result -= (locale.time.tzone_off * tm_sec_per_hour);
+
+	return (result < 0) ? _inv(time_t) : result;
 }
 
 size_t 
@@ -202,7 +235,7 @@ strftime(
 	__inout char *s,
 	__in size_t maxsize,
 	__in const char *format,
-	__in const tm *timeptr
+	__in const struct tm *timeptr
 	)
 {	
 	_tm hint;
@@ -228,7 +261,7 @@ strftime(
 				hint = 0;
 			}
 
-			fill = _strftime_len(*ch, hint);
+			fill = strftime_len(*ch, hint);
 			if((result + fill) > (maxsize - 1)) {
 				goto exit;
 			}
@@ -246,16 +279,24 @@ strftime(
 					strcpy(s, wday_string(timeptr->tm_wday));
 					break;
 				case tm_tag_am_pm: // 'p'
-
-					// TODO
+					strcpy(s, (timeptr->tm_hour >= 12) ? tm_pm : tm_am);
 					break;
 				case tm_tag_date: // 'x'
-
-					// TODO
+					/*sprintf(s, "%.3s %02u %04u", 
+						mon_string(timeptr->tm_mon),
+						timeptr->tm_mday,
+						timeptr->tm_year + tm_year_min
+						);*/
 					break;
 				case tm_tag_date_time: // 'c'
-
-					// TODO
+					/*sprintf(s, "%.3s %02u %02u:%02u:%02u %04u", 
+						mon_string(timeptr->tm_mon),
+						timeptr->tm_mday,
+						timeptr->tm_hour,
+						timeptr->tm_min,
+						timeptr->tm_sec,
+						timeptr->tm_year + tm_year_min
+						);*/
 					break;
 				case tm_tag_full_mon: // 'B'
 					strcpy(s, mon_full_string(timeptr->tm_mon));
@@ -264,60 +305,52 @@ strftime(
 					strcpy(s, wday_full_string(timeptr->tm_wday));
 					break;
 				case tm_tag_hour_12: // 'I'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_hour % 12);
 					break;
 				case tm_tag_hour_24: // 'H'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_hour);
 					break;
 				case tm_tag_mon_day_zero: // 'd'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_mday);
 					break;
 				case tm_tag_min: // 'M'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_min);
 					break;
 				case tm_tag_mon: // 'm'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_mon + 1);
 					break;
 				case tm_tag_sec: // 'S'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_sec);
 					break;
 				case tm_tag_time: // 'X'
-
-					// TODO
+					/*sprintf(s, "%02u:%02u:%02u", 
+						timeptr->tm_hour, 
+						timeptr->tm_min, 
+						timeptr->tm_sec
+						);*/
 					break;
 				case tm_tag_tzone: // 'Z'
-
-					// TODO
+					strcpy(s, locale.time.tzone);
 					break;
 				case tm_tag_wday: // 'w'
-
-					// TODO
+					//sprintf(s, "%02u", timeptr->tm_wday);
 					break;
 				case tm_tag_wmonday: // 'W'
-
-					// TODO
+					/*sprintf(s, "%02u", week_num(timeptr->tm_yday, 
+						timeptr->tm_wday));*/
 					break;
 				case tm_tag_wsunday: // 'U'
-
-					// TODO
+					/*sprintf(s, "%02u", week_num(timeptr->tm_yday, 
+						timeptr->tm_wday));*/
 					break;
 				case tm_tag_ycent: // 'y'
-
-					// TODO
+					//sprintf(s, "%02u", (timeptr->tm_year + tm_year_min) % 100);
 					break;
 				case tm_tag_yday: // 'j'
-
-					// TODO
+					//sprintf(s, "%03u", timeptr->tm_yday + 1);
 					break;
 				case tm_tag_year: // 'Y'
-
-					// TODO
+					//sprintf(s, "%04u", timeptr->tm_year + tm_year_min);
 					break;
 				default:
 					*s = *_unknown;

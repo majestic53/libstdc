@@ -52,7 +52,7 @@ typedef _time_t time_t;
 
 #ifndef _TM
 #define _TM
-typedef struct {
+struct tm {
 	_tm tm_sec; // second (0 - 61)
 	_tm tm_min; // minute (0 - 59)
 	_tm tm_hour; // hour (0 - 23)
@@ -62,7 +62,9 @@ typedef struct {
 	_tm tm_wday; // week day (0 - 6)
 	_tm tm_yday; // day (0 - 365)
 	_tm tm_isdst; // daylight saving time (0: not active, 1: active)
-} tm;
+};
+
+typedef struct tm tm;
 #endif // _TM
 
 /*
@@ -71,7 +73,7 @@ typedef struct {
  * @return string representation of time container
  */
 char *asctime(
-	__in const tm *timeptr
+	__in const struct tm *timeptr
 	);
 
 /*
@@ -105,7 +107,7 @@ double difftime(
  * @param timer valid pointer to time_t value
  * @return valid pointer to UTC time container
  */
-tm *gmtime(
+struct tm *gmtime(
 	__in const time_t *timer
 	);
 
@@ -114,7 +116,7 @@ tm *gmtime(
  * @param timer valid pointer to time_t value
  * @return valid pointer to local time container
  */
-tm *localtime(
+struct tm *localtime(
 	__in const time_t *timer
 	);
 
@@ -124,7 +126,7 @@ tm *localtime(
  * @return time_t value, else returns -1
  */
 time_t mktime(
-	__inout tm *timeptr
+	__inout struct tm *timeptr
 	);
 
 /* 
@@ -139,7 +141,7 @@ size_t strftime(
 	__inout char *s,
 	__in size_t maxsize,
 	__in const char *format,
-	__in const tm *timeptr
+	__in const struct tm *timeptr
 	);
 
 /*

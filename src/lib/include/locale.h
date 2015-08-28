@@ -48,7 +48,7 @@ enum {
 
 #ifndef _LCONV
 #define _LCONV
-typedef struct {
+struct lconv {
 	char *decimal_point; // decimal point character
 	char *thousands_sep; // thousands place seperator character
 	char *grouping;	// amount of digits that format a thousands seperated group
@@ -67,7 +67,9 @@ typedef struct {
 	char n_sep_by_space; // space between the currency symbol and negative monetary values
 	char p_sign_posn; // position of sign for non-negative monetary values
 	char n_sign_posn; // position of sign for negative monetary values
-} lconv;
+};
+
+typedef struct lconv lconv;
 #endif // _LCONV
 
 /*
