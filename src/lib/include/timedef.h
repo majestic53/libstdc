@@ -27,185 +27,187 @@ extern "C" {
 #endif // __cplusplus
 
 // time string tags
-#define tm_am "AM"
-#define tm_pm "PM"
-#define tm_tag '%'
-#define tm_tag_len 1
-#define tm_tag_abbrev_mon 'b'
-#define tm_tag_abbrev_mon_len 3
-#define tm_tag_abbrev_wday 'a'
-#define tm_tag_abbrev_wday_len 3
-#define tm_tag_am_pm 'p'
-#define tm_tag_am_pm_len 2
-#define tm_tag_date 'x'
-#define tm_tag_date_len 11
-#define tm_tag_date_time 'c'
-#define tm_tag_date_time_len 20
-#define tm_tag_full_mon 'B'
-#define tm_tag_full_mon_len 3
-#define tm_tag_full_wday 'A'
-#define tm_tag_full_wday_len 3
-#define tm_tag_hour_12 'I'
-#define tm_tag_hour_12_len 2
-#define tm_tag_hour_24 'H'
-#define tm_tag_hour_24_len 2
-#define tm_tag_mon_day_zero 'd'
-#define tm_tag_mon_day_zero_len 2
-#define tm_tag_min 'M'
-#define tm_tag_min_len 2
-#define tm_tag_mon 'm'
-#define tm_tag_mon_len 2
-#define tm_tag_sec 'S'
-#define tm_tag_sec_len 2
-#define tm_tag_time 'X'
-#define tm_tag_time_len 8
-#define tm_tag_tzone 'Z'
-#define tm_tag_tzone_len 3
-#define tm_tag_wday 'w'
-#define tm_tag_wday_len 1
-#define tm_tag_wmonday 'W'
-#define tm_tag_wmonday_len 2
-#define tm_tag_wsunday 'U'
-#define tm_tag_wsunday_len 2
-#define tm_tag_ycent 'y'
-#define tm_tag_ycent_len 2
-#define tm_tag_yday 'j'
-#define tm_tag_yday_len 3
-#define tm_tag_year 'Y'
-#define tm_tag_year_len 4
+#define TM_AM "AM"
+#define TM_PM "PM"
+#define TM_TAG '%'
+#define TM_TAG_ABBREV_MON 'b'
+#define TM_TAG_ABBREV_WDAY 'a'
+#define TM_TAG_AM_PM 'p'
+#define TM_TAG_DATE 'x'
+#define TM_TAG_DATE_TIME 'c'
+#define TM_TAG_HOUR_12 'I'
+#define TM_TAG_HOUR_24 'H'
+#define TM_TAG_MON_DAY_ZERO 'd'
+#define TM_TAG_MIN 'M'
+#define TM_TAG_MON 'm'
+#define TM_TAG_MON_FULL 'B'
+#define TM_TAG_SEC 'S'
+#define TM_TAG_TIME 'X'
+#define TM_TAG_TZONE 'Z'
+#define TM_TAG_WDAY 'w'
+#define TM_TAG_WDAY_FULL 'A'
+#define TM_TAG_WMONDAY 'W'
+#define TM_TAG_WSUNDAY 'U'
+#define TM_TAG_YCENT 'y'
+#define TM_TAG_YDAY 'j'
+#define TM_TAG_YEAR 'Y'
+
+// time string tag lengths
+#define TM_TAG_LEN 1
+#define TM_TAG_ABBREV_MON_LEN 3
+#define TM_TAG_ABBREV_WDAY_LEN 3
+#define TM_TAG_AM_PM_LEN 2
+#define TM_TAG_DATE_LEN 11
+#define TM_TAG_DATE_TIME_LEN 20
+#define TM_TAG_HOUR_12_LEN 2
+#define TM_TAG_HOUR_24_LEN 2
+#define TM_TAG_MIN_LEN 2
+#define TM_TAG_MON_DAY_ZERO_LEN 2
+#define TM_TAG_MON_FULL_LEN 3
+#define TM_TAG_MON_LEN 2
+#define TM_TAG_SEC_LEN 2
+#define TM_TAG_TIME_LEN 8
+#define TM_TAG_TZONE_LEN 3
+#define TM_TAG_WDAY_FULL_LEN 3
+#define TM_TAG_WDAY_LEN 1
+#define TM_TAG_WMONDAY_LEN 2
+#define TM_TAG_WSUNDAY_LEN 2
+#define TM_TAG_YCENT_LEN 2
+#define TM_TAG_YDAY_LEN 3
+#define TM_TAG_YEAR_LEN 4
 
 // time offsets
-#define tm_mon_feb 1 // february
-#define tm_epoch_start 70 // 1970
-#define tm_sec_per_year 31536000.0
-#define tm_sec_per_day 86400.0
-#define tm_sec_per_hour 3600.0
-#define tm_sec_per_min 60.0
+#define TM_MON_FEB 1 // february
+#define TM_EPOCH_START 70 // 1970
+#define TM_SEC_PER_YEAR 31536000.0
+#define TM_SEC_PER_DAY 86400.0
+#define TM_SEC_PER_HOUR 3600.0
+#define TM_SEC_PER_MIN 60.0
 
 // time value ranges
-#define tm_cent 100
-#define tm_dst_active 1
-#define tm_dsm_inactive 0
-#define tm_hour_max 23
-#define tm_hour_min 0
-#define tm_mday_max 31
-#define tm_mday_min 1
-#define tm_mille 1000
-#define tm_min_max 59
-#define tm_min_min 0
-#define tm_mon_max 11
-#define tm_mon_min 0
-#define tm_sec_max 61
-#define tm_sec_min 0
-#define tm_wday_max 6
-#define tm_wday_min 0
-#define tm_week_max 52
-#define tm_week_min 1
-#define tm_yday_max 365
-#define tm_yday_min 0
-#define tm_year_min 1900
-
-/*
- * Full month string
- * @param mon valid full month value
- */
-#define tm_mon_full_string(mon) \
-	(((mon < tm_mon_min) || (mon > tm_mon_max)) ? _unknown _unknown _unknown : \
-	tm_mon_full_str[mon])
+#define TM_CENT 100
+#define TM_DST_ACTIVE 1
+#define TM_DST_INACTIVE 0
+#define TM_HOUR_MAX 23
+#define TM_HOUR_MIN 0
+#define TM_MDAY_MAX 31
+#define TM_MDAY_MIN 1
+#define TM_MILLE 1000
+#define TM_MIN_MAX 59
+#define TM_MIN_MIN 0
+#define TM_MON_MAX 11
+#define TM_MON_MIN 0
+#define TM_SEC_MAX 61
+#define TM_SEC_MIN 0
+#define TM_WDAY_MAX 6
+#define TM_WDAY_MIN 0
+#define TM_WEEK_MAX 52
+#define TM_WEEK_MIN 1
+#define TM_YDAY_MAX 365
+#define TM_YDAY_MIN 0
+#define TM_YEAR_MIN 1900
 
 /*
  * Calculate month length
- * @param year year to check against
- * @param mon month to check against
+ * @param _YEAR_ year to check against
+ * @param _MON_ month to check against
  */
-#define tm_mon_length(year, mon) \
-	((((mon) < tm_mon_min) || ((mon) > tm_mon_max)) ? _inv(_tm) : \
-	(((mon) == tm_mon_feb) ? (tm_mon_len[mon] + (tm_year_leap(year) ? 1 : 0)) : \
-	tm_mon_len[mon]))
+#define TM_MON_LENGTH(_YEAR_, _MON_) \
+	((((_MON_) < TM_MON_MIN) || ((_MON_) > TM_MON_MAX)) ? _INV(_tm) : \
+	(((_MON_) == TM_MON_FEB) ? (TM_MON_LEN[_MON_] + (TM_YEAR_LEAP(_YEAR_) ? 1 : 0)) : \
+	TM_MON_LEN[_MON_]))
 
 /*
  * Month string
- * @param mon valid month value
+ * @param _MON_ valid month value
  */
-#define tm_mon_string(mon) \
-	(((mon < tm_mon_min) || (mon > tm_mon_max)) ? _unknown _unknown _unknown : \
-	tm_mon_str[mon])
+#define TM_MON_STRING(_MON_) \
+	((((_MON_) < TM_MON_MIN) || ((_MON_) > TM_MON_MAX)) ? _UNKNOWN _UNKNOWN _UNKNOWN : \
+	TM_MON_STR[_MON_])
 
 /*
- * Full week day string
- * @param wday valid weekday value
+ * Full month string
+ * @param _MON_ valid full month value
  */
-#define tm_wday_full_string(wday) \
-	(((wday < tm_wday_min) || (wday > tm_wday_max)) ? _unknown _unknown _unknown : \
-	tm_wday_full_str[wday])
+#define TM_MON_STRING_FULL(_MON_) \
+	((((_MON_) < TM_MON_MIN) || ((_MON_) > TM_MON_MAX)) ? _UNKNOWN _UNKNOWN _UNKNOWN : \
+	TM_MON_STR_FULL[_MON_])
 
 /*
  * Week day string
- * @param wday valid weekday value
+ * @param _WDAY_ valid weekday value
  */
-#define tm_wday_string(wday) \
-	(((wday < tm_wday_min) || (wday > tm_wday_max)) ? _unknown _unknown _unknown : \
-	tm_wday_str[wday])
+#define TM_WDAY_STRING(_WDAY_) \
+	((((_WDAY_) < TM_WDAY_MIN) || ((_WDAY_) > TM_WDAY_MAX)) ? _UNKNOWN _UNKNOWN _UNKNOWN : \
+	TM_WDAY_STR[_WDAY_])
+
+/*
+ * Full week day string
+ * @param _WDAY_ valid weekday value
+ */
+#define TM_WDAY_STRING_FULL(_WDAY_) \
+	((((_WDAY_) < TM_WDAY_MIN) || ((_WDAY_) > TM_WDAY_MAX)) ? _UNKNOWN _UNKNOWN _UNKNOWN : \
+	TM_WDAY_STR_FULL[_WDAY_])
 
 /*
  * Determine if a year is a leap year
- * @param year year to check against
+ * @param _YEAR_ year to check against
  */
-#define tm_year_leap(year) \
-	((!((year) % 4)) && (((year) % 100) || (!((year) + tm_year_min))))
+#define TM_YEAR_LEAP(_YEAR_) \
+	((!((_YEAR_) % 4)) && (((_YEAR_) % 100) || (!((_YEAR_) + TM_YEAR_MIN))))
 
 /*
  * Determine the number of days in a year
- * @param year year to check against
+ * @param _YEAR_ year to check against
  */
-#define tm_year_day(year) \
-	(tm_year_leap(year) ? (tm_yday_max + 1) : tm_yday_max)
-
-// time string container
-static char tm_ascstr[_ascstr_len] = { 0 };
-
-// full month string strings
-static const char *tm_mon_full_str[] = {
-	"January", "February", "March", "April", "May", "June", 
-	"July", "August", "September", "October", "November", "December",
-	};
+#define TM_YEAR_DAY(_YEAR_) \
+	(TM_YEAR_LEAP(_YEAR_) ? (TM_YDAY_MAX + 1) : TM_YDAY_MAX)
 
 // month length values
-static const _tm tm_mon_len[] = {
+static const _tm TM_MON_LEN[] = {
 	31, 28 /* + leap(year) */, 31, 30, 31, 
 	30, 31, 31, 30, 31, 30, 31,
 	};
 
 // month string strings
-static const char tm_mon_str[][4] = {
+static const char TM_MON_STR[][4] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 	};
 
-// full week day strings
-static const char *tm_wday_full_str[] = {
-	"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+// full month string strings
+static const char *TM_MON_STR_FULL[] = {
+	"January", "February", "March", "April", "May", "June", 
+	"July", "August", "September", "October", "November", "December",
 	};
 
 // week day strings
-static const char tm_wday_str[][4] = {
+static const char TM_WDAY_STR[][4] = {
 	"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
 	};
 
+// full week day strings
+static const char *TM_WDAY_STR_FULL[] = {
+	"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+	};
+
+// time string container
+static char tm_ascstr[_ASCSTR_LEN] = { 0 };
+
 // time value
-static time_t tm_cur = 0;
+static time_t tm_time = 0;
 
 // time container
-static struct tm tm_time = {
-	tm_sec_min,
-	tm_min_min,
-	tm_hour_min,
-	tm_mday_min,
-	tm_mon_min,
-	tm_year_min,
-	tm_wday_min,
-	tm_yday_min,
-	tm_dsm_inactive,
+static struct tm tm_timeptr = {
+	TM_SEC_MIN,
+	TM_MIN_MIN,
+	TM_HOUR_MIN,
+	TM_MDAY_MIN,
+	TM_MON_MIN,
+	TM_YEAR_MIN,
+	TM_WDAY_MIN,
+	TM_YDAY_MIN,
+	TM_DST_INACTIVE,
 	};
 
 #ifdef __cplusplus

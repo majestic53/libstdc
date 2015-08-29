@@ -28,16 +28,16 @@ extern "C" {
 
 /*
  * Restore previous saved environment
- * @param env environment to restore
- * @param val predicate to be evaluated
+ * @param _ENV_ environment to restore
+ * @param _VAL_ predicate to be evaluated
  */
-#define longjmp(env, val) _longjmp(env, val)
+#define longjmp(_ENV_, _VAL_) _longjmp(_ENV_, _VAL_)
 
 /*
  * Save current environment
- * @param env environment to save
+ * @param _ENV_ environment to save
  */
-#define setjmp(env) _setjmp(env)
+#define setjmp(_ENV_) _setjmp(_ENV_)
 
 // jump buffer definition
 #ifndef _JMP_BUF
@@ -66,7 +66,7 @@ int _setjmp(
 	);
 
 // jump buffer container
-extern jmp_buf _evn[_jmp_buf_len];
+extern jmp_buf _evn[_JMPBUF_LEN];
 	
 #ifdef __cplusplus
 }

@@ -32,26 +32,26 @@ extern "C" {
  * Abort if predicate expression is false
  * Assertion in the form: 
  *	"<FILE>:<LINE>: <FUNCT>: Assertion \'<EXPR>\' failed."
- * @param expression predicate expression to be checked
+ * @param _EXPR_ predicate expression to be checked
  */
-#define assert(expression) {\
-	if(!(expression)) {\
-	_assert(__FILE__ ":" _valstr(__LINE__) ": " __funct__ \
-	": Assertion \'" _valstr(expression) "\' failed.") \
+#define assert(_EXPR_) {\
+	if(!(_EXPR_)) {\
+	_assert(__FILE__ ":" _VALSTR(__LINE__) ": " __funct__ \
+	": Assertion \'" _VALSTR(_EXPR_) "\' failed.") \
 	} \
 	}
 #else
 
 // assert ignored when NDEBUG is defined
-#define assert(ignore) ((void) 0)
+#define assert(_IGNORE_) ((void) 0)
 #endif // NDEBUG
 
 /*
  * Assert if predicate expression is false
- * @param expression predicate string
+ * @param expr predicate string
  */
 void _assert(
-	__in const char *expression
+	__in const char *expr
 	);
 
 #ifdef __cplusplus

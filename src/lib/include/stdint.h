@@ -78,51 +78,51 @@ extern "C" {
 
 /*
  * Signed 8-bit integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define INT8_C(value) ((int8_t) value)
+#define INT8_C(_VAL_) ((int8_t) (_VAL_))
 
 /*
  * Signed 16-bit integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define INT16_C(value) ((int16_t) value)
+#define INT16_C(_VAL_) ((int16_t) (_VAL_))
 
 /*
  * Signed 32-bit integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define INT32_C(value) ((int32_t) _valstr(value, l))
+#define INT32_C(_VAL_) ((int32_t) _VALSTR(_VAL_, l))
 
 /*
  * Unsigned 8-bit integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define UINT8_C(value) ((int8_t) _valstr(value, u))
+#define UINT8_C(_VAL_) ((int8_t) _VALSTR(_VAL_, u))
 
 /*
  * Unsigned 16-bit integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define UINT16_C(value) ((int16_t) _valstr(value, u))
+#define UINT16_C(_VAL_) ((int16_t) _VALSTR(_VAL_, u))
 
 /*
  * Unsigned 32-bit integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define UINT32_C(value) ((int32_t) _valstr(value, ul))
+#define UINT32_C(_VAL_) ((int32_t) _VALSTR(_VAL_, ul))
 
 /*
  * Signed integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define INTMAX_C(value) INT32_C(value)
+#define INTMAX_C(_VAL_) INT32_C(_VAL_)
 
 /*
  * Unsigned integer conversion
- * @param value castable value
+ * @param _VAL_ castable value
  */
-#define UINTMAX_C(value) UINT32_C(value)
+#define UINTMAX_C(_VAL_) UINT32_C(_VAL_)
 
 // signed integer type definitions
 #ifndef _INT8_T

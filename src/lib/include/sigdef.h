@@ -17,46 +17,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STDDEF_H_
-#define STDDEF_H_
-
-#include "libdef.h"
+#ifndef SIGDEF_H_
+#define SIGDEF_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-// null definition
-#define NULL _NULL
+// abort signal
+#define SIGABRT 6
+#define SIGABRT_STR "Abort"
 
-/*
- * Determine the offset of a struct member
- * @param _TYPE_ struct type
- * @param _MEMBER_ struct member name
- */
-#define offsetof(_TYPE_, _MEMBER_) \
-	((size_t) &(((_TYPE_) *) 0)->_MEMBER_)
+// floating-point exception signal
+#define SIGFPE 8
+#define SIGFPE_STR "Floating-point exception"
 
-// ptrdiff_t defition
-#ifndef _PTRDIFF_T
-#define _PTRDIFF_T
-typedef _ptrdiff_t ptrdiff_t;
-#endif // _PTRDIFF_T
+// illegal operation signal
+#define SIGILL 4
+#define SIGILL_STR "Illegal operation"
 
-// size_t definition
-#ifndef _SIZE_T
-#define _SIZE_T
-typedef _size_t size_t;
-#endif // _SIZE_T
+// asyn interrupt signal
+#define SIGINT 2
+#define SIGINT_STR "Async signal"
 
-// wide character definition
-#ifndef _WCHAR_T
-#define _WCHAR_T
-typedef _wchar_t wchar_t;
-#endif // _WCHAR_T
+// segmentation fault signal
+#define SIGSEGV 11
+#define SIGSEGV_STR "Segmentation fault"
+
+// termination signal
+#define SIGTERM 15
+#define SIGTERM_STR "Terminated"
+
+// supported signal range
+#define SIGMIN SIGABRT
+#define SIGMAX SIGTERM
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // STDDEF_H_
+#endif // SIGDEF_H_

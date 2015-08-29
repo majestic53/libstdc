@@ -23,7 +23,7 @@
 #include "libdef.h"
 
 // null definition
-#define NULL _null
+#define NULL _NULL
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,268 +37,268 @@ typedef _size_t size_t;
 
 /*
  * Locate byte in memory block
- * @param s valid pointer to memory block
- * @param c byte value to locate
- * @param n number of bytes to search
+ * @param src valid pointer to memory block
+ * @param byte byte value to locate
+ * @param max number of bytes to search
  * @return a valid pointer to the first occurance of the byte
  * 	in the memory block, else returns NULL
  */
 void *memchr(
-	__in const void *s,
-	__in int c,
-	__in size_t n
+	__in const void *src,
+	__in int byte,
+	__in size_t max
 	);
 
 /*
  * Compare two memory blocks
- * @param s1 valid pointer to first memory block
- * @param s2 valid pointer to second memory block
- * @param n number of bytes to compare
+ * @param src1 valid pointer to first memory block
+ * @param src2 valid pointer to second memory block
+ * @param max number of bytes to compare
  * @return 0 if both memory blocks are equal, else return non-zero:
  * 	<0 if non-matching byte s1[N] < s2[N]
  * 	>0 if non-matching byte s1[N] > s2[N]
  */
 int memcmp(
-	__in const void *s1,
-	__in const void *s2,
-	__in size_t n
+	__in const void *src1,
+	__in const void *src2,
+	__in size_t max
 	);
 
 /*
  * Copy one memory block into another
- * @param s1 valid pointer to destination memory block
- * @param s2 valid pointer to source memory block
- * @param n number of bytes to copy
+ * @param dest valid pointer to destination memory block
+ * @param src valid pointer to source memory block
+ * @param max number of bytes to copy
  * @return valid pointer to destination memory block
  */
 void *memcpy(
-	__inout void *s1,
-	__in const void *s2,
-	__in size_t n
+	__inout void *dest,
+	__in const void *src,
+	__in size_t max
 	);
 
 /*
  * Move one memory block into another
- * @param s1 valid pointer to destination memory block
- * @param s2 valid pointer to source memory block
- * @param n number of bytes to move
+ * @param dest valid pointer to destination memory block
+ * @param src valid pointer to source memory block
+ * @param max number of bytes to move
  * @return valid pointer to destination memory block
  */
 void *memmove(
-	__inout void *s1,
-	__in const void *s2,
-	__in size_t n
+	__inout void *dest,
+	__in const void *src,
+	__in size_t max
 	);
 
 /*
  * Fill memory block with byte value
- * @param s valid pointer to memory block
- * @param c byte value to fill
- * @param n number of bytes to fill
+ * @param dest valid pointer to memory block
+ * @param byte byte value to fill
+ * @param max number of bytes to fill
  * @return valid pointer to memory block
  */
 void *memset(
-	__inout void *s,
-	__in int c,
-	__in size_t n
+	__inout void *dest,
+	__in int byte,
+	__in size_t max
 	);
 
 /*
  * Concatinate two strings
- * @param s1 valid pointer to destination string
- * @param s2 valid pointer to source string
+ * @param dest valid pointer to destination string
+ * @param src valid pointer to source string
  * @return valid pointer to destination string
  */
 char *strcat(
-	__inout char *s1,
-	__in const char *s2
+	__inout char *dest,
+	__in const char *src
 	);
 
 /*
  * Locate character in string
- * @param s valid pointer to string
- * @param c character to locate
+ * @param src valid pointer to string
+ * @param ch character to locate
  * @return a valid pointer to the first occurance of the character
  * 	in the string, else returns NULL
  */
 char *strchr(
-	__in const char *s,
-	__in int c
+	__in const char *src,
+	__in int ch
 	);
 
 /*
  * Determine span to character in string
- * @param s1 valid pointer to first string
- * @param s2 valid pointer to second string
+ * @param src1 valid pointer to first string
+ * @param src2 valid pointer to second string
  * @return length of the first string not contained in the second
  */
 size_t strcspn(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	);
 
 /*
  * Compare two strings
- * @param s1 valid pointer to first string
- * @param s2 valid pointer to second string
+ * @param src1 valid pointer to first string
+ * @param src2 valid pointer to second string
  * @return 0 if both strings are equal, else return non-zero:
  * 	<0 if non-matching byte s1[N] < s2[N]
  * 	>0 if non-matching byte s1[N] > s2[N]
  */
 int strcmp(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	);
 
 /*
  * Copy one string into another
- * @param s1 valid pointer to destination string
- * @param s2 valid pointer to source string
+ * @param dest valid pointer to destination string
+ * @param src valid pointer to source string
  * @return valid pointer to destination string
  */
 char *strcpy(
-	__inout char *s1,
-	__in const char *s2
+	__inout char *dest,
+	__in const char *src
 	);
 
 /*
  * Compare two strings using locale
- * @param s1 valid pointer to first string
- * @param s2 valid pointer to second string
+ * @param src1 valid pointer to first string
+ * @param src2 valid pointer to second string
  * @return 0 if both strings are equal, else return non-zero:
  * 	<0 if non-matching byte s1[N] < s2[N]
  * 	>0 if non-matching byte s1[N] > s2[N]
  */
 int strcoll(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	);
 
 /*
  * Retrieve a string representation of an error code
- * @param errnum error code to retrieve
+ * @param err error code to retrieve
  * @return valid pointer to string representation of errnum
  */
 char *strerror(
-	__in int errnum
+	__in int err
 	);
 
 /*
  * Determine the character length of a string
- * @param s valid pointer to string
+ * @param src valid pointer to string
  * @return character length of string
  */
 size_t strlen(
-	__in const char *s
+	__in const char *src
 	);
 
 /*
  * Append a string to another
- * @param s1 valid pointer to destination string
- * @param s2 valid pointer to source string
- * @param n maximum number of character to copy, up to terminating character
+ * @param dest valid pointer to destination string
+ * @param src valid pointer to source string
+ * @param max maximum number of character to copy, up to terminating character
  * @return valid pointer to destination string
  */
 char *strncat(
-	__inout char *s1,
-	__in const char *s2,
-	__in size_t n
+	__inout char *dest,
+	__in const char *src,
+	__in size_t max
 	);
 
 /*
  * Compare two strings
- * @param s1 valid pointer to first string
- * @param s2 valid pointer to second string
- * @param n maximum number of character to compare, up to terminating character
+ * @param src1 valid pointer to first string
+ * @param src2 valid pointer to second string
+ * @param max maximum number of character to compare, up to terminating character
  * @return 0 if both strings are equal, else return non-zero:
  * 	<0 if non-matching byte s1[N] < s2[N]
  * 	>0 if non-matching byte s1[N] > s2[N]
  */
 int strncmp(
-	__in const char *s1,
-	__in const char *s2,
-	__in size_t n
+	__in const char *src1,
+	__in const char *src2,
+	__in size_t max
 	);
 
 /*
  * Copy one string into another
- * @param s1 valid pointer to destination string
- * @param s2 valid pointer to source string
- * @param n maximum number of characters to copy, up to terminating character
+ * @param dest valid pointer to destination string
+ * @param src valid pointer to source string
+ * @param max maximum number of characters to copy, up to terminating character
  * @return valid pointer to destination string
  */
 char *strncpy(
-	__inout char *s1,
-	__in const char *s2,
-	__in size_t n
+	__inout char *dest,
+	__in const char *src,
+	__in size_t max
 	);
 
 /*
  * Locate first occurrence of character in string
- * @param s1 valid pointer to first string
- * @param s2 valid pointer to second string
+ * @param src1 valid pointer to first string
+ * @param src2 valid pointer to second string
  * @return valid pointer to first occurrence of character, else returns NULL
  */
 char *strpbrk(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	);
 
 /*
  * Locate last occurrence of character in string
- * @param s1 valid pointer to string
- * @param c character to locate
+ * @param src valid pointer to string
+ * @param ch character to locate
  * @return valid pointer to last occurrence of character, else returns NULL
  */
 char *strrchr(
-	__in const char *s,
-	__in int c
+	__in const char *src,
+	__in int ch
 	);
 
 /*
  * Determine span to character in string
- * @param s1 valid pointer to first string
- * @param s2 valid pointer to second string
+ * @param src1 valid pointer to first string
+ * @param src2 valid pointer to second string
  * @return length of the first string contained in the second
  */
 size_t strspn(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	);
 
 /*
  * Locate a substring in string
- * @param s1 valid pointer to string
- * @param s2 valid pointer to matching string
+ * @param src1 valid pointer to string
+ * @param src2 valid pointer to matching string
  * @return valid pointer to substring, else return NULL
  */
 char *strstr(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	);
 
 /*
  * Split string into tokens using supplied delimiter
- * @param s1 valid pointer to string
- * @param s2 valid pointer to delimiter string
+ * @param src valid pointer to string
+ * @param delim valid pointer to delimiter string
  * @return valid pointer to token substring, else return NULL
  */
 char *strtok(
-	__inout char *s1,
-	__in const char *s2
+	__inout char *src,
+	__in const char *delim
 	);
 
 /*
  * Transform string using locale
- * @param s1 valid pointer to destination string
- * @param s2 valid pointer to source string
- * @param n maximum number of characters to copy
+ * @param dest valid pointer to destination string
+ * @param src valid pointer to source string
+ * @param max maximum number of characters to copy
  * @return length of the destination string
  */
 size_t strxfrm(
-	__inout char *s1,
-	__in const char *s2,
-	__in size_t n
+	__inout char *dest,
+	__in const char *src,
+	__in size_t max
 	);
 
 #ifdef __cplusplus

@@ -23,9 +23,9 @@
 
 void 
 _assert(
-	__in const char *expression
+	__in const char *expr
 	)
 {
-	//fprintf(stderr, "%s\n", expression);
+	//fprintf(stderr, "%s\n", expr);
 	//abort();
 }

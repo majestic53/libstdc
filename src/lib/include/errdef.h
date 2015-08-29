@@ -32,6 +32,10 @@ extern "C" {
 #define ERANGE 2
 #define ERANGE_STR "Range error"
 
+// invalid argument error
+#define EINVAL 22
+#define EINVAL_STR "Invalid argument"
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

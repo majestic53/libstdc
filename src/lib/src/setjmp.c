@@ -20,7 +20,7 @@
 #include "../include/envdef.h"
 #include "../include/setjmp.h"
 
-jmp_buf _env[] = env_empty;
+jmp_buf _env[] = ENV_EMPTY;
 
 void 
 _longjmp(
@@ -28,7 +28,7 @@ _longjmp(
 	__in int val
 	)
 {
-	env_asm_longjmp(env, val);
+	ENV_LONGJMP(env, val);
 }
 
 int 
@@ -36,6 +36,6 @@ _setjmp(
 	__inout jmp_buf env
 	)
 {
-	env_asm_setjmp(env);
+	ENV_SETJMP(env);
 	return 0;
 }

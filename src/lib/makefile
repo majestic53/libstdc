@@ -31,11 +31,11 @@ all: build archive
 archive:
 	@echo ""
 	@echo "--- BUILDING STANDARD LIBRARY --------------"
-	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)string.o $(DIR_BUILD)time.o
+	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)signal.o $(DIR_BUILD)string.o $(DIR_BUILD)time.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
 
-build: assert.o ctype.o errno.o locale.o setjmp.o string.o time.o
+build: assert.o ctype.o errno.o locale.o setjmp.o signal.o string.o time.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
 ifndef CC_DBG
@@ -70,6 +70,13 @@ ifndef CC_DBG
 	$(CC) $(CC_FLAGS_REL) $(CC_FLAGS_ASM) -c $(DIR_SRC)setjmp.c -o $(DIR_BUILD)setjmp.o # release
 else
 	$(CC) $(CC_FLAGS_DBG) $(CC_FLAGS_ASM) -c $(DIR_SRC)setjmp.c -o $(DIR_BUILD)setjmp.o # debug
+endif # CC_DBG
+
+signal.o: $(DIR_SRC)signal.c $(DIR_INC)signal.h
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)signal.c -o $(DIR_BUILD)signal.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)signal.c -o $(DIR_BUILD)signal.o # debug
 endif # CC_DBG
 
 string.o: $(DIR_SRC)string.c $(DIR_INC)string.h

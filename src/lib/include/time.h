@@ -27,10 +27,10 @@ extern "C" {
 #endif // __cplusplus
 
 // clock ticks per second
-#define CLOCKS_PER_SEC _clocks_per_sec
+#define CLOCKS_PER_SEC _CLOCKS_PER_SEC
 
 // null definition
-#define NULL _null
+#define NULL _NULL
 
 // clock_t definition
 #ifndef _CLOCK_T
@@ -91,13 +91,13 @@ char *ctime(
 
 /*
  * Calculate the difference between two times
- * @param time1 second time value
- * @param time0 first time value
+ * @param next second time value
+ * @param prev first time value
  * @return differnce between supplied time contains
  */
 double difftime(
-	__in time_t time1,
-	__in time_t time0
+	__in time_t next,
+	__in time_t prev
 	);
 
 /*
@@ -129,14 +129,14 @@ time_t mktime(
 
 /* 
  * Format time as string
- * @param s valid pointer to string
+ * @param buf valid pointer to string
  * @param maxsize max string character length
  * @param format valid pointer to format string
  * @param timeptr valid pointer to time container
  * @return length of formatted string
  */
 size_t strftime(
-	__inout char *s,
+	__inout char *buf,
 	__in size_t maxsize,
 	__in const char *format,
 	__in const struct tm *timeptr

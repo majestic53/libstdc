@@ -28,121 +28,121 @@ extern "C" {
 
 /*
  * Check if character is alphanumeric
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is alphanumeric, else returns 0
  */
 int isalnum(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is alphabetical
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is alphabetical, else returns 0
  */
 int isalpha(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is a control character
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is a control character, else returns 0
  */
 int iscntrl(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is a digit
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is a digit, else returns 0
  */
 int isdigit(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is graphical
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is graphical, else returns 0
  */
 int isgraph(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is lower case
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is lower case, else returns 0
  */
 int islower(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is printable
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is printable, else returns 0
  */
 int isprint(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is punctuation
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is punctuation, else returns 0
  */
 int ispunct(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is whitespace
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is whitespace, else returns 0
  */
 int isspace(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is upper case
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is upper case, else returns 0
  */
 int isupper(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Check if character is a hexadecimal digit
- * @param c character to be checked
+ * @param ch character to be checked
  * @return non-zero if character is a hexadecimal digit, else returns 0
  */
 int isxdigit(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Convert a character to lower case
- * @param c character to be converted
+ * @param ch character to be converted
  * @return character converted to lower case if such a character exists, 
  * 	else character is unchanged
  */
 int tolower(
-	__in int c
+	__in int ch
 	);
 
 /*
  * Convert a character to upper case
- * @param c character to be converted
+ * @param ch character to be converted
  * @return character converted to upper case if such a character exists, 
  * 	else character is unchanged
  */
 int toupper(
-	__in int c
+	__in int ch
 	);
 
 #ifdef __cplusplus

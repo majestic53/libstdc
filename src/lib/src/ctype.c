@@ -19,373 +19,373 @@
 
 #include "../include/ctype.h"
 
-#define c_alpha 0x1
-#define c_cntrl 0x2
-#define c_digit 0x4
-#define c_graph 0x8
-#define c_lower 0x10
-#define c_punct 0x20
-#define c_space 0x30
-#define c_upper 0x40
-#define c_xdigit 0x80
+#define C_ALPHA 0x1
+#define C_CNTRL 0x2
+#define C_DIGIT 0x4
+#define C_GRAPH 0x8
+#define C_LOWER 0x10
+#define C_PUNCT 0x20
+#define C_SPACE 0x30
+#define C_UPPER 0x40
+#define C_XDIGIT 0x80
 
-static const char ctype_type[] = {
-	c_cntrl, // null
-	c_cntrl, // start of heading
-	c_cntrl, // start of text
-	c_cntrl, // end of text
-	c_cntrl, // end of transmission
-	c_cntrl, // enquiry
-	c_cntrl, // acknowledge
-	c_cntrl, // bell
-	c_cntrl, // backspace
-	c_cntrl | c_space, // horizontal tab
-	c_cntrl | c_space, // new line
-	c_cntrl | c_space, // vertical tab
-	c_cntrl | c_space, // new page
-	c_cntrl | c_space, // carrage return
-	c_cntrl, // shift out
-	c_cntrl, // shift in
-	c_cntrl, // data link escape
-	c_cntrl, // device control 1
-	c_cntrl, // device control 2
-	c_cntrl, // device control 3
-	c_cntrl, // device control 4
-	c_cntrl, // negative acknowledge
-	c_cntrl, // synchronous idle
-	c_cntrl, // end of transmission block
-	c_cntrl, // cancel
-	c_cntrl, // end of medium
-	c_cntrl, // substitute
-	c_cntrl, // escape
-	c_cntrl, // file seperator
-	c_cntrl, // group seperator
-	c_cntrl, // record seperator
-	c_cntrl, // unit seperator
-	c_space, // space
-	c_graph | c_punct, // !
-	c_graph | c_punct, // "
-	c_graph | c_punct, // #
-	c_graph | c_punct, // $
-	c_graph | c_punct, // %
-	c_graph | c_punct, // &
-	c_graph | c_punct, // '
-	c_graph | c_punct, // (
-	c_graph | c_punct, // )
-	c_graph | c_punct, // *
-	c_graph | c_punct, // +
-	c_graph | c_punct, // ,
-	c_graph | c_punct, // -
-	c_graph | c_punct, // .
-	c_graph | c_punct, // /
-	c_digit | c_graph | c_xdigit, // 0
-	c_digit | c_graph | c_xdigit, // 1
-	c_digit | c_graph | c_xdigit, // 2
-	c_digit | c_graph | c_xdigit, // 3
-	c_digit | c_graph | c_xdigit, // 4
-	c_digit | c_graph | c_xdigit, // 5
-	c_digit | c_graph | c_xdigit, // 6
-	c_digit | c_graph | c_xdigit, // 7
-	c_digit | c_graph | c_xdigit, // 8
-	c_digit | c_graph | c_xdigit, // 9
-	c_graph | c_punct, // :
-	c_graph | c_punct, // ;
-	c_graph | c_punct, // <
-	c_graph | c_punct, // =
-	c_graph | c_punct, // >
-	c_graph | c_punct, // ?
-	c_graph | c_punct, // @
-	c_alpha | c_graph | c_upper | c_xdigit, // A
-	c_alpha | c_graph | c_upper | c_xdigit, // B
-	c_alpha | c_graph | c_upper | c_xdigit, // C
-	c_alpha | c_graph | c_upper | c_xdigit, // D
-	c_alpha | c_graph | c_upper | c_xdigit, // E
-	c_alpha | c_graph | c_upper | c_xdigit, // F
-	c_alpha | c_graph | c_upper, // G
-	c_alpha | c_graph | c_upper, // H
-	c_alpha | c_graph | c_upper, // I
-	c_alpha | c_graph | c_upper, // J
-	c_alpha | c_graph | c_upper, // K
-	c_alpha | c_graph | c_upper, // L
-	c_alpha | c_graph | c_upper, // M
-	c_alpha | c_graph | c_upper, // N
-	c_alpha | c_graph | c_upper, // O
-	c_alpha | c_graph | c_upper, // P
-	c_alpha | c_graph | c_upper, // Q
-	c_alpha | c_graph | c_upper, // R
-	c_alpha | c_graph | c_upper, // S
-	c_alpha | c_graph | c_upper, // T
-	c_alpha | c_graph | c_upper, // U
-	c_alpha | c_graph | c_upper, // V
-	c_alpha | c_graph | c_upper, // W
-	c_alpha | c_graph | c_upper, // X
-	c_alpha | c_graph | c_upper, // Y
-	c_alpha | c_graph | c_upper, // Z
-	c_graph | c_punct, // [
-	c_graph | c_punct, // backspace
-	c_graph | c_punct, // ]
-	c_graph | c_punct, // ^
-	c_graph | c_punct, // _
-	c_graph | c_punct, // `
-	c_alpha | c_graph | c_lower | c_xdigit, // a
-	c_alpha | c_graph | c_lower | c_xdigit, // b
-	c_alpha | c_graph | c_lower | c_xdigit, // c
-	c_alpha | c_graph | c_lower | c_xdigit, // d
-	c_alpha | c_graph | c_lower | c_xdigit, // e
-	c_alpha | c_graph | c_lower | c_xdigit, // f
-	c_alpha | c_graph | c_xdigit, // g
-	c_alpha | c_graph | c_xdigit, // h
-	c_alpha | c_graph | c_xdigit, // i
-	c_alpha | c_graph | c_xdigit, // j
-	c_alpha | c_graph | c_xdigit, // k
-	c_alpha | c_graph | c_xdigit, // l
-	c_alpha | c_graph | c_xdigit, // m
-	c_alpha | c_graph | c_xdigit, // n
-	c_alpha | c_graph | c_xdigit, // o
-	c_alpha | c_graph | c_xdigit, // p
-	c_alpha | c_graph | c_xdigit, // q
-	c_alpha | c_graph | c_xdigit, // r
-	c_alpha | c_graph | c_xdigit, // s
-	c_alpha | c_graph | c_xdigit, // t
-	c_alpha | c_graph | c_xdigit, // u
-	c_alpha | c_graph | c_xdigit, // v
-	c_alpha | c_graph | c_xdigit, // w
-	c_alpha | c_graph | c_xdigit, // x
-	c_alpha | c_graph | c_xdigit, // y
-	c_alpha | c_graph | c_xdigit, // z
-	c_graph | c_punct, // {
-	c_graph | c_punct, // |
-	c_graph | c_punct, // }
-	c_graph | c_punct, // ~
-	c_cntrl, // delete
-	c_graph | c_punct, // Ç
-	c_graph | c_punct, // ü
-	c_graph | c_punct, // é
-	c_graph | c_punct, // â
-	c_graph | c_punct, // ä
-	c_graph | c_punct, // à
-	c_graph | c_punct, // å
-	c_graph | c_punct, // ç
-	c_graph | c_punct, // ê
-	c_graph | c_punct, // ë
-	c_graph | c_punct, // è
-	c_graph | c_punct, // ï
-	c_graph | c_punct, // î
-	c_graph | c_punct, // ì
-	c_graph | c_punct, // Ä
-	c_graph | c_punct, // Å
-	c_graph | c_punct, // É
-	c_graph | c_punct, // æ
-	c_graph | c_punct, // Æ
-	c_graph | c_punct, // ô
-	c_graph | c_punct, // ö
-	c_graph | c_punct, // ò
-	c_graph | c_punct, // û
-	c_graph | c_punct, // ù
-	c_graph | c_punct, // ÿ
-	c_graph | c_punct, // Ö
-	c_graph | c_punct, // Ü
-	c_graph | c_punct, // ¢
-	c_graph | c_punct, // £
-	c_graph | c_punct, // ¥
-	c_graph | c_punct, // ₧
-	c_graph | c_punct, // ƒ
-	c_graph | c_punct, // á
-	c_graph | c_punct, // í
-	c_graph | c_punct, // ó
-	c_graph | c_punct, // ú
-	c_graph | c_punct, // ñ
-	c_graph | c_punct, // Ñ
-	c_graph | c_punct, // ª
-	c_graph | c_punct, // º
-	c_graph | c_punct, // ¿
-	c_graph | c_punct, // ⌐
-	c_graph | c_punct, // ¬
-	c_graph | c_punct, // ½
-	c_graph | c_punct, // ¼
-	c_graph | c_punct, // ¡
-	c_graph | c_punct, // «
-	c_graph | c_punct, // »
-	c_graph | c_punct, // ░
-	c_graph | c_punct, // ▒
-	c_graph | c_punct, // ▓
-	c_graph | c_punct, // │
-	c_graph | c_punct, // ┤
-	c_graph | c_punct, // ╡
-	c_graph | c_punct, // ╢
-	c_graph | c_punct, // ╖
-	c_graph | c_punct, // ╕
-	c_graph | c_punct, // ╣
-	c_graph | c_punct, // ║
-	c_graph | c_punct, // ╗
-	c_graph | c_punct, // ╝
-	c_graph | c_punct, // ╜
-	c_graph | c_punct, // ╛
-	c_graph | c_punct, // ┐
-	c_graph | c_punct, // └
-	c_graph | c_punct, // ┴
-	c_graph | c_punct, // ┬
-	c_graph | c_punct, // ├
-	c_graph | c_punct, // ─
-	c_graph | c_punct, // ┼
-	c_graph | c_punct, // ╞
-	c_graph | c_punct, // ╟
-	c_graph | c_punct, // ╚
-	c_graph | c_punct, // ╔
-	c_graph | c_punct, // ╩
-	c_graph | c_punct, // ╦
-	c_graph | c_punct, // ╠
-	c_graph | c_punct, // ═
-	c_graph | c_punct, // ╬
-	c_graph | c_punct, // ╧
-	c_graph | c_punct, // ╨
-	c_graph | c_punct, // ╤
-	c_graph | c_punct, // ╥
-	c_graph | c_punct, // ╙
-	c_graph | c_punct, // ╘
-	c_graph | c_punct, // ╒
-	c_graph | c_punct, // ╓
-	c_graph | c_punct, // ╫
-	c_graph | c_punct, // ╪
-	c_graph | c_punct, // ┘
-	c_graph | c_punct, // ┌
-	c_graph | c_punct, // █
-	c_graph | c_punct, // ▄
-	c_graph | c_punct, // ▌
-	c_graph | c_punct, // ▐
-	c_graph | c_punct, // ▀
-	c_graph | c_punct, // α
-	c_graph | c_punct, // ß
-	c_graph | c_punct, // Γ
-	c_graph | c_punct, // π
-	c_graph | c_punct, // Σ
-	c_graph | c_punct, // σ
-	c_graph | c_punct, // µ
-	c_graph | c_punct, // τ
-	c_graph | c_punct, // Φ
-	c_graph | c_punct, // Θ
-	c_graph | c_punct, // Ω
-	c_graph | c_punct, // δ
-	c_graph | c_punct, // ∞
-	c_graph | c_punct, // φ
-	c_graph | c_punct, // ε
-	c_graph | c_punct, // ∩
-	c_graph | c_punct, // ≡
-	c_graph | c_punct, // ±
-	c_graph | c_punct, // ≥
-	c_graph | c_punct, // ≤
-	c_graph | c_punct, // ⌠
-	c_graph | c_punct, // ⌡
-	c_graph | c_punct, // ÷
-	c_graph | c_punct, // ≈
-	c_graph | c_punct, // °
-	c_graph | c_punct, // ∙
-	c_graph | c_punct, // ·
-	c_graph | c_punct, // √
-	c_graph | c_punct, // ⁿ
-	c_graph | c_punct, // ²
-	c_graph | c_punct, // ■
-	c_graph | c_punct, //
+static const char CTYPE_TYPE[] = {
+	C_CNTRL, // null
+	C_CNTRL, // start of heading
+	C_CNTRL, // start of text
+	C_CNTRL, // end of text
+	C_CNTRL, // end of transmission
+	C_CNTRL, // enquiry
+	C_CNTRL, // acknowledge
+	C_CNTRL, // bell
+	C_CNTRL, // backspace
+	C_CNTRL | C_SPACE, // horizontal tab
+	C_CNTRL | C_SPACE, // new line
+	C_CNTRL | C_SPACE, // vertical tab
+	C_CNTRL | C_SPACE, // new page
+	C_CNTRL | C_SPACE, // carrage return
+	C_CNTRL, // shift out
+	C_CNTRL, // shift in
+	C_CNTRL, // data link escape
+	C_CNTRL, // device control 1
+	C_CNTRL, // device control 2
+	C_CNTRL, // device control 3
+	C_CNTRL, // device control 4
+	C_CNTRL, // negative acknowledge
+	C_CNTRL, // synchronous idle
+	C_CNTRL, // end of transmission block
+	C_CNTRL, // cancel
+	C_CNTRL, // end of medium
+	C_CNTRL, // substitute
+	C_CNTRL, // escape
+	C_CNTRL, // file seperator
+	C_CNTRL, // group seperator
+	C_CNTRL, // record seperator
+	C_CNTRL, // unit seperator
+	C_SPACE, // space
+	C_GRAPH | C_PUNCT, // !
+	C_GRAPH | C_PUNCT, // "
+	C_GRAPH | C_PUNCT, // #
+	C_GRAPH | C_PUNCT, // $
+	C_GRAPH | C_PUNCT, // %
+	C_GRAPH | C_PUNCT, // &
+	C_GRAPH | C_PUNCT, // '
+	C_GRAPH | C_PUNCT, // (
+	C_GRAPH | C_PUNCT, // )
+	C_GRAPH | C_PUNCT, // *
+	C_GRAPH | C_PUNCT, // +
+	C_GRAPH | C_PUNCT, // ,
+	C_GRAPH | C_PUNCT, // -
+	C_GRAPH | C_PUNCT, // .
+	C_GRAPH | C_PUNCT, // /
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 0
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 1
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 2
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 3
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 4
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 5
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 6
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 7
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 8
+	C_DIGIT | C_GRAPH | C_XDIGIT, // 9
+	C_GRAPH | C_PUNCT, // :
+	C_GRAPH | C_PUNCT, // ;
+	C_GRAPH | C_PUNCT, // <
+	C_GRAPH | C_PUNCT, // =
+	C_GRAPH | C_PUNCT, // >
+	C_GRAPH | C_PUNCT, // ?
+	C_GRAPH | C_PUNCT, // @
+	C_ALPHA | C_GRAPH | C_UPPER | C_XDIGIT, // A
+	C_ALPHA | C_GRAPH | C_UPPER | C_XDIGIT, // B
+	C_ALPHA | C_GRAPH | C_UPPER | C_XDIGIT, // C
+	C_ALPHA | C_GRAPH | C_UPPER | C_XDIGIT, // D
+	C_ALPHA | C_GRAPH | C_UPPER | C_XDIGIT, // E
+	C_ALPHA | C_GRAPH | C_UPPER | C_XDIGIT, // F
+	C_ALPHA | C_GRAPH | C_UPPER, // G
+	C_ALPHA | C_GRAPH | C_UPPER, // H
+	C_ALPHA | C_GRAPH | C_UPPER, // I
+	C_ALPHA | C_GRAPH | C_UPPER, // J
+	C_ALPHA | C_GRAPH | C_UPPER, // K
+	C_ALPHA | C_GRAPH | C_UPPER, // L
+	C_ALPHA | C_GRAPH | C_UPPER, // M
+	C_ALPHA | C_GRAPH | C_UPPER, // N
+	C_ALPHA | C_GRAPH | C_UPPER, // O
+	C_ALPHA | C_GRAPH | C_UPPER, // P
+	C_ALPHA | C_GRAPH | C_UPPER, // Q
+	C_ALPHA | C_GRAPH | C_UPPER, // R
+	C_ALPHA | C_GRAPH | C_UPPER, // S
+	C_ALPHA | C_GRAPH | C_UPPER, // T
+	C_ALPHA | C_GRAPH | C_UPPER, // U
+	C_ALPHA | C_GRAPH | C_UPPER, // V
+	C_ALPHA | C_GRAPH | C_UPPER, // W
+	C_ALPHA | C_GRAPH | C_UPPER, // X
+	C_ALPHA | C_GRAPH | C_UPPER, // Y
+	C_ALPHA | C_GRAPH | C_UPPER, // Z
+	C_GRAPH | C_PUNCT, // [
+	C_GRAPH | C_PUNCT, // backspace
+	C_GRAPH | C_PUNCT, // ]
+	C_GRAPH | C_PUNCT, // ^
+	C_GRAPH | C_PUNCT, // _
+	C_GRAPH | C_PUNCT, // `
+	C_ALPHA | C_GRAPH | C_LOWER | C_XDIGIT, // a
+	C_ALPHA | C_GRAPH | C_LOWER | C_XDIGIT, // b
+	C_ALPHA | C_GRAPH | C_LOWER | C_XDIGIT, // c
+	C_ALPHA | C_GRAPH | C_LOWER | C_XDIGIT, // d
+	C_ALPHA | C_GRAPH | C_LOWER | C_XDIGIT, // e
+	C_ALPHA | C_GRAPH | C_LOWER | C_XDIGIT, // f
+	C_ALPHA | C_GRAPH | C_LOWER, // g
+	C_ALPHA | C_GRAPH | C_LOWER, // h
+	C_ALPHA | C_GRAPH | C_LOWER, // i
+	C_ALPHA | C_GRAPH | C_LOWER, // j
+	C_ALPHA | C_GRAPH | C_LOWER, // k
+	C_ALPHA | C_GRAPH | C_LOWER, // l
+	C_ALPHA | C_GRAPH | C_LOWER, // m
+	C_ALPHA | C_GRAPH | C_LOWER, // n
+	C_ALPHA | C_GRAPH | C_LOWER, // o
+	C_ALPHA | C_GRAPH | C_LOWER, // p
+	C_ALPHA | C_GRAPH | C_LOWER, // q
+	C_ALPHA | C_GRAPH | C_LOWER, // r
+	C_ALPHA | C_GRAPH | C_LOWER, // s
+	C_ALPHA | C_GRAPH | C_LOWER, // t
+	C_ALPHA | C_GRAPH | C_LOWER, // u
+	C_ALPHA | C_GRAPH | C_LOWER, // v
+	C_ALPHA | C_GRAPH | C_LOWER, // w
+	C_ALPHA | C_GRAPH | C_LOWER, // x
+	C_ALPHA | C_GRAPH | C_LOWER, // y
+	C_ALPHA | C_GRAPH | C_LOWER, // z
+	C_GRAPH | C_PUNCT, // {
+	C_GRAPH | C_PUNCT, // |
+	C_GRAPH | C_PUNCT, // }
+	C_GRAPH | C_PUNCT, // ~
+	C_CNTRL, // delete
+	C_GRAPH | C_PUNCT, // Ç
+	C_GRAPH | C_PUNCT, // ü
+	C_GRAPH | C_PUNCT, // é
+	C_GRAPH | C_PUNCT, // â
+	C_GRAPH | C_PUNCT, // ä
+	C_GRAPH | C_PUNCT, // à
+	C_GRAPH | C_PUNCT, // å
+	C_GRAPH | C_PUNCT, // ç
+	C_GRAPH | C_PUNCT, // ê
+	C_GRAPH | C_PUNCT, // ë
+	C_GRAPH | C_PUNCT, // è
+	C_GRAPH | C_PUNCT, // ï
+	C_GRAPH | C_PUNCT, // î
+	C_GRAPH | C_PUNCT, // ì
+	C_GRAPH | C_PUNCT, // Ä
+	C_GRAPH | C_PUNCT, // Å
+	C_GRAPH | C_PUNCT, // É
+	C_GRAPH | C_PUNCT, // æ
+	C_GRAPH | C_PUNCT, // Æ
+	C_GRAPH | C_PUNCT, // ô
+	C_GRAPH | C_PUNCT, // ö
+	C_GRAPH | C_PUNCT, // ò
+	C_GRAPH | C_PUNCT, // û
+	C_GRAPH | C_PUNCT, // ù
+	C_GRAPH | C_PUNCT, // ÿ
+	C_GRAPH | C_PUNCT, // Ö
+	C_GRAPH | C_PUNCT, // Ü
+	C_GRAPH | C_PUNCT, // ¢
+	C_GRAPH | C_PUNCT, // £
+	C_GRAPH | C_PUNCT, // ¥
+	C_GRAPH | C_PUNCT, // ₧
+	C_GRAPH | C_PUNCT, // ƒ
+	C_GRAPH | C_PUNCT, // á
+	C_GRAPH | C_PUNCT, // í
+	C_GRAPH | C_PUNCT, // ó
+	C_GRAPH | C_PUNCT, // ú
+	C_GRAPH | C_PUNCT, // ñ
+	C_GRAPH | C_PUNCT, // Ñ
+	C_GRAPH | C_PUNCT, // ª
+	C_GRAPH | C_PUNCT, // º
+	C_GRAPH | C_PUNCT, // ¿
+	C_GRAPH | C_PUNCT, // ⌐
+	C_GRAPH | C_PUNCT, // ¬
+	C_GRAPH | C_PUNCT, // ½
+	C_GRAPH | C_PUNCT, // ¼
+	C_GRAPH | C_PUNCT, // ¡
+	C_GRAPH | C_PUNCT, // «
+	C_GRAPH | C_PUNCT, // »
+	C_GRAPH | C_PUNCT, // ░
+	C_GRAPH | C_PUNCT, // ▒
+	C_GRAPH | C_PUNCT, // ▓
+	C_GRAPH | C_PUNCT, // │
+	C_GRAPH | C_PUNCT, // ┤
+	C_GRAPH | C_PUNCT, // ╡
+	C_GRAPH | C_PUNCT, // ╢
+	C_GRAPH | C_PUNCT, // ╖
+	C_GRAPH | C_PUNCT, // ╕
+	C_GRAPH | C_PUNCT, // ╣
+	C_GRAPH | C_PUNCT, // ║
+	C_GRAPH | C_PUNCT, // ╗
+	C_GRAPH | C_PUNCT, // ╝
+	C_GRAPH | C_PUNCT, // ╜
+	C_GRAPH | C_PUNCT, // ╛
+	C_GRAPH | C_PUNCT, // ┐
+	C_GRAPH | C_PUNCT, // └
+	C_GRAPH | C_PUNCT, // ┴
+	C_GRAPH | C_PUNCT, // ┬
+	C_GRAPH | C_PUNCT, // ├
+	C_GRAPH | C_PUNCT, // ─
+	C_GRAPH | C_PUNCT, // ┼
+	C_GRAPH | C_PUNCT, // ╞
+	C_GRAPH | C_PUNCT, // ╟
+	C_GRAPH | C_PUNCT, // ╚
+	C_GRAPH | C_PUNCT, // ╔
+	C_GRAPH | C_PUNCT, // ╩
+	C_GRAPH | C_PUNCT, // ╦
+	C_GRAPH | C_PUNCT, // ╠
+	C_GRAPH | C_PUNCT, // ═
+	C_GRAPH | C_PUNCT, // ╬
+	C_GRAPH | C_PUNCT, // ╧
+	C_GRAPH | C_PUNCT, // ╨
+	C_GRAPH | C_PUNCT, // ╤
+	C_GRAPH | C_PUNCT, // ╥
+	C_GRAPH | C_PUNCT, // ╙
+	C_GRAPH | C_PUNCT, // ╘
+	C_GRAPH | C_PUNCT, // ╒
+	C_GRAPH | C_PUNCT, // ╓
+	C_GRAPH | C_PUNCT, // ╫
+	C_GRAPH | C_PUNCT, // ╪
+	C_GRAPH | C_PUNCT, // ┘
+	C_GRAPH | C_PUNCT, // ┌
+	C_GRAPH | C_PUNCT, // █
+	C_GRAPH | C_PUNCT, // ▄
+	C_GRAPH | C_PUNCT, // ▌
+	C_GRAPH | C_PUNCT, // ▐
+	C_GRAPH | C_PUNCT, // ▀
+	C_GRAPH | C_PUNCT, // α
+	C_GRAPH | C_PUNCT, // ß
+	C_GRAPH | C_PUNCT, // Γ
+	C_GRAPH | C_PUNCT, // π
+	C_GRAPH | C_PUNCT, // Σ
+	C_GRAPH | C_PUNCT, // σ
+	C_GRAPH | C_PUNCT, // µ
+	C_GRAPH | C_PUNCT, // τ
+	C_GRAPH | C_PUNCT, // Φ
+	C_GRAPH | C_PUNCT, // Θ
+	C_GRAPH | C_PUNCT, // Ω
+	C_GRAPH | C_PUNCT, // δ
+	C_GRAPH | C_PUNCT, // ∞
+	C_GRAPH | C_PUNCT, // φ
+	C_GRAPH | C_PUNCT, // ε
+	C_GRAPH | C_PUNCT, // ∩
+	C_GRAPH | C_PUNCT, // ≡
+	C_GRAPH | C_PUNCT, // ±
+	C_GRAPH | C_PUNCT, // ≥
+	C_GRAPH | C_PUNCT, // ≤
+	C_GRAPH | C_PUNCT, // ⌠
+	C_GRAPH | C_PUNCT, // ⌡
+	C_GRAPH | C_PUNCT, // ÷
+	C_GRAPH | C_PUNCT, // ≈
+	C_GRAPH | C_PUNCT, // °
+	C_GRAPH | C_PUNCT, // ∙
+	C_GRAPH | C_PUNCT, // ·
+	C_GRAPH | C_PUNCT, // √
+	C_GRAPH | C_PUNCT, // ⁿ
+	C_GRAPH | C_PUNCT, // ²
+	C_GRAPH | C_PUNCT, // ■
+	C_GRAPH | C_PUNCT, //
 	};
 
-#define ctype_chktype(c, type) \
-	(((ctype_type[c] & (type)) > 0) ? 1 : 0)
+#define CTYPE_CHKTYPE(_CH_, _TYPE_) \
+	(((CTYPE_TYPE[_CH_] & (_TYPE_)) > 0) ? 1 : 0)
 
-#define ctype_tolower(c) \
-	((((c) < 'A') || ((c) > 'Z')) ? (c) : \
-	((((c) - 'A') + 'a') % 0xff))
+#define CTYPE_TOLOWER(_CH_) \
+	((((_CH_) < 'A') || ((_CH_) > 'Z')) ? (_CH_) : \
+	((((_CH_) - 'A') + 'a') % 0xff))
 
-#define ctype_toupper(c) \
-	((((c) < 'a') || ((c) > 'z')) ? (c) : \
-	((((c) - 'a') + 'A') % 0xff))
+#define CTYPE_TOUPPER(_CH_) \
+	((((_CH_) < 'a') || ((_CH_) > 'z')) ? (_CH_) : \
+	((((_CH_) - 'a') + 'A') % 0xff))
 
 int isalnum(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_alpha | c_digit);
+	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA | C_DIGIT);
 }
 
 int isalpha(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_alpha);
+	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA);
 }
 
 int iscntrl(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_cntrl);
+	return CTYPE_CHKTYPE(ch & 0xff, C_CNTRL);
 }
 
 int isdigit(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_digit);
+	return CTYPE_CHKTYPE(ch & 0xff, C_DIGIT);
 }
 
 int isgraph(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_graph);
+	return CTYPE_CHKTYPE(ch & 0xff, C_GRAPH);
 }
 
 int islower(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_lower);
+	return CTYPE_CHKTYPE(ch & 0xff, C_LOWER);
 }
 
 int isprint(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_alpha | c_digit | c_punct | c_space);
+	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA | C_DIGIT | C_PUNCT | C_SPACE);
 }
 
 int ispunct(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_punct);
+	return CTYPE_CHKTYPE(ch & 0xff, C_PUNCT);
 }
 
 int isspace(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_space);
+	return CTYPE_CHKTYPE(ch & 0xff, C_SPACE);
 }
 
 int isupper(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_upper);
+	return CTYPE_CHKTYPE(ch & 0xff, C_UPPER);
 }
 
 int isxdigit(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_chktype(c & 0xff, c_xdigit);
+	return CTYPE_CHKTYPE(ch & 0xff, C_XDIGIT);
 }
 
 int tolower(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_tolower(c & 0xff);
+	return CTYPE_TOLOWER(ch & 0xff);
 }
 
 int toupper(
-	__in int c
+	__in int ch
 	)
 {
-	return ctype_toupper(c & 0xff);
+	return CTYPE_TOUPPER(ch & 0xff);
 }

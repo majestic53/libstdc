@@ -27,9 +27,9 @@ extern "C" {
 #endif // __cplusplus
 
 /*
- * longjmp assembly
- * @param env environment to restore
- * @param val predicate to be evaluated
+ * Longjmp instructions
+ * @param _ENV_ environment to restore
+ * @param _VAL_ predicate to be evaluated
  * ---
  * mov edi, dword ptr [env]		; set data index
  * mov eax, dword ptr [edi+0x00]	; restore eax
@@ -49,7 +49,7 @@ extern "C" {
  * mov eax, 0x1				; 	set eax to 1
  * done:				; done
  */
-#define env_asm_longjmp(env, val) \
+#define ENV_LONGJMP(_ENV_, _VAL_) \
 	__asm__ volatile ( \
 		"movl $0, %%edi\n\t" \
 		"movl +0x00(%%edi), %%eax\n\t" \
@@ -67,13 +67,13 @@ extern "C" {
 		"jnz done\n\t" \
 		"movl 0x00000001, %%eax\n\t" \
 		"done:\n\t" \
-		:: "l" (&env), "l" (val) \
+		:: "l" (&_ENV_), "l" (_VAL_) \
 		: "edi" \
-	);
+	)
 
 /*
- * Save current environment
- * @param env environment to save
+ * Setjmp instructions
+ * @param _ENV_ environment to save
  * ---
  * push edi				; keep previous edi value
  * mov edi, dword ptr[env]		; set data index
@@ -90,7 +90,7 @@ extern "C" {
  * mov dword ptr [edi+0x20], edx	; save return address
  * xor eax, eax				; zero eax
  */
-#define env_asm_setjmp(env) \
+#define ENV_SETJMP(_ENV_) \
 	__asm__ volatile ( \
 		"pushl %%edi\n\t" \
 		"movl $0, %%edi\n\t" \
@@ -106,12 +106,12 @@ extern "C" {
 		"movl (%%esp), %%edx\n\t" \
 		"movl %%edx, +0x20(%%edi)\n\t" \
 		"xorl %%eax, %%eax\n\t" \
-		:: "l" (&env) \
+		:: "l" (&_ENV_) \
 		: "edi" \
-	);
+	)
 
-// empty environment
-#define env_empty { 0, 0, 0, 0, 0, 0, 0, 0, }
+// Empty environment
+#define ENV_EMPTY { 0, 0, 0, 0, 0, 0, 0, 0, }
 
 // environment container
 #ifndef _ENV

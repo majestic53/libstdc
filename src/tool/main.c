@@ -28,6 +28,7 @@
 #include "../lib/include/locale.h"
 #include "../lib/include/locdef.h"
 #include "../lib/include/setjmp.h"
+#include "../lib/include/signal.h"
 #include "../lib/include/stdbool.h"
 #include "../lib/include/stdarg.h"
 #include "../lib/include/stddef.h"

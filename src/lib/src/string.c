@@ -21,44 +21,43 @@
 #include "../include/stdint.h"
 #include "../include/string.h"
 
-#define EOF _eof
+#define EOF _EOF
 
 static char *strerr = NULL;
-
 static char *token = NULL;
 
 void *
 memchr(
-	__in const void *s,
-	__in int c,
-	__in size_t n
+	__in const void *src,
+	__in int byte,
+	__in size_t max
 	)
 {
 	size_t iter = 0;
-	uint8_t *result = (uint8_t *) s;
+	uint8_t *result = (uint8_t *) src;
 
-	for(; iter < n; ++iter, ++result) {
+	for(; iter < max; ++iter, ++result) {
 
-		if(*result == (uint8_t) c) {
+		if(*result == (uint8_t) byte) {
 			break;
 		}
 	}
 
-	return (iter >= n) ? NULL : result;
+	return (iter >= max) ? NULL : result;
 }
 
 int 
 memcmp(
-	__in const void *s1,
-	__in const void *s2,
-	__in size_t n
+	__in const void *src1,
+	__in const void *src2,
+	__in size_t max
 	)
 {
 	int result = 0;
 	size_t iter = 0;
-	int8_t *byte1 = (int8_t *) s1, *byte2 = (int8_t *) s2;
+	int8_t *byte1 = (int8_t *) src1, *byte2 = (int8_t *) src2;
 
-	for(; iter < n; ++iter, ++byte1, ++byte2) {
+	for(; iter < max; ++iter, ++byte1, ++byte2) {
 
 		result = (*byte1 - *byte2);
 		if(result) {
@@ -66,67 +65,67 @@ memcmp(
 		}
 	}
 
-	return (iter >= n) ? 0 : result;
+	return (iter >= max) ? 0 : result;
 }
 
 void *
 memcpy(
-	__inout void *s1,
-	__in const void *s2,
-	__in size_t n
+	__inout void *dest,
+	__in const void *src,
+	__in size_t max
 	)
 {
 	size_t iter = 0;
-	uint8_t *byte1 = (uint8_t *) s1, *byte2 = (uint8_t *) s2;
+	uint8_t *byte1 = (uint8_t *) dest, *byte2 = (uint8_t *) src;
 
-	for(; iter < n; ++iter, ++byte1, ++byte2) {
+	for(; iter < max; ++iter, ++byte1, ++byte2) {
 		*byte1 = *byte2;
 	}
 
-	return s1;
+	return dest;
 }
 
 void *
 memmove(
-	__inout void *s1,
-	__in const void *s2,
-	__in size_t n
+	__inout void *dest,
+	__in const void *src,
+	__in size_t max
 	)
 {
 	size_t iter = 0;
-	uint8_t *byte1 = (uint8_t *) s1, *byte2 = (uint8_t *) s2;
+	uint8_t *byte1 = (uint8_t *) dest, *byte2 = (uint8_t *) src;
 
-	for(; iter < n; ++iter, ++byte1, ++byte2) {
+	for(; iter < max; ++iter, ++byte1, ++byte2) {
 		*byte1 = *byte2;
 	}
 
-	return s1;
+	return dest;
 }
 
 void *
 memset(
-	__inout void *s,
-	__in int c,
-	__in size_t n
+	__inout void *dest,
+	__in int byte,
+	__in size_t max
 	)
 {
 	size_t iter = 0;
-	uint8_t *byte = (uint8_t *) s;
+	uint8_t *byte1 = (uint8_t *) dest;
 
-	for(; iter < n; ++iter, ++byte) {
-		*byte = c;
+	for(; iter < max; ++iter, ++byte1) {
+		*byte1 = byte;
 	}
 
-	return s;
+	return dest;
 }
 
 char *
 strcat(
-	__inout char *s1,
-	__in const char *s2
+	__inout char *dest,
+	__in const char *src
 	)
 {
-	char *ch1 = (char *) s1, *ch2 = (char *) s2;
+	char *ch1 = (char *) dest, *ch2 = (char *) src;
 
 	while(*ch1 != EOF) {
 		++ch1;
@@ -140,20 +139,20 @@ strcat(
 
 	*ch1 = EOF;
 
-	return s1;
+	return dest;
 }
 
 char *
 strchr(
-	__in const char *s,
-	__in int c
+	__in const char *src,
+	__in int ch
 	)
 {
-	char *result = (char *) s;
+	char *result = (char *) src;
 
 	while(*result != EOF) {
 
-		if(*result == (char) c) {
+		if(*result == (char) ch) {
 			break;
 		}
 	}
@@ -163,16 +162,16 @@ strchr(
 
 size_t 
 strcspn(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	)
 {
 	size_t result = 0;
-	char *ch1 = (char *) s1, *ch2;
+	char *ch1 = (char *) src1, *ch2;
 
 	while(*ch1 != EOF) {
 
-		ch2 = (char *) s2;
+		ch2 = (char *) src2;
 		while(*ch2 != EOF) {
 
 			if(*ch1 == *ch2) {
@@ -192,12 +191,12 @@ exit:
 
 int 
 strcmp(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	)
 {
 	int result = 0;
-	char *ch1 = (char *) s1, *ch2 = (char *) s2;
+	char *ch1 = (char *) src1, *ch2 = (char *) src2;
 
 	while(*ch1 != EOF) {
 
@@ -215,11 +214,11 @@ strcmp(
 
 char *
 strcpy(
-	__inout char *s1,
-	__in const char *s2
+	__inout char *dest,
+	__in const char *src
 	)
 {
-	char *ch1 = (char *) s1, *ch2 = (char *) s2;
+	char *ch1 = (char *) dest, *ch2 = (char *) src;
 
 	while(*ch2 != EOF) {
 		*ch1 = *ch2;
@@ -227,32 +226,35 @@ strcpy(
 		++ch2;
 	}
 
-	return s1;
+	return dest;
 }
 
 int 
 strcoll(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	)
 {
-	return strcmp(s1, s2);
+	return strcmp(src1, src2);
 }
 
 char *
 strerror(
-	__in int errnum
+	__in int err
 	)
 {
-	switch(errnum) {
+	switch(err) {
 		case EDOM:
 			strerr = EDOM_STR;
 			break;
 		case ERANGE:
 			strerr = ERANGE_STR;
 			break;
+		case EINVAL:
+			strerr = EINVAL_STR;
+			break;
 		default:
-			strerr = _nullstr;
+			strerr = _NULLSTR;
 	}
 
 	return strerr;
@@ -260,11 +262,11 @@ strerror(
 
 size_t 
 strlen(
-	__in const char *s
+	__in const char *src
 	)
 {
 	size_t result = 0;
-	char *ch = (char *) s;
+	char *ch = (char *) src;
 
 	while(*ch != EOF) {
 		++result;
@@ -276,40 +278,40 @@ strlen(
 
 char *
 strncat(
-	__inout char *s1,
-	__in const char *s2,
-	__in size_t n
+	__inout char *dest,
+	__in const char *src,
+	__in size_t max
 	)
 {
-	char *ch1 = (char *) s1, *ch2 = (char *) s2;
+	char *ch1 = (char *) dest, *ch2 = (char *) src;
 
 	while(*ch1 != EOF) {
 		++ch1;
 	}
 
-	while((*ch2 != EOF) && n) {
+	while((*ch2 != EOF) && max) {
 		*ch1 = *ch2;
 		++ch1;
 		++ch2;
-		--n;
+		--max;
 	}
 
 	*ch1 = EOF;
 
-	return s1;
+	return dest;
 }
 
 int 
 strncmp(
-	__in const char *s1,
-	__in const char *s2,
-	__in size_t n
+	__in const char *src1,
+	__in const char *src2,
+	__in size_t max
 	)
 {
 	int result = 0;
-	char *ch1 = (char *) s1, *ch2 = (char *) s2;
+	char *ch1 = (char *) src1, *ch2 = (char *) src2;
 
-	while((*ch1 != EOF) && n) {
+	while((*ch1 != EOF) && max) {
 
 		result = (*ch1 - *ch2);
 		if(result) {
@@ -318,7 +320,7 @@ strncmp(
 
 		++ch1;
 		++ch2;
-		--n;
+		--max;
 	}
 
 	return (*ch1 == EOF) ? 0 : result;
@@ -326,12 +328,12 @@ strncmp(
 
 char *
 strncpy(
-	__inout char *s1,
-	__in const char *s2,
-	__in size_t n
+	__inout char *dest,
+	__in const char *src,
+	__in size_t max
 	)
 {
-	char *ch1 = (char *) s1, *ch2 = (char *) s2;
+	char *ch1 = (char *) dest, *ch2 = (char *) src;
 
 	while(*ch2 != EOF) {
 		*ch1 = *ch2;
@@ -339,26 +341,26 @@ strncpy(
 		++ch2;
 	}
 
-	while(n) {
+	while(max) {
 		*ch1 = EOF;
 		++ch1;
-		--n;
+		--max;
 	}
 
-	return s1;
+	return dest;
 }
 
 char *
 strpbrk(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	)
 {
-	char *ch1 = (char *) s1, *ch2;
+	char *ch1 = (char *) src1, *ch2;
 
 	while(*ch1 != EOF) {
 
-		ch2 = (char *) s2;
+		ch2 = (char *) src2;
 		while(*ch2 != EOF) {
 
 			if(*ch1 == *ch2) {
@@ -377,19 +379,19 @@ exit:
 
 char *
 strrchr(
-	__in const char *s,
-	__in int c
+	__in const char *src,
+	__in int ch
 	)
 {
-	char *ch = (char *) s, *result = NULL;
+	char *ch1 = (char *) src, *result = NULL;
 
-	while(*ch != EOF) {
+	while(*ch1 != EOF) {
 
-		if(*ch == (char) c) {
-			result = ch;
+		if(*ch1 == (char) ch) {
+			result = ch1;
 		}
 
-		++ch;
+		++ch1;
 	}
 
 	return result;
@@ -397,16 +399,16 @@ strrchr(
 
 size_t 
 strspn(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	)
 {
 	size_t result = 0;
-	char *ch1 = (char *) s1, *ch2;
+	char *ch1 = (char *) src1, *ch2;
 
 	while(*ch1 != EOF) {
 
-		ch2 = (char *) s2;
+		ch2 = (char *) src2;
 		while(*ch2 != EOF) {
 
 			if(*ch1 == *ch2) {
@@ -430,15 +432,15 @@ exit:
 
 char *
 strstr(
-	__in const char *s1,
-	__in const char *s2
+	__in const char *src1,
+	__in const char *src2
 	)
 {
-	char *ch1 = (char *) s1, *ch2, *chk1;
+	char *ch1 = (char *) src1, *ch2, *chk1;
 
 	while(*ch1 != EOF) {
 
-		ch2 = (char *) s2;
+		ch2 = (char *) src2;
 		if(*ch1 == *ch2) {
 
 			chk1 = ch1;
@@ -466,24 +468,24 @@ exit:
 
 char *
 strtok(
-	__inout char *s1,
-	__in const char *s2
+	__inout char *src,
+	__in const char *delim
 	)
 {
 	char *result = NULL;
 
-	if(s1) {
-		token = s1;
+	if(src) {
+		token = src;
 	}
 
-	token += strspn(token, s2);
+	token += strspn(token, delim);
 	if(*token == EOF) {
 		token = NULL;
 		goto exit;
 	}
 
 	result = token;
-	token = strpbrk(token, s2);
+	token = strpbrk(token, delim);
 	*token = EOF;
 	++token;
 
@@ -493,20 +495,20 @@ exit:
 
 size_t 
 strxfrm(
-	__inout char *s1,
-	__in const char *s2,
-	__in size_t n
+	__inout char *dest,
+	__in const char *src,
+	__in size_t max
 	)
 {
 	size_t result = 0;
 
-	if(!s1 && n) {
-		result = strlen(s2);
+	if(!dest && max) {
+		result = strlen(src);
 		goto exit;
 	}
 
-	if(strncpy(s1, s2, n)) {
-		result = strlen(s1);
+	if(strncpy(dest, src, max)) {
+		result = strlen(dest);
 	}
 
 exit:

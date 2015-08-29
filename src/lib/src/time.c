@@ -25,7 +25,7 @@
 #include "../include/time.h"
 #include "../include/timedef.h"
 
-#define EOF _eof
+#define EOF _EOF
 
 _tm 
 find_mday(
@@ -33,16 +33,16 @@ find_mday(
 	__in _tm yday
 	)
 {
-	_tm len, mon = tm_mon_min, result = yday;
+	_tm len, mon = TM_MON_MIN, result = yday;
 	
-	len = tm_mon_length(year, mon);
-	while((result > len) && (mon <= tm_mon_max)) {
+	len = TM_MON_LENGTH(year, mon);
+	while((result > len) && (mon <= TM_MON_MAX)) {
 		result -= len;
 		++mon;
-		len = tm_mon_length(year, mon);
+		len = TM_MON_LENGTH(year, mon);
 	}
 	
-	return (result + tm_mday_min);
+	return (result + TM_MDAY_MIN);
 }
 	
 _tm 
@@ -51,13 +51,13 @@ find_mon(
 	__in _tm yday
 	)
 {
-	_tm len, rem = yday, result = tm_mon_min;
+	_tm len, rem = yday, result = TM_MON_MIN;
 	
-	len = tm_mon_length(year, result);
-	while((rem > len) && (result <= tm_mon_max)) {
+	len = TM_MON_LENGTH(year, result);
+	while((rem > len) && (result <= TM_MON_MAX)) {
 		rem -= len;
 		++result;
-		len = tm_mon_length(year, result);
+		len = TM_MON_LENGTH(year, result);
 	}
 	
 	return result;
@@ -76,81 +76,81 @@ find_strftime_len(
 	}
 
 	switch(tag) {
-		case tm_tag_abbrev_mon: // 'b'
-			result = tm_tag_abbrev_mon_len;
+		case TM_TAG_ABBREV_MON: // 'b'
+			result = TM_TAG_ABBREV_MON_LEN;
 			break;
-		case tm_tag_abbrev_wday: // 'a'
-			result = tm_tag_abbrev_wday_len;
+		case TM_TAG_ABBREV_WDAY: // 'a'
+			result = TM_TAG_ABBREV_WDAY_LEN;
 			break;
-		case tm_tag_am_pm: // 'p'
-			result = tm_tag_am_pm_len;
+		case TM_TAG_AM_PM: // 'p'
+			result = TM_TAG_AM_PM_LEN;
 			break;
-		case tm_tag_date: // 'x'
-			result = tm_tag_date_len;
+		case TM_TAG_DATE: // 'x'
+			result = TM_TAG_DATE_LEN;
 			break;
-		case tm_tag_date_time: // 'c'
-			result = tm_tag_date_time_len;
+		case TM_TAG_DATE_TIME: // 'c'
+			result = TM_TAG_DATE_TIME_LEN;
 			break;
-		case tm_tag_full_mon: // 'B'
+		case TM_TAG_HOUR_12: // 'I'
+			result = TM_TAG_HOUR_12_LEN;
+			break;
+		case TM_TAG_HOUR_24: // 'H'
+			result = TM_TAG_HOUR_24_LEN;
+			break;
+		case TM_TAG_MIN: // 'M'
+			result = TM_TAG_MIN_LEN;
+			break;
+		case TM_TAG_MON: // 'm'
+			result = TM_TAG_MON_LEN;
+			break;
+		case TM_TAG_MON_DAY_ZERO: // 'd'
+			result = TM_TAG_MON_DAY_ZERO_LEN;
+			break;
+		case TM_TAG_MON_FULL: // 'B'
 
-			if((hint >= tm_mon_min) && (hint <= tm_mon_max)) {
-				result = strlen(tm_mon_full_string(hint));
+			if((hint >= TM_MON_MIN) && (hint <= TM_MON_MAX)) {
+				result = strlen(TM_MON_STRING_FULL(hint));
 			} else {
-				result = tm_tag_full_mon_len;
+				result = TM_TAG_MON_FULL_LEN;
 			}
 			break;
-		case tm_tag_full_wday: // 'A'
+		case TM_TAG_SEC: // 'S'
+			result = TM_TAG_SEC_LEN;
+			break;
+		case TM_TAG_TIME: // 'X'
+			result = TM_TAG_TIME_LEN;
+			break;
+		case TM_TAG_TZONE: // 'Z'
+			result = TM_TAG_TZONE_LEN;
+			break;
+		case TM_TAG_WDAY: // 'w'
+			result = TM_TAG_WDAY_LEN;
+			break;
+		case TM_TAG_WDAY_FULL: // 'A'
 
-			if((hint >= tm_wday_min) && (hint <= tm_wday_max)) {
-				result = strlen(tm_wday_full_string(hint));
+			if((hint >= TM_WDAY_MIN) && (hint <= TM_WDAY_MAX)) {
+				result = strlen(TM_WDAY_STRING_FULL(hint));
 			} else {
-				result = tm_tag_full_wday_len;
+				result = TM_TAG_WDAY_FULL_LEN;
 			}
 			break;
-		case tm_tag_hour_12: // 'I'
-			result = tm_tag_hour_12_len;
+		case TM_TAG_WMONDAY: // 'W'
+			result = TM_TAG_WMONDAY_LEN;
 			break;
-		case tm_tag_hour_24: // 'H'
-			result = tm_tag_hour_24_len;
+		case TM_TAG_WSUNDAY: // 'U'
+			result = TM_TAG_WSUNDAY_LEN;
 			break;
-		case tm_tag_mon_day_zero: // 'd'
-			result = tm_tag_mon_day_zero_len;
+		case TM_TAG_YCENT: // 'y'
+			result = TM_TAG_YCENT_LEN;
 			break;
-		case tm_tag_min: // 'M'
-			result = tm_tag_min_len;
+		case TM_TAG_YDAY: // 'j'
+			result = TM_TAG_YDAY_LEN;
 			break;
-		case tm_tag_mon: // 'm'
-			result = tm_tag_mon_len;
-			break;
-		case tm_tag_sec: // 'S'
-			result = tm_tag_sec_len;
-			break;
-		case tm_tag_time: // 'X'
-			result = tm_tag_time_len;
-			break;
-		case tm_tag_tzone: // 'Z'
-			result = tm_tag_tzone_len;
-			break;
-		case tm_tag_wday: // 'w'
-			result = tm_tag_wday_len;
-			break;
-		case tm_tag_wmonday: // 'W'
-			result = tm_tag_wmonday_len;
-			break;
-		case tm_tag_wsunday: // 'U'
-			result = tm_tag_wsunday_len;
-			break;
-		case tm_tag_ycent: // 'y'
-			result = tm_tag_ycent_len;
-			break;
-		case tm_tag_yday: // 'j'
-			result = tm_tag_yday_len;
-			break;
-		case tm_tag_year: // 'Y'
-			result = tm_tag_year_len;
+		case TM_TAG_YEAR: // 'Y'
+			result = TM_TAG_YEAR_LEN;
 			break;
 		default:
-			result = tm_tag_len;
+			result = TM_TAG_LEN;
 			break;
 	}
 
@@ -164,14 +164,12 @@ find_wday(
 	__in _tm yday
 	)
 {
-	/*_tm cent = (((year + tm_year_min) & tm_mille) / 2);
+	/*_tm cent = (((year + TM_YEAR_MIN) & TM_MILLE) / 2);
 	
-	year %= tm_cent;
+	year %= TM_CENT;*/
 
-	return ((find_mday(year, yday) + find_mon(year, yday) + year 
-		+ (_tm) floor((double) year / 4.0) + cent) % (tm_wday_max + 1));*/
-
-	return 0;
+	return 0; /*((find_mday(year, yday) + find_mon(year, yday) + year 
+		+ (_tm) floor((double) year / 4.0) + cent) % (TM_WDAY_MAX + 1));*/
 }
 
 _tm 
@@ -182,10 +180,10 @@ find_week_num(
 {
 	_tm result = ((yday - wday) + 10) / 7;
 
-	if(result < tm_week_min) {
-		result = tm_week_max;
-	} else if(result > tm_week_max) {
-		result = tm_week_min;
+	if(result < TM_WEEK_MIN) {
+		result = TM_WEEK_MAX;
+	} else if(result > TM_WEEK_MAX) {
+		result = TM_WEEK_MIN;
 	}
 
 	return result;
@@ -197,13 +195,13 @@ asctime(
 	)
 {
 	/*sprintf(tm_ascstr, "%.3s %.3s %02u %02u:%02u:%02u %04u\n", 
-		tm_wday_string(timeptr->tm_wday),
-		tm_mon_string(timeptr->tm_mon),
+		TM_WDAY_STRING(timeptr->tm_wday),
+		TM_MON_STRING(timeptr->tm_mon),
 		timeptr->tm_mday,
 		timeptr->tm_hour,
 		timeptr->tm_min,
 		timeptr->tm_sec,
-		timeptr->tm_year + tm_year_min
+		timeptr->tm_year + TM_YEAR_MIN
 		);*/
 		
 	return tm_ascstr;
@@ -225,11 +223,11 @@ ctime(
 
 double 
 difftime(
-	__in time_t time1,
-	__in time_t time0
+	__in time_t next,
+	__in time_t prev
 	)
 {
-	return (double) (time1 > time0) ? (time1 - time0) : (-1 * (time0 - time1));
+	return (double) (next > prev) ? (next - prev) : (-1 * (prev - next));
 }
 
 struct tm *
@@ -243,38 +241,38 @@ gmtime(
 		goto exit;
 	}
 
-	memset(&tm_time, 0, sizeof(struct tm));
+	memset(&tm_timeptr, 0, sizeof(struct tm));
 
-	while(rem > tm_sec_per_year) {
-		rem -= (tm_year_day(tm_year_min + tm_time.tm_year) 
-			* tm_sec_per_day);
-		tm_time.tm_year++;
+	while(rem > TM_SEC_PER_YEAR) {
+		rem -= (TM_YEAR_DAY(TM_YEAR_MIN + tm_timeptr.tm_year) 
+			* TM_SEC_PER_DAY);
+		tm_timeptr.tm_year++;
 	}
 
-	tm_time.tm_year += tm_epoch_start;
+	tm_timeptr.tm_year += TM_EPOCH_START;
 
-	while(rem > tm_sec_per_day) {
-		rem -= tm_sec_per_day;
-		tm_time.tm_yday++;
+	while(rem > TM_SEC_PER_DAY) {
+		rem -= TM_SEC_PER_DAY;
+		tm_timeptr.tm_yday++;
 	}
 
-	while(rem > tm_sec_per_hour) {
-		rem -= tm_sec_per_hour;
-		tm_time.tm_hour++;
+	while(rem > TM_SEC_PER_HOUR) {
+		rem -= TM_SEC_PER_HOUR;
+		tm_timeptr.tm_hour++;
 	}
 
-	while(rem > tm_sec_per_min) {
-		rem -= tm_sec_per_min;
-		tm_time.tm_min++;
+	while(rem > TM_SEC_PER_MIN) {
+		rem -= TM_SEC_PER_MIN;
+		tm_timeptr.tm_min++;
 	}
 
-	tm_time.tm_sec = rem;
-	tm_time.tm_mon = find_mon(tm_time.tm_year, tm_time.tm_yday);
-	tm_time.tm_mday = find_mday(tm_time.tm_year, tm_time.tm_yday);
-	tm_time.tm_wday = find_wday(tm_time.tm_year, tm_time.tm_yday);
+	tm_timeptr.tm_sec = rem;
+	tm_timeptr.tm_mon = find_mon(tm_timeptr.tm_year, tm_timeptr.tm_yday);
+	tm_timeptr.tm_mday = find_mday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
+	tm_timeptr.tm_wday = find_wday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
 
 exit:
-	return (*timer < 0) ? NULL : &tm_time;
+	return (*timer < 0) ? NULL : &tm_timeptr;
 }
 
 struct tm *
@@ -282,7 +280,7 @@ localtime(
 	__in const time_t *timer
 	)
 {
-	time_t loc = *timer - (locale.time.tzone_off * tm_sec_per_hour);
+	time_t loc = *timer - (locale.time.offset * TM_SEC_PER_HOUR);
 	return gmtime(&loc);
 }
 
@@ -291,33 +289,33 @@ mktime(
 	__inout struct tm *timeptr
 	)
 {
-	time_t iter = tm_epoch_start, leap = 0, result = 0;
+	time_t iter = TM_EPOCH_START, leap = 0, result = 0;
 
 	for(; iter <= timeptr->tm_year; ++iter) {
 
-		if(tm_year_leap(tm_year_min + iter)) {
+		if(TM_YEAR_LEAP(TM_YEAR_MIN + iter)) {
 			++leap;
 		}
 	}
 
-	result = (((timeptr->tm_year - tm_epoch_start) * tm_sec_per_year)
-		+ ((timeptr->tm_yday + leap + 1) * tm_sec_per_day)
-		+ (timeptr->tm_hour * tm_sec_per_hour)
-		+ (timeptr->tm_min * tm_sec_per_min)
+	result = (((timeptr->tm_year - TM_EPOCH_START) * TM_SEC_PER_YEAR)
+		+ ((timeptr->tm_yday + leap + 1) * TM_SEC_PER_DAY)
+		+ (timeptr->tm_hour * TM_SEC_PER_HOUR)
+		+ (timeptr->tm_min * TM_SEC_PER_MIN)
 		+ timeptr->tm_sec);
 
 	if(timeptr->tm_isdst) {
-		result -= tm_sec_per_hour;
+		result -= TM_SEC_PER_HOUR;
 	}
 
-	result -= (locale.time.tzone_off * tm_sec_per_hour);
+	result -= (locale.time.offset * TM_SEC_PER_HOUR);
 
-	return (result < 0) ? _inv(time_t) : result;
+	return (result < 0) ? _INV(time_t) : result;
 }
 
 size_t 
 strftime(
-	__inout char *s,
+	__inout char *buf,
 	__in size_t maxsize,
 	__in const char *format,
 	__in const struct tm *timeptr
@@ -333,14 +331,14 @@ strftime(
 
 	while((*ch != EOF) && (result < maxsize)) {
 
-		if(*ch == tm_tag) {
+		if(*ch == TM_TAG) {
 			++ch;
 
 			if(*ch == EOF) {
 				goto exit;
-			} else if(*ch == tm_tag_full_mon) {
+			} else if(*ch == TM_TAG_MON_FULL) {
 				hint = timeptr->tm_mon;
-			} else if(*ch == tm_tag_full_wday) {
+			} else if(*ch == TM_TAG_WDAY_FULL) {
 				hint = timeptr->tm_wday;
 			} else {
 				hint = 0;
@@ -354,98 +352,98 @@ strftime(
 			result += fill;
 
 			switch(*ch) {
-				case tm_tag: // %
-					*s = *ch;
+				case TM_TAG: // %
+					*buf = *ch;
 					break;
-				case tm_tag_abbrev_mon: // 'b'
-					strcpy(s, tm_mon_string(timeptr->tm_mon));
+				case TM_TAG_ABBREV_MON: // 'b'
+					strcpy(buf, TM_MON_STRING(timeptr->tm_mon));
 					break;
-				case tm_tag_abbrev_wday: // 'a'
-					strcpy(s, tm_wday_string(timeptr->tm_wday));
+				case TM_TAG_ABBREV_WDAY: // 'a'
+					strcpy(buf, TM_WDAY_STRING(timeptr->tm_wday));
 					break;
-				case tm_tag_am_pm: // 'p'
-					strcpy(s, (timeptr->tm_hour >= 12) ? tm_pm : tm_am);
+				case TM_TAG_AM_PM: // 'p'
+					strcpy(buf, (timeptr->tm_hour >= 12) ? TM_PM : TM_AM);
 					break;
-				case tm_tag_date: // 'x'
-					/*sprintf(s, "%.3s %02u %04u", 
-						tm_mon_string(timeptr->tm_mon),
+				case TM_TAG_DATE: // 'x'
+					/*sprintf(buf, "%.3s %02u %04u", 
+						TM_MON_STRING(timeptr->tm_mon),
 						timeptr->tm_mday,
-						timeptr->tm_year + tm_year_min
+						timeptr->tm_year + TM_YEAR_MIN
 						);*/
 					break;
-				case tm_tag_date_time: // 'c'
-					/*sprintf(s, "%.3s %02u %02u:%02u:%02u %04u", 
-						tm_mon_string(timeptr->tm_mon),
+				case TM_TAG_DATE_TIME: // 'c'
+					/*sprintf(buf, "%.3s %02u %02u:%02u:%02u %04u", 
+						TM_MON_STRING(timeptr->tm_mon),
 						timeptr->tm_mday,
 						timeptr->tm_hour,
 						timeptr->tm_min,
 						timeptr->tm_sec,
-						timeptr->tm_year + tm_year_min
+						timeptr->tm_year + TM_YEAR_MIN
 						);*/
 					break;
-				case tm_tag_full_mon: // 'B'
-					strcpy(s, tm_mon_full_string(timeptr->tm_mon));
+				case TM_TAG_HOUR_12: // 'I'
+					//sprintf(buf, "%02u", timeptr->tm_hour % 12);
 					break;
-				case tm_tag_full_wday: // 'A'
-					strcpy(s, tm_wday_full_string(timeptr->tm_wday));
+				case TM_TAG_HOUR_24: // 'H'
+					//sprintf(buf, "%02u", timeptr->tm_hour);
 					break;
-				case tm_tag_hour_12: // 'I'
-					//sprintf(s, "%02u", timeptr->tm_hour % 12);
+				case TM_TAG_MIN: // 'M'
+					//sprintf(buf, "%02u", timeptr->tm_min);
 					break;
-				case tm_tag_hour_24: // 'H'
-					//sprintf(s, "%02u", timeptr->tm_hour);
+				case TM_TAG_MON: // 'm'
+					//sprintf(buf, "%02u", timeptr->tm_mon + 1);
 					break;
-				case tm_tag_mon_day_zero: // 'd'
-					//sprintf(s, "%02u", timeptr->tm_mday);
+				case TM_TAG_MON_DAY_ZERO: // 'd'
+					//sprintf(buf, "%02u", timeptr->tm_mday);
 					break;
-				case tm_tag_min: // 'M'
-					//sprintf(s, "%02u", timeptr->tm_min);
+				case TM_TAG_MON_FULL: // 'B'
+					strcpy(buf, TM_MON_STRING_FULL(timeptr->tm_mon));
 					break;
-				case tm_tag_mon: // 'm'
-					//sprintf(s, "%02u", timeptr->tm_mon + 1);
+				case TM_TAG_SEC: // 'S'
+					//sprintf(buf, "%02u", timeptr->tm_sec);
 					break;
-				case tm_tag_sec: // 'S'
-					//sprintf(s, "%02u", timeptr->tm_sec);
-					break;
-				case tm_tag_time: // 'X'
-					/*sprintf(s, "%02u:%02u:%02u", 
+				case TM_TAG_TIME: // 'X'
+					/*sprintf(buf, "%02u:%02u:%02u", 
 						timeptr->tm_hour, 
 						timeptr->tm_min, 
 						timeptr->tm_sec
 						);*/
 					break;
-				case tm_tag_tzone: // 'Z'
-					strcpy(s, locale.time.tzone);
+				case TM_TAG_TZONE: // 'Z'
+					strcpy(buf, locale.time.name);
 					break;
-				case tm_tag_wday: // 'w'
-					//sprintf(s, "%02u", timeptr->tm_wday);
+				case TM_TAG_WDAY: // 'w'
+					//sprintf(buf, "%02u", timeptr->tm_wday);
 					break;
-				case tm_tag_wmonday: // 'W'
-					/*sprintf(s, "%02u", find_week_num(timeptr->tm_yday, 
+				case TM_TAG_WDAY_FULL: // 'A'
+					strcpy(buf, TM_WDAY_STRING_FULL(timeptr->tm_wday));
+					break;
+				case TM_TAG_WMONDAY: // 'W'
+					/*sprintf(buf, "%02u", find_week_num(timeptr->tm_yday, 
 						timeptr->tm_wday));*/
 					break;
-				case tm_tag_wsunday: // 'U'
-					/*sprintf(s, "%02u", find_week_num(timeptr->tm_yday, 
+				case TM_TAG_WSUNDAY: // 'U'
+					/*sprintf(buf, "%02u", find_week_num(timeptr->tm_yday, 
 						timeptr->tm_wday));*/
 					break;
-				case tm_tag_ycent: // 'y'
-					//sprintf(s, "%02u", (timeptr->tm_year + tm_year_min) % 100);
+				case TM_TAG_YCENT: // 'y'
+					//sprintf(buf, "%02u", (timeptr->tm_year + TM_YEAR_MIN) % 100);
 					break;
-				case tm_tag_yday: // 'j'
-					//sprintf(s, "%03u", timeptr->tm_yday + 1);
+				case TM_TAG_YDAY: // 'j'
+					//sprintf(buf, "%03u", timeptr->tm_yday + 1);
 					break;
-				case tm_tag_year: // 'Y'
-					//sprintf(s, "%04u", timeptr->tm_year + tm_year_min);
+				case TM_TAG_YEAR: // 'Y'
+					//sprintf(buf, "%04u", timeptr->tm_year + TM_YEAR_MIN);
 					break;
 				default:
-					*s = *_unknown;
+					*buf = *_UNKNOWN;
 					break;
 			}
 
-			s += fill;
+			buf += fill;
 		} else {
-			*s = *ch;
-			++s;
+			*buf = *ch;
+			++buf;
 			++result;
 		}
 
@@ -453,8 +451,8 @@ strftime(
 	}
 
 	while((result + fill++) <= maxsize) {
-		*s = EOF;
-		++s;
+		*buf = EOF;
+		++buf;
 	}
 
 	++result;
@@ -468,11 +466,11 @@ time(
 	__inout time_t *timer
 	)
 {
-	// TODO: set tm_cur
+	// TODO: sys call: set tm_time to current unix time
 
 	if(timer) {
-		*timer = tm_cur;
+		*timer = tm_time;
 	}
 
-	return tm_cur;
+	return tm_time;
 }

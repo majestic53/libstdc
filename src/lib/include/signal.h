@@ -17,46 +17,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STDDEF_H_
-#define STDDEF_H_
+#ifndef SIGNAL_H_
+#define SIGNAL_H_
 
 #include "libdef.h"
+#include "sigdef.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-// null definition
-#define NULL _NULL
+enum {
+	SIG_ERR = -1, // error on signal
+	SIG_DFL, // default on signal
+	SIG_IGN, // ignore signal
+};
 
 /*
- * Determine the offset of a struct member
- * @param _TYPE_ struct type
- * @param _MEMBER_ struct member name
+ * Raise a synchronous signal
+ * @param sig signal value
+ * @return zero if signal was raised successfully, else returns non-zero
  */
-#define offsetof(_TYPE_, _MEMBER_) \
-	((size_t) &(((_TYPE_) *) 0)->_MEMBER_)
+int raise(
+	__in int sig
+	);
 
-// ptrdiff_t defition
-#ifndef _PTRDIFF_T
-#define _PTRDIFF_T
-typedef _ptrdiff_t ptrdiff_t;
-#endif // _PTRDIFF_T
+#ifndef _SIG_HDL_T
+#define _SIG_HDL_T
+typedef _sig_hdl_t(sig_hdl_t);
+#endif // _SIG_HDL_T
 
-// size_t definition
-#ifndef _SIZE_T
-#define _SIZE_T
-typedef _size_t size_t;
-#endif // _SIZE_T
+/*
+ * Set asynchronous signal handler
+ * @param sig signal value
+ * @param funct signal handler
+ * @return a valid pointer to funct, else SIG_ERR and errno set
+ */
+sig_hdl_t signal(
+	__in int sig,
+	__in sig_hdl_t funct
+	);
 
-// wide character definition
-#ifndef _WCHAR_T
-#define _WCHAR_T
-typedef _wchar_t wchar_t;
-#endif // _WCHAR_T
+#ifndef _SIG_ATOMIC_T
+#define _SIG_ATOMIC_T
+typedef _sig_atomic_t sig_atomic_t;
+#endif // _SIG_ATOMIC_T
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // STDDEF_H_
+#endif // SIGNAL_H_

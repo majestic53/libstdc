@@ -27,33 +27,26 @@ extern "C" {
 #endif // __cplusplus
 
 /*
- * Determine variable argument byte length
- * @param type argument type name
- */
-#define _va_sizeof(type) \
-	((sizeof(type) + (sizeof(int) - 1)) & ~(sizeof(int) - 1))
-
-/*
  * Locate next argument in list
- * @param ap variable argument list
- * @param type argument type name
+ * @param _AP_ variable argument list
+ * @param _TYPE_ argument type name
  */
-#define va_arg(ap, type) \
-	(*(type *) ((ap += _va_sizeof(type)) - _va_sizeof(type)))
+#define va_arg(_AP_, _TYPE_) \
+	(*((_TYPE_) *) (((_AP_) += _VA_SIZEOF(_TYPE_)) - _VA_SIZEOF(_TYPE_)))
 
 /*
  * Uninitialize argument list
- * @param ap variable argument list
+ * @param _AP_ variable argument list
  */
-#define va_end(ap) (ap = _null)
+#define va_end(_AP_) ((_AP_) = _NULL)
 
 /*
  * Initialize argument list
- * @param ap variable argument list
- * @param format variable argument format
+ * @param _AP_ variable argument list
+ * @param _FORMAT_ variable argument format
  */
-#define va_start(ap, format) \
-	(ap = ((va_list) (&format + _va_sizeof(format) + 1)))
+#define va_start(_AP_, _FORMAT_) \
+	((_AP_) = ((va_list) (&(_FORMAT_) + _VA_SIZEOF(_FORMAT_) + 1)))
 
 // variable argument list definition
 #ifndef _VA_LIST

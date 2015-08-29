@@ -181,19 +181,19 @@ setlocale(
 	int lc = LC_INFO_DEF, set = 0;
 
 	if(!locale) {
-		result = lc_info_struct(LC_INFO_DEF)->name;
+		result = LC_INFO_STRUCT(LC_INFO_DEF)->name;
 		goto exit;
 	}
 
-	for(; lc <= lc_info_max; ++lc) {
+	for(; lc <= LC_INFO_MAX; ++lc) {
 
-		info = (struct lcinfo *) lc_info_struct(lc);
+		info = (struct lcinfo *) LC_INFO_STRUCT(lc);
 		if(!strcmp(locale, info->name)) {
 			break;
 		}
 	}
 
-	if(lc > lc_info_max) {
+	if(lc > LC_INFO_MAX) {
 		goto exit;
 	}
 

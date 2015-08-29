@@ -28,7 +28,7 @@ extern "C" {
 #endif // __cplusplus
 
 // minimal locale
-#define lc_info_c { \
+#define LCINFO_C { \
 	"C", \
 	{ \
 	}, \
@@ -36,15 +36,15 @@ extern "C" {
 	}, \
 	{ \
 		".", \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
-		_nullstr, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
+		_NULLSTR, \
 		CHAR_MAX, \
 		CHAR_MAX, \
 		CHAR_MAX, \
@@ -61,7 +61,7 @@ extern "C" {
 }
 
 // default locale
-#define lc_info_usa_pst { \
+#define LCINFO_USA_PST { \
 	"", \
 	{ \
 	}, \
@@ -98,22 +98,28 @@ enum {
 	LC_INFO_C, // c locale
 };
 
-#define lc_info_max LC_INFO_C
+#define LC_INFO_MAX LC_INFO_C
 
-struct lccoll {
-	// TODO: add collate members
-};
+#ifndef _LCCOLL
+#define _LCCOLL
+struct lccoll { /* empty */ };
+#endif // _LCCOLL
 
+#ifndef _LCTIME
+#define _LCTIME
 struct lctime {
-	char tzone[_tzone_len]; // time zone
-	int tzone_off; // time zone offset (from GMT)
-	// TODO: add time members
+	char *name; // time zone name
+	int offset; // time zone offset (from GMT)
 };
+#endif // _LCTIME
 
-struct lctype {
-	// TODO: add ctype members
-};
+#ifndef _LCTYPE
+#define _LCTYPE
+struct lctype { /* empty */ };
+#endif // _LCTYPE
 
+#ifndef _LCINFO
+#define _LCINFO
 struct lcinfo {
 	char *name; // locale name
 	struct lccoll coll; // collate settings
@@ -121,23 +127,24 @@ struct lcinfo {
 	struct lconv conv; // monetary/numeric settings
 	struct lctime time; // time settings
 };
+#endif // _LCINFO
 
 // supported locales
-static const struct lcinfo lc_c = lc_info_c;
-static const struct lcinfo lc_def = lc_info_usa_pst;
-static struct lcinfo locale = lc_info_usa_pst;
+static const struct lcinfo lc_c = LCINFO_C;
+static const struct lcinfo lc_def = LCINFO_USA_PST;
+static struct lcinfo locale = LCINFO_USA_PST;
 
-static const struct lcinfo *lc_info_st[] = {
+static const struct lcinfo *LC_INFO_ST[] = {
 	&lc_c, &lc_def,
 };
 
 /*
  * Retrieve a valid pointer to a supported locale
- * @param type locale type
+ * @param _TYPE_ locale type
  */
-#define lc_info_struct(type) \
-	((type) > lc_info_max ? lc_info_st[0] : \
-	lc_info_st[type])
+#define LC_INFO_STRUCT(_TYPE_) \
+	((_TYPE_) > LC_INFO_MAX ? LC_INFO_ST[LC_INFO_DEF] : \
+	LC_INFO_ST[_TYPE_])
 
 #ifdef __cplusplus
 }

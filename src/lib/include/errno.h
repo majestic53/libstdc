@@ -21,6 +21,7 @@
 #define ERRNO_H_
 
 #include "errdef.h"
+#include "libdef.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,7 +31,7 @@ extern "C" {
 #define errno _errno
 
 // system call error container
-extern int _errno;
+_err _errno;
 
 #ifdef __cplusplus
 }
