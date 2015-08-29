@@ -32,8 +32,9 @@ raise(
 	int result = 0;
 	sig_hdl_t hdl = (sig_hdl_t) SIG_DFL;
 
-	if((sig < (SIGMIN) || (sig > SIGMAX))) {
-		result = -1;
+	if(sig > SIGMAX) {
+		errno = EINVAL;
+		result = _INV(int);
 		goto exit;
 	}
 
@@ -90,9 +91,9 @@ signal(
 			break;
 		default:
 
-			if((sig < SIGMIN) || (sig > SIGMAX)) {
-				result = (sig_hdl_t) SIG_ERR;
+			if(sig > SIGMAX) {
 				errno = EINVAL;
+				result = (sig_hdl_t) SIG_ERR;
 				goto exit;
 			}
 

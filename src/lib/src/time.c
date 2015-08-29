@@ -244,7 +244,7 @@ gmtime(
 	memset(&tm_timeptr, 0, sizeof(struct tm));
 
 	while(rem > TM_SEC_PER_YEAR) {
-		rem -= (TM_YEAR_DAY(TM_YEAR_MIN + tm_timeptr.tm_year) 
+		rem -= (TM_YEAR_DAY(tm_timeptr.tm_year + TM_YEAR_MIN) 
 			* TM_SEC_PER_DAY);
 		tm_timeptr.tm_year++;
 	}

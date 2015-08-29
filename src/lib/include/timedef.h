@@ -77,6 +77,8 @@ extern "C" {
 #define TM_TAG_YEAR_LEN 4
 
 // time offsets
+#define TM_CENT 100 // century
+#define TM_MILLE 1000 // millenium
 #define TM_MON_FEB 1 // february
 #define TM_EPOCH_START 70 // 1970
 #define TM_SEC_PER_YEAR 31536000.0
@@ -85,14 +87,12 @@ extern "C" {
 #define TM_SEC_PER_MIN 60.0
 
 // time value ranges
-#define TM_CENT 100
 #define TM_DST_ACTIVE 1
 #define TM_DST_INACTIVE 0
 #define TM_HOUR_MAX 23
 #define TM_HOUR_MIN 0
 #define TM_MDAY_MAX 31
 #define TM_MDAY_MIN 1
-#define TM_MILLE 1000
 #define TM_MIN_MAX 59
 #define TM_MIN_MIN 0
 #define TM_MON_MAX 11
@@ -170,7 +170,7 @@ static const _tm TM_MON_LEN[] = {
 	};
 
 // month string strings
-static const char TM_MON_STR[][4] = {
+static const char *TM_MON_STR[] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 	};
@@ -182,7 +182,7 @@ static const char *TM_MON_STR_FULL[] = {
 	};
 
 // week day strings
-static const char TM_WDAY_STR[][4] = {
+static const char *TM_WDAY_STR[] = {
 	"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
 	};
 

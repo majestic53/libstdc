@@ -38,7 +38,7 @@ extern "C" {
 
 // asyn interrupt signal
 #define SIGINT 2
-#define SIGINT_STR "Async signal"
+#define SIGINT_STR "Async interrupt"
 
 // segmentation fault signal
 #define SIGSEGV 11
@@ -49,7 +49,6 @@ extern "C" {
 #define SIGTERM_STR "Terminated"
 
 // supported signal range
-#define SIGMIN SIGABRT
 #define SIGMAX SIGTERM
 
 #ifdef __cplusplus

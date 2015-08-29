@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../include/errno.h"
 #include "../include/limits.h"
 #include "../include/locale.h"
 #include "../include/locdef.h"
@@ -36,6 +37,7 @@ setlocale_collate(
 	int result = 1;
 
 	if(!info) {
+		errno = EINVAL;
 		result = 0;
 		goto exit;
 	}
@@ -54,6 +56,7 @@ setlocale_ctype(
 	int result = 1;
 
 	if(!info) {
+		errno = EINVAL;
 		result = 0;
 		goto exit;
 	}
@@ -72,6 +75,7 @@ setlocale_monetary(
 	int result = 1;
 
 	if(!info) {
+		errno = EINVAL;
 		result = 0;
 		goto exit;
 	}
@@ -104,6 +108,7 @@ setlocale_numeric(
 	int result = 1;
 
 	if(!info) {
+		errno = EINVAL;
 		result = 0;
 		goto exit;
 	}
@@ -124,6 +129,7 @@ setlocale_time(
 	int result;
 
 	if(!info) {
+		errno = EINVAL;
 		result = 0;
 		goto exit;
 	}
@@ -181,6 +187,7 @@ setlocale(
 	int lc = LC_INFO_DEF, set = 0;
 
 	if(!locale) {
+		errno = EINVAL;
 		result = LC_INFO_STRUCT(LC_INFO_DEF)->name;
 		goto exit;
 	}
@@ -194,6 +201,7 @@ setlocale(
 	}
 
 	if(lc > LC_INFO_MAX) {
+		errno = EINVAL;
 		goto exit;
 	}
 
@@ -217,6 +225,7 @@ setlocale(
 			set = setlocale_time(info);
 			break;
 		default:
+			errno = EINVAL;
 			goto exit;
 	}
 

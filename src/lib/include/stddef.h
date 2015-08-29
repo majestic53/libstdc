@@ -35,7 +35,7 @@ extern "C" {
  * @param _MEMBER_ struct member name
  */
 #define offsetof(_TYPE_, _MEMBER_) \
-	((size_t) &(((_TYPE_) *) 0)->_MEMBER_)
+	((size_t) &((_TYPE_ *) 0)->_MEMBER_)
 
 // ptrdiff_t defition
 #ifndef _PTRDIFF_T

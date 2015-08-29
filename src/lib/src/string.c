@@ -255,6 +255,7 @@ strerror(
 			break;
 		default:
 			strerr = _NULLSTR;
+			break;
 	}
 
 	return strerr;

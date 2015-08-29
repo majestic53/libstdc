@@ -32,7 +32,7 @@ extern "C" {
  * @param _TYPE_ argument type name
  */
 #define va_arg(_AP_, _TYPE_) \
-	(*((_TYPE_) *) (((_AP_) += _VA_SIZEOF(_TYPE_)) - _VA_SIZEOF(_TYPE_)))
+	(*(_TYPE_ *) (((_AP_) += _VA_SIZEOF(_TYPE_)) - _VA_SIZEOF(_TYPE_)))
 
 /*
  * Uninitialize argument list
