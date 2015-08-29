@@ -19,6 +19,7 @@
 
 #include "../include/locale.h"
 #include "../include/locdef.h"
+//#include "../include/math.h"
 //#include "../include/stdio.h"
 #include "../include/string.h"
 #include "../include/time.h"
@@ -26,8 +27,44 @@
 
 #define EOF _eof
 
+_tm 
+find_mday(
+	__in _tm year,
+	__in _tm yday
+	)
+{
+	_tm len, mon = tm_mon_min, result = yday;
+	
+	len = tm_mon_length(year, mon);
+	while((result > len) && (mon <= tm_mon_max)) {
+		result -= len;
+		++mon;
+		len = tm_mon_length(year, mon);
+	}
+	
+	return (result + tm_mday_min);
+}
+	
+_tm 
+find_mon(
+	__in _tm year,
+	__in _tm yday
+	)
+{
+	_tm len, rem = yday, result = tm_mon_min;
+	
+	len = tm_mon_length(year, result);
+	while((rem > len) && (result <= tm_mon_max)) {
+		rem -= len;
+		++result;
+		len = tm_mon_length(year, result);
+	}
+	
+	return result;
+}
+
 size_t 
-strftime_len(
+find_strftime_len(
 	__in const char tag,
 	__in _tm hint
 	)
@@ -57,7 +94,7 @@ strftime_len(
 		case tm_tag_full_mon: // 'B'
 
 			if((hint >= tm_mon_min) && (hint <= tm_mon_max)) {
-				result = strlen(mon_full_string(hint));
+				result = strlen(tm_mon_full_string(hint));
 			} else {
 				result = tm_tag_full_mon_len;
 			}
@@ -65,7 +102,7 @@ strftime_len(
 		case tm_tag_full_wday: // 'A'
 
 			if((hint >= tm_wday_min) && (hint <= tm_wday_max)) {
-				result = strlen(wday_full_string(hint));
+				result = strlen(tm_wday_full_string(hint));
 			} else {
 				result = tm_tag_full_wday_len;
 			}
@@ -122,7 +159,23 @@ exit:
 }
 
 _tm 
-week_num(
+find_wday(
+	__in _tm year,
+	__in _tm yday
+	)
+{
+	/*_tm cent = (((year + tm_year_min) & tm_mille) / 2);
+	
+	year %= tm_cent;
+
+	return ((find_mday(year, yday) + find_mon(year, yday) + year 
+		+ (_tm) floor((double) year / 4.0) + cent) % (tm_wday_max + 1));*/
+
+	return 0;
+}
+
+_tm 
+find_week_num(
 	__in _tm yday,
 	__in _tm wday
 	)
@@ -143,9 +196,9 @@ asctime(
 	__in const struct tm *timeptr
 	)
 {
-	/*sprintf(asc_str, "%.3s %.3s %02u %02u:%02u:%02u %04u\n", 
-		wday_string(timeptr->tm_wday),
-		mon_string(timeptr->tm_mon),
+	/*sprintf(tm_ascstr, "%.3s %.3s %02u %02u:%02u:%02u %04u\n", 
+		tm_wday_string(timeptr->tm_wday),
+		tm_mon_string(timeptr->tm_mon),
 		timeptr->tm_mday,
 		timeptr->tm_hour,
 		timeptr->tm_min,
@@ -153,7 +206,7 @@ asctime(
 		timeptr->tm_year + tm_year_min
 		);*/
 		
-	return asc_str;
+	return tm_ascstr;
 }
 
 clock_t 
@@ -176,9 +229,6 @@ difftime(
 	__in time_t time0
 	)
 {
-	time0 -= tm_epoch_offset;
-	time1 -= tm_epoch_offset;
-
 	return (double) (time1 > time0) ? (time1 - time0) : (-1 * (time0 - time1));
 }
 
@@ -187,9 +237,44 @@ gmtime(
 	__in const time_t *timer
 	)
 {
-	// TODO
+	time_t rem = *timer;
 
-	return &tm_time;
+	if(rem < 0) {
+		goto exit;
+	}
+
+	memset(&tm_time, 0, sizeof(struct tm));
+
+	while(rem > tm_sec_per_year) {
+		rem -= (tm_year_day(tm_year_min + tm_time.tm_year) 
+			* tm_sec_per_day);
+		tm_time.tm_year++;
+	}
+
+	tm_time.tm_year += tm_epoch_start;
+
+	while(rem > tm_sec_per_day) {
+		rem -= tm_sec_per_day;
+		tm_time.tm_yday++;
+	}
+
+	while(rem > tm_sec_per_hour) {
+		rem -= tm_sec_per_hour;
+		tm_time.tm_hour++;
+	}
+
+	while(rem > tm_sec_per_min) {
+		rem -= tm_sec_per_min;
+		tm_time.tm_min++;
+	}
+
+	tm_time.tm_sec = rem;
+	tm_time.tm_mon = find_mon(tm_time.tm_year, tm_time.tm_yday);
+	tm_time.tm_mday = find_mday(tm_time.tm_year, tm_time.tm_yday);
+	tm_time.tm_wday = find_wday(tm_time.tm_year, tm_time.tm_yday);
+
+exit:
+	return (*timer < 0) ? NULL : &tm_time;
 }
 
 struct tm *
@@ -261,7 +346,7 @@ strftime(
 				hint = 0;
 			}
 
-			fill = strftime_len(*ch, hint);
+			fill = find_strftime_len(*ch, hint);
 			if((result + fill) > (maxsize - 1)) {
 				goto exit;
 			}
@@ -273,24 +358,24 @@ strftime(
 					*s = *ch;
 					break;
 				case tm_tag_abbrev_mon: // 'b'
-					strcpy(s, mon_string(timeptr->tm_mon));
+					strcpy(s, tm_mon_string(timeptr->tm_mon));
 					break;
 				case tm_tag_abbrev_wday: // 'a'
-					strcpy(s, wday_string(timeptr->tm_wday));
+					strcpy(s, tm_wday_string(timeptr->tm_wday));
 					break;
 				case tm_tag_am_pm: // 'p'
 					strcpy(s, (timeptr->tm_hour >= 12) ? tm_pm : tm_am);
 					break;
 				case tm_tag_date: // 'x'
 					/*sprintf(s, "%.3s %02u %04u", 
-						mon_string(timeptr->tm_mon),
+						tm_mon_string(timeptr->tm_mon),
 						timeptr->tm_mday,
 						timeptr->tm_year + tm_year_min
 						);*/
 					break;
 				case tm_tag_date_time: // 'c'
 					/*sprintf(s, "%.3s %02u %02u:%02u:%02u %04u", 
-						mon_string(timeptr->tm_mon),
+						tm_mon_string(timeptr->tm_mon),
 						timeptr->tm_mday,
 						timeptr->tm_hour,
 						timeptr->tm_min,
@@ -299,10 +384,10 @@ strftime(
 						);*/
 					break;
 				case tm_tag_full_mon: // 'B'
-					strcpy(s, mon_full_string(timeptr->tm_mon));
+					strcpy(s, tm_mon_full_string(timeptr->tm_mon));
 					break;
 				case tm_tag_full_wday: // 'A'
-					strcpy(s, wday_full_string(timeptr->tm_wday));
+					strcpy(s, tm_wday_full_string(timeptr->tm_wday));
 					break;
 				case tm_tag_hour_12: // 'I'
 					//sprintf(s, "%02u", timeptr->tm_hour % 12);
@@ -336,11 +421,11 @@ strftime(
 					//sprintf(s, "%02u", timeptr->tm_wday);
 					break;
 				case tm_tag_wmonday: // 'W'
-					/*sprintf(s, "%02u", week_num(timeptr->tm_yday, 
+					/*sprintf(s, "%02u", find_week_num(timeptr->tm_yday, 
 						timeptr->tm_wday));*/
 					break;
 				case tm_tag_wsunday: // 'U'
-					/*sprintf(s, "%02u", week_num(timeptr->tm_yday, 
+					/*sprintf(s, "%02u", find_week_num(timeptr->tm_yday, 
 						timeptr->tm_wday));*/
 					break;
 				case tm_tag_ycent: // 'y'
@@ -383,11 +468,11 @@ time(
 	__inout time_t *timer
 	)
 {
-	// TODO: set cur_time
+	// TODO: set tm_cur
 
 	if(timer) {
-		*timer = cur_time;
+		*timer = tm_cur;
 	}
 
-	return cur_time;
+	return tm_cur;
 }

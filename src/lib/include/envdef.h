@@ -116,7 +116,7 @@ extern "C" {
 // environment container
 #ifndef _ENV
 #define _ENV
-typedef struct {
+struct env {
 	_jmp_buf eax; // accumulator
 	_jmp_buf ebx; // base
 	_jmp_buf ecx; // counter
@@ -125,7 +125,7 @@ typedef struct {
 	_jmp_buf edi; // destination index
 	_jmp_buf ebp; // base pointer
 	_jmp_buf esp; // stack pointer
-} env;
+};
 #endif // _ENV
 
 #ifdef __cplusplus

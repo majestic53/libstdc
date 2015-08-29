@@ -68,8 +68,6 @@ struct lconv {
 	char p_sign_posn; // position of sign for non-negative monetary values
 	char n_sign_posn; // position of sign for negative monetary values
 };
-
-typedef struct lconv lconv;
 #endif // _LCONV
 
 /*

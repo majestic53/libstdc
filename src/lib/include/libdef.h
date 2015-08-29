@@ -48,7 +48,7 @@ extern "C" {
 #define _unknown "?"
 
 // environment values
-#define _asc_str_len 26
+#define _ascstr_len 26
 #define _clocks_per_sec 1000000
 #define _jmp_buf_len 8
 #define _tzone_len 4
@@ -67,7 +67,7 @@ extern "C" {
 // library version
 #define _lib_maj 0
 #define _lib_min 1
-#define _lib_rev 5
+#define _lib_rev 6
 #define _lib_wk 1535
 
 // library version string

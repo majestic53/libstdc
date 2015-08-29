@@ -100,34 +100,34 @@ enum {
 
 #define lc_info_max LC_INFO_C
 
-typedef struct {
+struct lccoll {
 	// TODO: add collate members
-} lccoll;
+};
 
-typedef struct {
+struct lctime {
 	char tzone[_tzone_len]; // time zone
 	int tzone_off; // time zone offset (from GMT)
 	// TODO: add time members
-} lctime;
+};
 
-typedef struct {
+struct lctype {
 	// TODO: add ctype members
-} lctype;
+};
 
-typedef struct {
+struct lcinfo {
 	char *name; // locale name
-	lccoll coll; // collate settings
-	lctype type; // ctype settings
-	lconv conv; // monetary/numeric settings
-	lctime time; // time settings
-} lcinfo;
+	struct lccoll coll; // collate settings
+	struct lctype type; // ctype settings
+	struct lconv conv; // monetary/numeric settings
+	struct lctime time; // time settings
+};
 
 // supported locales
-static const lcinfo lc_c = lc_info_c;
-static const lcinfo lc_def = lc_info_usa_pst;
-static lcinfo locale = lc_info_usa_pst;
+static const struct lcinfo lc_c = lc_info_c;
+static const struct lcinfo lc_def = lc_info_usa_pst;
+static struct lcinfo locale = lc_info_usa_pst;
 
-static const lcinfo *lc_info_st[] = {
+static const struct lcinfo *lc_info_st[] = {
 	&lc_c, &lc_def,
 };
 

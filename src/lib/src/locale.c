@@ -30,7 +30,7 @@ localeconv(void)
 
 int 
 setlocale_collate(
-	__in const lcinfo *info
+	__in const struct lcinfo *info
 	)
 {
 	int result = 1;
@@ -40,7 +40,7 @@ setlocale_collate(
 		goto exit;
 	}
 
-	result = (memcpy(&locale.coll, &info->coll, sizeof(lccoll)) != NULL);
+	result = (memcpy(&locale.coll, &info->coll, sizeof(struct lccoll)) != NULL);
 
 exit:
 	return result;
@@ -48,7 +48,7 @@ exit:
 
 int 
 setlocale_ctype(
-	__in const lcinfo *info
+	__in const struct lcinfo *info
 	)
 {
 	int result = 1;
@@ -58,7 +58,7 @@ setlocale_ctype(
 		goto exit;
 	}
 
-	result = (memcpy(&locale.type, &info->type, sizeof(lctype)) != NULL);
+	result = (memcpy(&locale.type, &info->type, sizeof(struct lctype)) != NULL);
 
 exit:
 	return result;
@@ -66,7 +66,7 @@ exit:
 
 int 
 setlocale_monetary(
-	__in const lcinfo *info
+	__in const struct lcinfo *info
 	)
 {
 	int result = 1;
@@ -98,7 +98,7 @@ exit:
 
 int 
 setlocale_numeric(
-	__in const lcinfo *info
+	__in const struct lcinfo *info
 	)
 {
 	int result = 1;
@@ -118,7 +118,7 @@ exit:
 
 int 
 setlocale_time(
-	__in const lcinfo *info
+	__in const struct lcinfo *info
 	)
 {
 	int result;
@@ -128,7 +128,7 @@ setlocale_time(
 		goto exit;
 	}
 
-	result = (memcpy(&locale.time, &info->time, sizeof(lctime)) != NULL);
+	result = (memcpy(&locale.time, &info->time, sizeof(struct lctime)) != NULL);
 
 exit:
 	return result;
@@ -136,7 +136,7 @@ exit:
 
 int 
 setlocale_all(
-	__in const lcinfo *info
+	__in const struct lcinfo *info
 	)
 {
 	int result;
@@ -177,7 +177,7 @@ setlocale(
 	)
 {	
 	char *result = NULL;
-	lcinfo *info = NULL;
+	struct lcinfo *info = NULL;
 	int lc = LC_INFO_DEF, set = 0;
 
 	if(!locale) {
@@ -187,7 +187,7 @@ setlocale(
 
 	for(; lc <= lc_info_max; ++lc) {
 
-		info = (lcinfo *) lc_info_struct(lc);
+		info = (struct lcinfo *) lc_info_struct(lc);
 		if(!strcmp(locale, info->name)) {
 			break;
 		}

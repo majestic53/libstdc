@@ -75,7 +75,7 @@ extern "C" {
 #define tm_tag_year_len 4
 
 // time offsets
-#define tm_epoch_leap 26 // seconds
+#define tm_mon_feb 1 // february
 #define tm_epoch_start 70 // 1970
 #define tm_sec_per_year 31536000.0
 #define tm_sec_per_day 86400.0
@@ -83,12 +83,14 @@ extern "C" {
 #define tm_sec_per_min 60.0
 
 // time value ranges
+#define tm_cent 100
 #define tm_dst_active 1
 #define tm_dsm_inactive 0
 #define tm_hour_max 23
 #define tm_hour_min 0
 #define tm_mday_max 31
 #define tm_mday_min 1
+#define tm_mille 1000
 #define tm_min_max 59
 #define tm_min_min 0
 #define tm_mon_max 11
@@ -104,11 +106,46 @@ extern "C" {
 #define tm_year_min 1900
 
 /*
- * Offset from 01/01/1900 to 01/01/1970 in seconds
- * 	(((70 * 365) + 17) * 86400)
+ * Full month string
+ * @param mon valid full month value
  */
-#define tm_epoch_offset \
-	(((tm_epoch_start * tm_yday_max) + tm_epoch_leap) * tm_sec_per_day)
+#define tm_mon_full_string(mon) \
+	(((mon < tm_mon_min) || (mon > tm_mon_max)) ? _unknown _unknown _unknown : \
+	tm_mon_full_str[mon])
+
+/*
+ * Calculate month length
+ * @param year year to check against
+ * @param mon month to check against
+ */
+#define tm_mon_length(year, mon) \
+	((((mon) < tm_mon_min) || ((mon) > tm_mon_max)) ? _inv(_tm) : \
+	(((mon) == tm_mon_feb) ? (tm_mon_len[mon] + (tm_year_leap(year) ? 1 : 0)) : \
+	tm_mon_len[mon]))
+
+/*
+ * Month string
+ * @param mon valid month value
+ */
+#define tm_mon_string(mon) \
+	(((mon < tm_mon_min) || (mon > tm_mon_max)) ? _unknown _unknown _unknown : \
+	tm_mon_str[mon])
+
+/*
+ * Full week day string
+ * @param wday valid weekday value
+ */
+#define tm_wday_full_string(wday) \
+	(((wday < tm_wday_min) || (wday > tm_wday_max)) ? _unknown _unknown _unknown : \
+	tm_wday_full_str[wday])
+
+/*
+ * Week day string
+ * @param wday valid weekday value
+ */
+#define tm_wday_string(wday) \
+	(((wday < tm_wday_min) || (wday > tm_wday_max)) ? _unknown _unknown _unknown : \
+	tm_wday_str[wday])
 
 /*
  * Determine if a year is a leap year
@@ -124,68 +161,42 @@ extern "C" {
 #define tm_year_day(year) \
 	(tm_year_leap(year) ? (tm_yday_max + 1) : tm_yday_max)
 
+// time string container
+static char tm_ascstr[_ascstr_len] = { 0 };
+
 // full month string strings
-static const char *mon_full_str[] = {
+static const char *tm_mon_full_str[] = {
 	"January", "February", "March", "April", "May", "June", 
 	"July", "August", "September", "October", "November", "December",
 	};
 
-/*
- * Full month string
- * @param mon valid full month value
- */
-#define mon_full_string(mon) \
-	(((mon < tm_mon_min) || (mon > tm_mon_max)) ? _unknown _unknown _unknown : \
-	mon_full_str[mon])
-
-// full week day strings
-static const char *wday_full_str[] = {
-	"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+// month length values
+static const _tm tm_mon_len[] = {
+	31, 28 /* + leap(year) */, 31, 30, 31, 
+	30, 31, 31, 30, 31, 30, 31,
 	};
 
-/*
- * Full week day string
- * @param wday valid weekday value
- */
-#define wday_full_string(wday) \
-	(((wday < tm_wday_min) || (wday > tm_wday_max)) ? _unknown _unknown _unknown : \
-	wday_full_str[wday])
-
 // month string strings
-static const char mon_str[][4] = {
+static const char tm_mon_str[][4] = {
 	"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 	};
 
-/*
- * Month string
- * @param mon valid month value
- */
-#define mon_string(mon) \
-	(((mon < tm_mon_min) || (mon > tm_mon_max)) ? _unknown _unknown _unknown : \
-	mon_str[mon])
+// full week day strings
+static const char *tm_wday_full_str[] = {
+	"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+	};
 
 // week day strings
-static const char wday_str[][4] = {
+static const char tm_wday_str[][4] = {
 	"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
 	};
 
-/*
- * Week day string
- * @param wday valid weekday value
- */
-#define wday_string(wday) \
-	(((wday < tm_wday_min) || (wday > tm_wday_max)) ? _unknown _unknown _unknown : \
-	wday_str[wday])
-
-// time string container
-static char asc_str[_asc_str_len] = { 0 };
-
 // time value
-static time_t cur_time = 0;
+static time_t tm_cur = 0;
 
 // time container
-static tm tm_time = {
+static struct tm tm_time = {
 	tm_sec_min,
 	tm_min_min,
 	tm_hour_min,

@@ -63,8 +63,6 @@ struct tm {
 	_tm tm_yday; // day (0 - 365)
 	_tm tm_isdst; // daylight saving time (0: not active, 1: active)
 };
-
-typedef struct tm tm;
 #endif // _TM
 
 /*
