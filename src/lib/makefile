@@ -31,11 +31,11 @@ all: build archive
 archive:
 	@echo ""
 	@echo "--- BUILDING STANDARD LIBRARY --------------"
-	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)signal.o $(DIR_BUILD)string.o $(DIR_BUILD)time.o
+	ar rcs $(DIR_BIN)$(LIB) $(DIR_BUILD)assert.o $(DIR_BUILD)ctype.o $(DIR_BUILD)errno.o $(DIR_BUILD)locale.o $(DIR_BUILD)math.o $(DIR_BUILD)setjmp.o $(DIR_BUILD)signal.o $(DIR_BUILD)stdio.o $(DIR_BUILD)stdlib.o $(DIR_BUILD)string.o $(DIR_BUILD)time.o
 	@echo "--- DONE -----------------------------------"
 	@echo ""
 
-build: assert.o ctype.o errno.o locale.o setjmp.o signal.o string.o time.o
+build: assert.o ctype.o errno.o locale.o math.o setjmp.o signal.o stdio.o stdlib.o string.o time.o
 
 assert.o: $(DIR_SRC)assert.c $(DIR_INC)assert.h
 ifndef CC_DBG
@@ -65,6 +65,13 @@ else
 	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)locale.c -o $(DIR_BUILD)locale.o # debug
 endif # CC_DBG
 
+math.o: $(DIR_SRC)math.c $(DIR_INC)math.h
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)math.c -o $(DIR_BUILD)math.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)math.c -o $(DIR_BUILD)math.o # debug
+endif # CC_DBG
+
 setjmp.o: $(DIR_SRC)setjmp.c $(DIR_INC)setjmp.h
 ifndef CC_DBG
 	$(CC) $(CC_FLAGS_REL) $(CC_FLAGS_ASM) -c $(DIR_SRC)setjmp.c -o $(DIR_BUILD)setjmp.o # release
@@ -77,6 +84,20 @@ ifndef CC_DBG
 	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)signal.c -o $(DIR_BUILD)signal.o # release
 else
 	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)signal.c -o $(DIR_BUILD)signal.o # debug
+endif # CC_DBG
+
+stdio.o: $(DIR_SRC)stdio.c $(DIR_INC)stdio.h
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)stdio.c -o $(DIR_BUILD)stdio.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)stdio.c -o $(DIR_BUILD)stdio.o # debug
+endif # CC_DBG
+
+stdlib.o: $(DIR_SRC)stdlib.c $(DIR_INC)stdlib.h
+ifndef CC_DBG
+	$(CC) $(CC_FLAGS_REL) -c $(DIR_SRC)stdlib.c -o $(DIR_BUILD)stdlib.o # release
+else
+	$(CC) $(CC_FLAGS_DBG) -c $(DIR_SRC)stdlib.c -o $(DIR_BUILD)stdlib.o # debug
 endif # CC_DBG
 
 string.o: $(DIR_SRC)string.c $(DIR_INC)string.h
