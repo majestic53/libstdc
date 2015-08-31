@@ -19,8 +19,8 @@
 
 #include "../include/locale.h"
 #include "../include/locdef.h"
-//#include "../include/math.h"
-//#include "../include/stdio.h"
+#include "../include/math.h"
+#include "../include/stdio.h"
 #include "../include/string.h"
 #include "../include/time.h"
 #include "../include/timedef.h"
@@ -164,12 +164,12 @@ _wday(
 	__in _tm yday
 	)
 {
-	/*_tm cent = (((year + TM_YEAR_MIN) & TM_MILLE) / 2);
+	_tm cent = (((year + TM_YEAR_MIN) & TM_MILLE) / 2);
 	
-	year %= TM_CENT;*/
+	year %= TM_CENT;
 
-	return 0; /*((_mday(year, yday) + _mon(year, yday) + year 
-		+ (_tm) floor((double) year / 4.0) + cent) % (TM_WDAY_MAX + 1));*/
+	return ((_mday(year, yday) + _mon(year, yday) + year 
+		+ (_tm) floor((double) year / 4.0) + cent) % (TM_WDAY_MAX + 1));
 }
 
 _tm 

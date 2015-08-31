@@ -29,6 +29,8 @@ extern "C" {
 
 // huge value definition
 #define HUGE_VAL DBL_MAX
+
+// infinity definition
 #define INFINITY HUGE_VAL
 
 // e constant definition

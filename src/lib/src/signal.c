@@ -19,8 +19,8 @@
 
 #include "../include/errno.h"
 #include "../include/signal.h"
-//#include "../include/stdio.h"
-//#include "../include/stdlib.h"
+#include "../include/stdio.h"
+#include "../include/stdlib.h"
 
 static sig_hdl_t _sig[SIGMAX + 1] = { (sig_hdl_t) SIG_DFL };
 
