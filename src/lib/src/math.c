@@ -89,7 +89,7 @@ _fact(
 	double iter, result = x;
 
 	/*
-	 * Initial factorials (0 - 30)
+	 * Initial factorials (0 - 30),
 	 * 	fact(31) and beyond must be calculated at runtime
 	 */
 	static const double fact_val[_FACT_TBL_MAX + 1] = {
@@ -214,8 +214,8 @@ cos(
 				result = 0.0;
 
 				/*
-				 * Calculating cos(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n))
-				 * 			where -INF < x < INF && x != NaN && 0.0 <= n <= M
+				 * Calculating cos(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
+				 * 	where -INF < x < INF && x != NaN && 0.0 <= n <= M
 				 */
 				for(;; ++iter) {
 					errno = 0;
@@ -296,8 +296,8 @@ exp(
 				next = result;
 
 				/*
-				 * Calculate exp(x) = e^x = 1 + sum((x ^ n) / fact(n))
-				 *			where -INF < x < INF && x != NaN && 2.0 <= n <= M
+				 * Calculate exp(x) = e^x = 1 + sum((x ^ n) / fact(n)),
+				 *	where -INF < x < INF && x != NaN && 2.0 <= n <= M
 				 */
 				for(;; ++iter) {
 					errno = 0;
@@ -435,8 +435,8 @@ log(
 				next = result;
 
 				/*
-				 * Calculating ln(x) = sum((((x - 1) / x) ^ n) / n)
-				 * 			where 0.0 <= x < INF && x != NaN && 2.0 <= n <= M
+				 * Calculating ln(x) = sum((((x - 1) / x) ^ n) / n),
+				 * 	where 0.0 <= x < INF && x != NaN && 2.0 <= n <= M
 				 */
 				for(;; ++iter) {
 					prev = next;
@@ -609,8 +609,8 @@ pow(
 	while(exp) {
 
 		/*
-		 * Calculate pow(b, e) = prod(b) 
-		 *		where i = e
+		 * Calculate pow(b, e) = prod(b),
+		 * 	where i = e
 		 */
 		result *= base;
 
@@ -657,8 +657,8 @@ sin(
 			if((x < 0.0) || (x > 0.0)) {
 
 				/*
-				 * Calculating sin(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n))
-				 * 			where -INF < x < INF && x != NaN && 0.0 <= n <= M
+				 * Calculating sin(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
+				 * 	where -INF < x < INF && x != NaN && 0.0 <= n <= M
 				 */
 				for(;; ++iter) {
 					errno = 0;
@@ -747,8 +747,8 @@ sqrt(
 				result = 1.0;
 
 				/*
- 				 * Calculate sqrt(x) = sum((n^2 - x) / (2n)) -- (Newton's method)
-				 * 			where 0.0 <= x > INF && x != NaN && 0.0 <= n <= M
+ 				 * Calculate sqrt(x) = sum((n^2 - x) / (2n)) -- (Newton's method),
+				 * 	where 0.0 <= x > INF && x != NaN && 0.0 <= n <= M
 				 */ 
 				for(;;) {
 					prev = result;

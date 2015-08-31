@@ -175,7 +175,7 @@ _wday(
 
 	/*
 	 * Calculate week day: wday(year, yday) = 
-	 *			(mday + mon + (year % 100) + floor(year / 4) + 100) % 7
+	 *	(mday + mon + (year % 100) + floor(year / 4) + 100) % 7
 	 */
 	return ((_mday(year, yday) + _mon(year, yday) + year 
 		+ (_tm) floor((double) year / 4.0) + cent) % (TM_WDAY_MAX + 1));
@@ -190,8 +190,8 @@ _week_num(
 	_tm result = ((yday - wday) + 10) / 7;
 
 	/*
-	 * Calculate week number: wnum(yday, wday) = ((yday - wday) + 10) / 7
-	 *			if wnum < 1, wnum = 52; if wnum > 52, wnum = 1
+	 * Calculate week number: wnum(yday, wday) = ((yday - wday) + 10) / 7,
+	 *	if wnum < 1, wnum = 52; if wnum > 52, wnum = 1
 	 */
 	if(result < TM_WEEK_MIN) {
 		result = TM_WEEK_MAX;
@@ -257,8 +257,8 @@ gmtime(
 	memset(&tm_timeptr, 0, sizeof(struct tm));
 
 	/*
-	 * Calculate years: year(t) = sum(ydays_in(n + 1900) * sec_per_day)
-				where 0 <= n <= M
+	 * Calculate years: year(t) = sum(ydays_in(n + 1900) * sec_per_day),
+		where 0 <= n <= M
 	 */
 	while(rem > TM_SEC_PER_YEAR) {
 		rem -= (TM_YEAR_DAY(tm_timeptr.tm_year + TM_YEAR_MIN) 
@@ -270,8 +270,8 @@ gmtime(
 	tm_timeptr.tm_year += TM_EPOCH_START;
 
 	/*
-	 * Calculate year days (< 1 year): yday(t) = sum(n * sec_per_day)
-				where 0 <= n <= M
+	 * Calculate year days (< 1 year): yday(t) = sum(n * sec_per_day),
+		where 0 <= n <= M
 	 */
 	while(rem > TM_SEC_PER_DAY) {
 		rem -= TM_SEC_PER_DAY;
@@ -279,8 +279,8 @@ gmtime(
 	}
 
 	/*
-	 * Calculate hours (< 1 day): hour(t) = sum(n * sec_per_hour)
-				where 0 <= n <= M
+	 * Calculate hours (< 1 day): hour(t) = sum(n * sec_per_hour),
+		where 0 <= n <= M
 	 */
 	while(rem > TM_SEC_PER_HOUR) {
 		rem -= TM_SEC_PER_HOUR;
@@ -288,8 +288,8 @@ gmtime(
 	}
 
 	/*
-	 * Calculate minutes (< 1 hour): min(t) = sum(n * sec_per_min)
-				where 0 <= n <= M
+	 * Calculate minutes (< 1 hour): min(t) = sum(n * sec_per_min),
+		where 0 <= n <= M
 	 */
 	while(rem > TM_SEC_PER_MIN) {
 		rem -= TM_SEC_PER_MIN;
@@ -338,10 +338,10 @@ mktime(
 
 	/*
 	 * Calculate time(t) = ((year - 1970) * sec_per_year)
-	 * 		+ ((year days + leap days + 1) * sec_per_day)
-			+ ((hours * sec_per_hour)
-			+ ((minutes * sec_per_minute)
-			+ seconds
+	 * 	+ ((year days + leap days + 1) * sec_per_day)
+		+ ((hours * sec_per_hour)
+		+ ((minutes * sec_per_minute)
+		+ seconds
 	 */
 	result = (((timeptr->tm_year - TM_EPOCH_START) * TM_SEC_PER_YEAR)
 		+ ((timeptr->tm_yday + leap + 1) * TM_SEC_PER_DAY)
