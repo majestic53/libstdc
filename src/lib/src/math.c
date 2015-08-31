@@ -164,7 +164,7 @@ ceil(
 	__in double x
 	)
 {
-	return ((x - (long) x) > 0.0) ? ((long) x + 1.0) : x;
+	return ((x - ((long) x)) > 0.0) ? (((long) x) + 1.0) : x;
 }
 
 double 
@@ -191,7 +191,7 @@ exp(
 	)
 {
 	int valid;
-	double iter = 2.0, next, prev, result = x;
+	double denom, iter = 2.0, next, numer, prev, result = x;
 
 	valid = _fp_valid(result, FP_INF | FP_NAN);
 	switch(valid) {
@@ -211,9 +211,9 @@ exp(
 				next = result;
 
 				for(;; ++iter) {
-					errno = 0;
 					prev = next;
-					next = (pow(x, iter) / _fact(iter));
+					errno = 0;
+					numer = pow(x, iter);
 
 					switch(errno) {
 						case EDOM:
@@ -221,6 +221,16 @@ exp(
 							goto exit;
 					}
 
+					errno = 0;
+					denom = _fact(iter);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					next = (numer / denom);
 					result += next;
 
 					if(next < EXP_ERR) {
@@ -332,8 +342,8 @@ log(
 				next = result;
 
 				for(;; ++iter) {
-					errno = 0;
 					prev = next;
+					errno = 0;
 					next = (pow(((x - LOG_DOM_MIN) / x), iter) / iter);
 
 					switch(errno) {
@@ -562,8 +572,8 @@ sqrt(
 				result = 1.0;
 
 				for(;;) {
-					errno = 0;
 					prev = result;
+					errno = 0;
 					result = (result - ((pow(result, 2.0) - x) / (2.0 * result)));
 
 					switch(errno) {
