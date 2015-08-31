@@ -244,6 +244,9 @@ strerror(
 	)
 {
 	switch(err) {
+		case 0:
+			strerr = _SUCCESS;
+			break;
 		case EDOM:
 			strerr = EDOM_STR;
 			break;

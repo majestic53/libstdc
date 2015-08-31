@@ -23,14 +23,8 @@
 #include "../include/locdef.h"
 #include "../include/string.h"
 
-struct lconv *
-localeconv(void)
-{
-	return (struct lconv *) &locale.conv;
-}
-
 int 
-setlocale_collate(
+_set_coll(
 	__in const struct lcinfo *info
 	)
 {
@@ -49,7 +43,7 @@ exit:
 }
 
 int 
-setlocale_ctype(
+_set_ctype(
 	__in const struct lcinfo *info
 	)
 {
@@ -68,7 +62,7 @@ exit:
 }
 
 int 
-setlocale_monetary(
+_set_mon(
 	__in const struct lcinfo *info
 	)
 {
@@ -101,7 +95,7 @@ exit:
 }
 
 int 
-setlocale_numeric(
+_set_num(
 	__in const struct lcinfo *info
 	)
 {
@@ -122,7 +116,7 @@ exit:
 }
 
 int 
-setlocale_time(
+_set_time(
 	__in const struct lcinfo *info
 	)
 {
@@ -141,39 +135,45 @@ exit:
 }
 
 int 
-setlocale_all(
+_set_all(
 	__in const struct lcinfo *info
 	)
 {
 	int result;
 
-	result = setlocale_collate(info);
+	result = _set_coll(info);
 	if(!result) {
 		goto exit;
 	}
 
-	result = setlocale_ctype(info);
+	result = _set_ctype(info);
 	if(!result) {
 		goto exit;
 	}
 
-	result = setlocale_monetary(info);
+	result = _set_mon(info);
 	if(!result) {
 		goto exit;
 	}
 
-	result = setlocale_numeric(info);
+	result = _set_num(info);
 	if(!result) {
 		goto exit;
 	}
 
-	result = setlocale_time(info);
+	result = _set_time(info);
 	if(!result) {
 		goto exit;
 	}
 
 exit:
 	return result;
+}
+
+struct lconv *
+localeconv(void)
+{
+	return (struct lconv *) &locale.conv;
 }
 
 char *
@@ -207,22 +207,22 @@ setlocale(
 
 	switch(category) {
 		case LC_ALL:
-			set = setlocale_all(info);
+			set = _set_time(info);
 			break;
 		case LC_COLLATE:
-			set = setlocale_collate(info);
+			set = _set_coll(info);
 			break;
 		case LC_CTYPE:
-			set = setlocale_ctype(info);
+			set = _set_ctype(info);
 			break;
 		case LC_MONETARY:
-			set = setlocale_monetary(info);
+			set = _set_mon(info);
 			break;
 		case LC_NUMERIC:
-			set = setlocale_numeric(info);
+			set = _set_num(info);
 			break;
 		case LC_TIME:
-			set = setlocale_time(info);
+			set = _set_time(info);
 			break;
 		default:
 			errno = EINVAL;

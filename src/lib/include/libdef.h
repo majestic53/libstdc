@@ -60,17 +60,19 @@ extern "C" {
 #define _EOF '\0'
 #define _NULL ((void *) 0)
 #define _NULLSTR ""
+#define _SUCCESS "Success"
 #define _UNKNOWN "?"
 
 // environment values
 #define _ASCSTR_LEN 26
 #define _CLOCKS_PER_SEC 1000000
+#define _FACT_TBL_MAX 30
 #define _JMPBUF_LEN 8
 
 // library version
 #define _LIB_MAJ 0
 #define _LIB_MIN 1
-#define _LIB_REV 8
+#define _LIB_REV 9
 #define _LIB_WK 1535
 
 // library version string

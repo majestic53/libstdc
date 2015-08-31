@@ -29,6 +29,16 @@ extern "C" {
 
 // huge value definition
 #define HUGE_VAL DBL_MAX
+#define INFINITY HUGE_VAL
+
+// e constant definition
+#define M_E 2.7182818284590452354
+
+// pi constant definition
+#define M_PI 3.14159265358979323846
+
+// not-a-number definition
+#define NAN (0.0 / 0.0)
 
 /*
  * Compute arc-cosine of input

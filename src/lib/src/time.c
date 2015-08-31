@@ -28,7 +28,7 @@
 #define EOF _EOF
 
 _tm 
-find_mday(
+_mday(
 	__in _tm year,
 	__in _tm yday
 	)
@@ -46,7 +46,7 @@ find_mday(
 }
 	
 _tm 
-find_mon(
+_mon(
 	__in _tm year,
 	__in _tm yday
 	)
@@ -64,7 +64,7 @@ find_mon(
 }
 
 size_t 
-find_strftime_len(
+_strftime_len(
 	__in const char tag,
 	__in _tm hint
 	)
@@ -159,7 +159,7 @@ exit:
 }
 
 _tm 
-find_wday(
+_wday(
 	__in _tm year,
 	__in _tm yday
 	)
@@ -168,12 +168,12 @@ find_wday(
 	
 	year %= TM_CENT;*/
 
-	return 0; /*((find_mday(year, yday) + find_mon(year, yday) + year 
+	return 0; /*((_mday(year, yday) + _mon(year, yday) + year 
 		+ (_tm) floor((double) year / 4.0) + cent) % (TM_WDAY_MAX + 1));*/
 }
 
 _tm 
-find_week_num(
+_week_num(
 	__in _tm yday,
 	__in _tm wday
 	)
@@ -267,9 +267,9 @@ gmtime(
 	}
 
 	tm_timeptr.tm_sec = rem;
-	tm_timeptr.tm_mon = find_mon(tm_timeptr.tm_year, tm_timeptr.tm_yday);
-	tm_timeptr.tm_mday = find_mday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
-	tm_timeptr.tm_wday = find_wday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
+	tm_timeptr.tm_mon = _mon(tm_timeptr.tm_year, tm_timeptr.tm_yday);
+	tm_timeptr.tm_mday = _mday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
+	tm_timeptr.tm_wday = _wday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
 
 exit:
 	return (*timer < 0) ? NULL : &tm_timeptr;
@@ -344,7 +344,7 @@ strftime(
 				hint = 0;
 			}
 
-			fill = find_strftime_len(*ch, hint);
+			fill = _strftime_len(*ch, hint);
 			if((result + fill) > (maxsize - 1)) {
 				goto exit;
 			}
@@ -419,11 +419,11 @@ strftime(
 					strcpy(buf, TM_WDAY_STRING_FULL(timeptr->tm_wday));
 					break;
 				case TM_TAG_WMONDAY: // 'W'
-					/*sprintf(buf, "%02u", find_week_num(timeptr->tm_yday, 
+					/*sprintf(buf, "%02u", _week_num(timeptr->tm_yday, 
 						timeptr->tm_wday));*/
 					break;
 				case TM_TAG_WSUNDAY: // 'U'
-					/*sprintf(buf, "%02u", find_week_num(timeptr->tm_yday, 
+					/*sprintf(buf, "%02u", _week_num(timeptr->tm_yday, 
 						timeptr->tm_wday));*/
 					break;
 				case TM_TAG_YCENT: // 'y'

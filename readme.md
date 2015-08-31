@@ -13,6 +13,10 @@ Changelog
 =========
 
 ##Version 0.1.1535
+*Updated: 8/30/2015*
+
+* Implemented additional math routines
+
 *Updated: 8/29/2015*
 
 * Implemented additional library header (math (partial), signal)
