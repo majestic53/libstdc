@@ -25,6 +25,7 @@
 #include "../include/time.h"
 #include "../include/timedef.h"
 
+// end of file (NUL) definition
 #define EOF _EOF
 
 _tm 
@@ -35,6 +36,7 @@ _mday(
 {
 	_tm len, mon = TM_MON_MIN, result = yday;
 	
+	// iterate over year day to find containing month day
 	len = TM_MON_LENGTH(year, mon);
 	while((result > len) && (mon <= TM_MON_MAX)) {
 		result -= len;
@@ -53,6 +55,7 @@ _mon(
 {
 	_tm len, rem = yday, result = TM_MON_MIN;
 	
+	// iterate over year day to find containing month
 	len = TM_MON_LENGTH(year, result);
 	while((rem > len) && (result <= TM_MON_MAX)) {
 		rem -= len;
@@ -108,6 +111,7 @@ _strftime_len(
 			break;
 		case TM_TAG_MON_FULL: // 'B'
 
+			// determine full length of month
 			if((hint >= TM_MON_MIN) && (hint <= TM_MON_MAX)) {
 				result = strlen(TM_MON_STRING_FULL(hint));
 			} else {
@@ -128,6 +132,7 @@ _strftime_len(
 			break;
 		case TM_TAG_WDAY_FULL: // 'A'
 
+			// determine full length of week day
 			if((hint >= TM_WDAY_MIN) && (hint <= TM_WDAY_MAX)) {
 				result = strlen(TM_WDAY_STRING_FULL(hint));
 			} else {
@@ -168,6 +173,10 @@ _wday(
 	
 	year %= TM_CENT;
 
+	/*
+	 * Calculate week day: wday(year, yday) = 
+	 *			(mday + mon + (year % 100) + floor(year / 4) + 100) % 7
+	 */
 	return ((_mday(year, yday) + _mon(year, yday) + year 
 		+ (_tm) floor((double) year / 4.0) + cent) % (TM_WDAY_MAX + 1));
 }
@@ -180,6 +189,10 @@ _week_num(
 {
 	_tm result = ((yday - wday) + 10) / 7;
 
+	/*
+	 * Calculate week number: wnum(yday, wday) = ((yday - wday) + 10) / 7
+	 *			if wnum < 1, wnum = 52; if wnum > 52, wnum = 1
+	 */
 	if(result < TM_WEEK_MIN) {
 		result = TM_WEEK_MAX;
 	} else if(result > TM_WEEK_MAX) {
@@ -243,30 +256,50 @@ gmtime(
 
 	memset(&tm_timeptr, 0, sizeof(struct tm));
 
+	/*
+	 * Calculate years: year(t) = sum(ydays_in(n + 1900) * sec_per_day)
+				where 0 <= n <= M
+	 */
 	while(rem > TM_SEC_PER_YEAR) {
 		rem -= (TM_YEAR_DAY(tm_timeptr.tm_year + TM_YEAR_MIN) 
 			* TM_SEC_PER_DAY);
 		tm_timeptr.tm_year++;
 	}
 
+	// offset year by unix epoch (01/01/1970)
 	tm_timeptr.tm_year += TM_EPOCH_START;
 
+	/*
+	 * Calculate year days (< 1 year): yday(t) = sum(n * sec_per_day)
+				where 0 <= n <= M
+	 */
 	while(rem > TM_SEC_PER_DAY) {
 		rem -= TM_SEC_PER_DAY;
 		tm_timeptr.tm_yday++;
 	}
 
+	/*
+	 * Calculate hours (< 1 day): hour(t) = sum(n * sec_per_hour)
+				where 0 <= n <= M
+	 */
 	while(rem > TM_SEC_PER_HOUR) {
 		rem -= TM_SEC_PER_HOUR;
 		tm_timeptr.tm_hour++;
 	}
 
+	/*
+	 * Calculate minutes (< 1 hour): min(t) = sum(n * sec_per_min)
+				where 0 <= n <= M
+	 */
 	while(rem > TM_SEC_PER_MIN) {
 		rem -= TM_SEC_PER_MIN;
 		tm_timeptr.tm_min++;
 	}
 
+	// set seconds to remainder of t
 	tm_timeptr.tm_sec = rem;
+
+	// calculate the remaining members using previously collected year and year day
 	tm_timeptr.tm_mon = _mon(tm_timeptr.tm_year, tm_timeptr.tm_yday);
 	tm_timeptr.tm_mday = _mday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
 	tm_timeptr.tm_wday = _wday(tm_timeptr.tm_year, tm_timeptr.tm_yday);
@@ -280,6 +313,10 @@ localtime(
 	__in const time_t *timer
 	)
 {
+
+	/*
+	 * Calculate localtime(t) = gmtime(t) - time zone offset
+	 */
 	time_t loc = *timer - (locale.time.offset * TM_SEC_PER_HOUR);
 	return gmtime(&loc);
 }
@@ -291,6 +328,7 @@ mktime(
 {
 	time_t iter = TM_EPOCH_START, leap = 0, result = 0;
 
+	// determine the number of leap days that must be added between 1900 and t
 	for(; iter <= timeptr->tm_year; ++iter) {
 
 		if(TM_YEAR_LEAP(TM_YEAR_MIN + iter)) {
@@ -298,16 +336,25 @@ mktime(
 		}
 	}
 
+	/*
+	 * Calculate time(t) = ((year - 1970) * sec_per_year)
+	 * 		+ ((year days + leap days + 1) * sec_per_day)
+			+ ((hours * sec_per_hour)
+			+ ((minutes * sec_per_minute)
+			+ seconds
+	 */
 	result = (((timeptr->tm_year - TM_EPOCH_START) * TM_SEC_PER_YEAR)
 		+ ((timeptr->tm_yday + leap + 1) * TM_SEC_PER_DAY)
 		+ (timeptr->tm_hour * TM_SEC_PER_HOUR)
 		+ (timeptr->tm_min * TM_SEC_PER_MIN)
 		+ timeptr->tm_sec);
 
+	// remove an hour if DST is active
 	if(timeptr->tm_isdst) {
 		result -= TM_SEC_PER_HOUR;
 	}
 
+	// offset for local time zone
 	result -= (locale.time.offset * TM_SEC_PER_HOUR);
 
 	return (result < 0) ? _INV(time_t) : result;
@@ -331,6 +378,7 @@ strftime(
 
 	while((*ch != EOF) && (result < maxsize)) {
 
+		// supported tag
 		if(*ch == TM_TAG) {
 			++ch;
 
@@ -344,6 +392,7 @@ strftime(
 				hint = 0;
 			}
 
+			// determine required space for tag
 			fill = _strftime_len(*ch, hint);
 			if((result + fill) > (maxsize - 1)) {
 				goto exit;
@@ -441,6 +490,8 @@ strftime(
 			}
 
 			buf += fill;
+
+		// unsupported tag added as character
 		} else {
 			*buf = *ch;
 			++buf;
@@ -450,6 +501,7 @@ strftime(
 		++ch;
 	}
 
+	// fill remainder of input with EOF characters
 	while((result + fill++) <= maxsize) {
 		*buf = EOF;
 		++buf;

@@ -19,4 +19,8 @@
 
 #include "../include/errno.h"
 
+/*
+ * Global error value
+ * 	always initialized to 0
+ */
 int _errno = 0;

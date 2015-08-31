@@ -20,6 +20,7 @@
 #include "../include/envdef.h"
 #include "../include/setjmp.h"
 
+// global environment
 jmp_buf _env[] = ENV_EMPTY;
 
 void 

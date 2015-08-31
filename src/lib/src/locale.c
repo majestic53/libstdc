@@ -36,6 +36,7 @@ _set_coll(
 		goto exit;
 	}
 
+	// copy new collate settings
 	result = (memcpy(&locale.coll, &info->coll, sizeof(struct lccoll)) != NULL);
 
 exit:
@@ -55,6 +56,7 @@ _set_ctype(
 		goto exit;
 	}
 
+	// copy new ctype settings
 	result = (memcpy(&locale.type, &info->type, sizeof(struct lctype)) != NULL);
 
 exit:
@@ -74,6 +76,7 @@ _set_mon(
 		goto exit;
 	}
 
+	// copy new monetary settings
 	locale.conv.int_curr_symbol = info->conv.int_curr_symbol;
 	locale.conv.currency_symbol = info->conv.currency_symbol;
 	locale.conv.mon_decimal_point = info->conv.mon_decimal_point;
@@ -107,6 +110,7 @@ _set_num(
 		goto exit;
 	}
 
+	// copy new numeric settings
 	locale.conv.decimal_point = info->conv.decimal_point;
 	locale.conv.thousands_sep = info->conv.thousands_sep;
 	locale.conv.grouping = info->conv.grouping;
@@ -128,6 +132,7 @@ _set_time(
 		goto exit;
 	}
 
+	// copy new time settings
 	result = (memcpy(&locale.time, &info->time, sizeof(struct lctime)) != NULL);
 
 exit:
@@ -194,6 +199,7 @@ setlocale(
 
 	for(; lc <= LC_INFO_MAX; ++lc) {
 
+		// determine supported locale
 		info = (struct lcinfo *) LC_INFO_STRUCT(lc);
 		if(!strcmp(locale, info->name)) {
 			break;
@@ -205,6 +211,7 @@ setlocale(
 		goto exit;
 	}
 
+	// configure locale
 	switch(category) {
 		case LC_ALL:
 			set = _set_time(info);

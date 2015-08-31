@@ -20,22 +20,33 @@
 #include "../include/errno.h"
 #include "../include/math.h"
 
-#define EXP_ERR 0.00000001
+/*
+ * Error bound definition
+ * 	used by a variety of routines to control precision
+ */
+#ifndef ERR_BOUND
+#define ERR_BOUND 0.000000000001
+#endif // ERR_BOUND
+
+// math routine internal constants
 #define FACT_DOM_MIN 0.0
+#define LOG_10 10.0
+#define LOG_DOM_MIN 1.0
+#define SQRT_DOM_MIN 0.0
+#define SQRT_ERR 0.0001
+
+// floating-point class flags
 #define FP_FIN 0x1
 #define FP_INF 0x2
 #define FP_NAN 0x4
-#define LOG_10 10.0
-#define LOG_DOM_MIN 1.0
-#define LOG_ERR 0.00000001
-#define SQRT_DOM_MIN 0.0
-#define SQRT_ERR 0.0001
 
 int 
 _fp_inf(
 	__in double x
 	)
 {
+
+	// infinite floating-point values are defined as either HUGE_VAL or -HUGE_VAL
 	return ((x >= HUGE_VAL) || (x <= -HUGE_VAL));
 }
 
@@ -56,10 +67,12 @@ _fp_valid(
 {
 	int result = FP_FIN;
 
+	// detect infinite floating-point values
 	if((flag & FP_INF) && _fp_inf(x)) {
 		result = FP_INF;
 	}
 
+	// detect NaN floating-point values
 	if((flag & FP_NAN) && _fp_nan(x)) {
 		result = FP_NAN;
 	}
@@ -75,6 +88,10 @@ _fact(
 	int valid;
 	double iter, result = x;
 
+	/*
+	 * Initial factorials (0 - 30)
+	 * 	fact(31) and beyond must be calculated at runtime
+	 */
 	static const double fact_val[_FACT_TBL_MAX + 1] = {
 		1.0, 1.0, 2.0, 6.0, 24.0, 120.0, 720.0, 5040.0, 40320.0, 
 		362880.0, 3628800.0, 39916800.0, 479001600.0, 6227020800.0, 
@@ -108,10 +125,13 @@ _fact(
 				errno = EDOM;
 				result = NAN;
 			} else if(result <= _FACT_TBL_MAX) {
+
+				// lookup fact(0 - 30)
 				result = fact_val[(long) x];
 			} else {
 				result = fact_val[_FACT_TBL_MAX];
 
+				// calculate fact(31) and beyond
 				for(iter = (_FACT_TBL_MAX + 1); iter <= x; ++iter) {
 					result *= iter;
 				}
@@ -164,6 +184,8 @@ ceil(
 	__in double x
 	)
 {
+
+	// ceil(x) = x - frac(x), unless frac(x) == 0
 	return ((x - ((long) x)) > 0.0) ? (((long) x) + 1.0) : x;
 }
 
@@ -172,8 +194,71 @@ cos(
 	__in double x
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double denom, iter = 0.0, next, numer, result = 1.0;
+
+	valid = _fp_valid(x, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((x < 0.0) ? -INFINITY : INFINITY);
+			break;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			break;
+		default:
+
+			// no work if x == 0.0
+			if((x < 0.0) || (x > 0.0)) {
+				result = 0.0;
+
+				/*
+				 * Calculating cos(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n))
+				 * 			where -INF < x < INF && x != NaN && 0.0 <= n <= M
+				 */
+				for(;; ++iter) {
+					errno = 0;
+					numer = pow(-1.0, iter);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					errno = 0;
+					numer *= pow(x, 2.0 * iter);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					errno = 0;
+					denom = _fact(2.0 * iter);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					next = (numer / denom);
+					result += next;
+
+					// check if error bound has been reached
+					if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
+						break;
+					}
+				}
+			}
+			break;
+	}
+
+exit:
+	return result;
 }
 
 double 
@@ -191,7 +276,7 @@ exp(
 	)
 {
 	int valid;
-	double denom, iter = 2.0, next, numer, prev, result = x;
+	double denom, iter = 2.0, next, numer, result = x;
 
 	valid = _fp_valid(result, FP_INF | FP_NAN);
 	switch(valid) {
@@ -210,8 +295,11 @@ exp(
 				result += 1.0;
 				next = result;
 
+				/*
+				 * Calculate exp(x) = e^x = 1 + sum((x ^ n) / fact(n))
+				 *			where -INF < x < INF && x != NaN && 2.0 <= n <= M
+				 */
 				for(;; ++iter) {
-					prev = next;
 					errno = 0;
 					numer = pow(x, iter);
 
@@ -233,7 +321,8 @@ exp(
 					next = (numer / denom);
 					result += next;
 
-					if(next < EXP_ERR) {
+					// check if error bound has been reached
+					if(next < ERR_BOUND) {
 						break;
 					}
 				}
@@ -262,6 +351,8 @@ fabs(
 			errno = EDOM;
 			break;
 		default:
+
+			// reverse sign if result is negative
 			result = ((result < 0.0) ? (-result) : result);
 			break;
 	}
@@ -274,6 +365,8 @@ floor(
 	__in double x
 	)
 {
+
+	// floor(x) = int(x)
 	return ((long) x);
 }
 
@@ -341,6 +434,10 @@ log(
 				result = ((x - LOG_DOM_MIN) / x);
 				next = result;
 
+				/*
+				 * Calculating ln(x) = sum((((x - 1) / x) ^ n) / n)
+				 * 			where 0.0 <= x < INF && x != NaN && 2.0 <= n <= M
+				 */
 				for(;; ++iter) {
 					prev = next;
 					errno = 0;
@@ -355,7 +452,9 @@ log(
 					result += next;
 
 					errno = 0;
-					if(fabs(prev - next) < LOG_ERR) {
+
+					// check if error bound has been reached
+					if(fabs(prev - next) < ERR_BOUND) {
 						break;
 					}
 
@@ -404,6 +503,10 @@ log10(
 				errno = EDOM;
 				result = NAN;
 			} else {
+
+				/*
+				 * Calculating log(x) = ln(x) / ln(10)
+				 */
 				errno = 0;
 				numer = log(x);
 
@@ -445,6 +548,7 @@ modf(
 		goto exit;
 	}
 
+	// set integer part
 	*ipart = ((long) result);
 
 	valid = _fp_valid(result, FP_INF | FP_NAN);
@@ -457,6 +561,8 @@ modf(
 			errno = EDOM;
 			break;
 		default:
+
+			// set fractional part
 			result -= *ipart;
 			break;
 	}
@@ -474,6 +580,7 @@ pow(
 	int valid;
 	double result = 1.0;
 
+	// check if base is valid
 	valid = _fp_valid(base, FP_INF | FP_NAN);
 	switch(valid) {
 		case FP_INF:
@@ -486,6 +593,7 @@ pow(
 			goto exit;
 	}
 
+	// check if exp is valid
 	valid = _fp_valid(exp, FP_INF | FP_NAN);
 	switch(valid) {
 		case FP_INF:
@@ -499,6 +607,11 @@ pow(
 	}
 
 	while(exp) {
+
+		/*
+		 * Calculate pow(b, e) = prod(b) 
+		 *		where i = e
+		 */
 		result *= base;
 
 		valid = _fp_valid(result, FP_INF | FP_NAN);
@@ -525,8 +638,70 @@ sin(
 	__in double x
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double denom, iter = 0.0, next, numer, result = 0.0;
+
+	valid = _fp_valid(x, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((x < 0.0) ? -INFINITY : INFINITY);
+			break;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			break;
+		default:
+
+			// no work if x == 0.0
+			if((x < 0.0) || (x > 0.0)) {
+
+				/*
+				 * Calculating sin(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n))
+				 * 			where -INF < x < INF && x != NaN && 0.0 <= n <= M
+				 */
+				for(;; ++iter) {
+					errno = 0;
+					numer = pow(-1.0, iter);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					errno = 0;
+					numer *= pow(x, (2.0 * iter) + 1.0);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					errno = 0;
+					denom = _fact((2.0 * iter) + 1.0);
+
+					switch(errno) {
+						case EDOM:
+						case ERANGE:
+							goto exit;
+					}
+
+					next = (numer / denom);
+					result += next;
+
+					// check if error bound has been reached
+					if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
+						break;
+					}
+				}
+			}
+			break;
+	}
+
+exit:
+	return result;
 }
 
 double 
@@ -571,6 +746,10 @@ sqrt(
 			} else {
 				result = 1.0;
 
+				/*
+ 				 * Calculate sqrt(x) = sum((n^2 - x) / (2n)) -- (Newton's method)
+				 * 			where 0.0 <= x > INF && x != NaN && 0.0 <= n <= M
+				 */ 
 				for(;;) {
 					prev = result;
 					errno = 0;
@@ -583,6 +762,8 @@ sqrt(
 					}
 
 					errno = 0;
+
+					// check if error bound has been reached
 					if(fabs(prev - result) < SQRT_ERR) {
 						break;
 					}

@@ -21,9 +21,13 @@
 #include "../include/stdint.h"
 #include "../include/string.h"
 
+// end of file (NUL) definition
 #define EOF _EOF
 
+// global string error string
 static char *strerr = NULL;
+
+// global token string
 static char *token = NULL;
 
 void *
@@ -38,6 +42,7 @@ memchr(
 
 	for(; iter < max; ++iter, ++result) {
 
+		// attempt to locate byte
 		if(*result == (uint8_t) byte) {
 			break;
 		}
@@ -59,6 +64,7 @@ memcmp(
 
 	for(; iter < max; ++iter, ++byte1, ++byte2) {
 
+		// check if bytes are exact match
 		result = (*byte1 - *byte2);
 		if(result) {
 			break;
@@ -127,10 +133,12 @@ strcat(
 {
 	char *ch1 = (char *) dest, *ch2 = (char *) src;
 
+	// find the end of the destination string
 	while(*ch1 != EOF) {
 		++ch1;
 	}
 
+	// append source string to the end of the destination string
 	while(*ch2 != EOF) {
 		*ch1 = *ch2;
 		++ch1;
@@ -174,6 +182,7 @@ strcspn(
 		ch2 = (char *) src2;
 		while(*ch2 != EOF) {
 
+			// attempt to locate character
 			if(*ch1 == *ch2) {
 				goto exit;
 			}
@@ -200,6 +209,7 @@ strcmp(
 
 	while(*ch1 != EOF) {
 
+		// attempt to locate character
 		result = (*ch1 - *ch2);
 		if(result) {
 			break;
@@ -244,7 +254,7 @@ strerror(
 	)
 {
 	switch(err) {
-		case 0:
+		case 0: // success
 			strerr = _SUCCESS;
 			break;
 		case EDOM:
@@ -256,7 +266,7 @@ strerror(
 		case EINVAL:
 			strerr = EINVAL_STR;
 			break;
-		default:
+		default: // all unknown errors return empty string
 			strerr = _NULLSTR;
 			break;
 	}
@@ -289,10 +299,15 @@ strncat(
 {
 	char *ch1 = (char *) dest, *ch2 = (char *) src;
 
+	// find the end of the destination string
 	while(*ch1 != EOF) {
 		++ch1;
 	}
 
+	/*
+	 * append source string to the end of the destination string 
+	 * upto max characters
+	 */
 	while((*ch2 != EOF) && max) {
 		*ch1 = *ch2;
 		++ch1;
@@ -317,6 +332,7 @@ strncmp(
 
 	while((*ch1 != EOF) && max) {
 
+		// attempt to find character
 		result = (*ch1 - *ch2);
 		if(result) {
 			break;
@@ -345,6 +361,7 @@ strncpy(
 		++ch2;
 	}
 
+	// stop copying character if max characters is reached
 	while(max) {
 		*ch1 = EOF;
 		++ch1;
@@ -367,6 +384,7 @@ strpbrk(
 		ch2 = (char *) src2;
 		while(*ch2 != EOF) {
 
+			// attempt to find character
 			if(*ch1 == *ch2) {
 				goto exit;
 			}
@@ -391,6 +409,7 @@ strrchr(
 
 	while(*ch1 != EOF) {
 
+		// attempt to find character
 		if(*ch1 == (char) ch) {
 			result = ch1;
 		}
@@ -415,6 +434,7 @@ strspn(
 		ch2 = (char *) src2;
 		while(*ch2 != EOF) {
 
+			// attempt to find span until character is reached
 			if(*ch1 == *ch2) {
 				++result;
 				break;
@@ -448,6 +468,8 @@ strstr(
 		if(*ch1 == *ch2) {
 
 			chk1 = ch1;
+
+			// attempt to find substring
 			while(*chk1 != EOF) {
 
 				if(*chk1 != *ch2) {
@@ -482,6 +504,7 @@ strtok(
 		token = src;
 	}
 
+	// find span to start of token
 	token += strspn(token, delim);
 	if(*token == EOF) {
 		token = NULL;
@@ -489,7 +512,11 @@ strtok(
 	}
 
 	result = token;
+
+	// find span to end of token
 	token = strpbrk(token, delim);
+
+	// set end of token character to EOF
 	*token = EOF;
 	++token;
 
@@ -511,6 +538,7 @@ strxfrm(
 		goto exit;
 	}
 
+	// same as string copy
 	if(strncpy(dest, src, max)) {
 		result = strlen(dest);
 	}

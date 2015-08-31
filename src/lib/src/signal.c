@@ -22,6 +22,7 @@
 #include "../include/stdio.h"
 #include "../include/stdlib.h"
 
+// signal handler list
 static sig_hdl_t _sig[SIGMAX + 1] = { (sig_hdl_t) SIG_DFL };
 
 int 
@@ -32,6 +33,7 @@ raise(
 	int result = 0;
 	sig_hdl_t hdl = (sig_hdl_t) SIG_DFL;
 
+	// detect invalid signal request
 	if(sig > SIGMAX) {
 		errno = EINVAL;
 		result = _INV(int);
@@ -41,10 +43,13 @@ raise(
 	hdl = _sig[sig];
 	if((hdl != (sig_hdl_t) SIG_ERR) 
 			&& (hdl != (sig_hdl_t) SIG_IGN)) {
+
+		// call handler and then set handle to default
 		hdl(sig);
 		_sig[sig] = (sig_hdl_t) SIG_DFL;
 	} else if(hdl != (sig_hdl_t) SIG_IGN) {
 
+		// default handler behavior is to terminate after performing an action
 		switch(sig) {
 			case SIGABRT:
 				//fprintf(stderr, "%s\n", SIGABRT_STR);
@@ -87,6 +92,8 @@ signal(
 	switch(sig) {
 		case SIG_DFL:
 		case SIG_IGN:
+
+			// retrieve handler
 			result = (sig_hdl_t) sig;
 			break;
 		default:
@@ -97,6 +104,7 @@ signal(
 				goto exit;
 			}
 
+			// set new handler
 			_sig[sig] = funct;
 			break;
 	}

@@ -19,6 +19,7 @@
 
 #include "../include/ctype.h"
 
+// character type flags
 #define C_ALPHA 0x1
 #define C_CNTRL 0x2
 #define C_DIGIT 0x4
@@ -29,6 +30,7 @@
 #define C_UPPER 0x40
 #define C_XDIGIT 0x80
 
+// character type masks
 static const char CTYPE_TYPE[] = {
 	C_CNTRL, // null
 	C_CNTRL, // start of heading
@@ -288,13 +290,26 @@ static const char CTYPE_TYPE[] = {
 	C_GRAPH | C_PUNCT, //
 	};
 
+/*
+ * Determine character is of type
+ * @param _CH_ character to check
+ * @param _TYPE_ character type
+ */
 #define CTYPE_CHKTYPE(_CH_, _TYPE_) \
 	(((CTYPE_TYPE[_CH_] & (_TYPE_)) > 0) ? 1 : 0)
 
+/* 
+ * Convert character to lowercase
+ * @param _CH_ character to convert
+ */
 #define CTYPE_TOLOWER(_CH_) \
 	((((_CH_) < 'A') || ((_CH_) > 'Z')) ? (_CH_) : \
 	((((_CH_) - 'A') + 'a') % 0xff))
 
+/*
+ * Convert character to uppercase
+ * @param _CH_ character to convert
+ */
 #define CTYPE_TOUPPER(_CH_) \
 	((((_CH_) < 'a') || ((_CH_) > 'z')) ? (_CH_) : \
 	((((_CH_) - 'a') + 'A') % 0xff))
@@ -303,6 +318,11 @@ int isalnum(
 	__in int ch
 	)
 {
+
+	/*
+	 * all alpha and digit characters
+	 * 	[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA | C_DIGIT);
 }
 
@@ -310,6 +330,11 @@ int isalpha(
 	__in int ch
 	)
 {
+
+	/*
+	 * all alpha characters
+	 * 	[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA);
 }
 
@@ -317,6 +342,11 @@ int iscntrl(
 	__in int ch
 	)
 {
+
+	/*
+	 * all control characters
+	 * 	[\0-\x1f\x7f]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_CNTRL);
 }
 
@@ -324,6 +354,11 @@ int isdigit(
 	__in int ch
 	)
 {
+
+	/*
+	 * all digit characters
+	 * 	[0123456789]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_DIGIT);
 }
 
@@ -331,6 +366,11 @@ int isgraph(
 	__in int ch
 	)
 {
+
+	/*
+	 * all graphical characters
+	 * 	[\x21-\x7e]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_GRAPH);
 }
 
@@ -338,6 +378,11 @@ int islower(
 	__in int ch
 	)
 {
+
+	/*
+	 * all lowercase (alpha) characters
+	 * 	[abcdefghijklmnopqrstuvwxyz]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_LOWER);
 }
 
@@ -345,6 +390,11 @@ int isprint(
 	__in int ch
 	)
 {
+
+	/*
+	 * all printable characters
+	 * 	[\x20-\x7e]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA | C_DIGIT | C_PUNCT | C_SPACE);
 }
 
@@ -352,6 +402,11 @@ int ispunct(
 	__in int ch
 	)
 {
+
+	/*
+	 * all punctuation characters
+	 * 	[\x21-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_PUNCT);
 }
 
@@ -359,6 +414,11 @@ int isspace(
 	__in int ch
 	)
 {
+
+	/*
+	 * all space characters
+	 * 	[\x09-\x0d\x20]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_SPACE);
 }
 
@@ -366,6 +426,11 @@ int isupper(
 	__in int ch
 	)
 {
+
+	/*
+	 * all uppercase (alpha) characters
+	 * 	[ABCDEFGHIJKLMNOPQRSTUVWXYZ]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_UPPER);
 }
 
@@ -373,6 +438,11 @@ int isxdigit(
 	__in int ch
 	)
 {
+
+	/*
+	 * all hexidecimal characters
+	 * 	[abcdefABCDEF0123456789]
+	 */
 	return CTYPE_CHKTYPE(ch & 0xff, C_XDIGIT);
 }
 
