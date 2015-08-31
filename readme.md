@@ -4,24 +4,24 @@ LIBSTDC
 LIBSTDC is an implementation of the C89 standard library for x86 processors, with support for some C99 features.
 
 ##Supported Headers
-* [CMP] [assert.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/assert.h) -- assertion routine
-* [CMP] [ctype.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/ctype.h) -- check character types
-* [CMP] [errno.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/errno.h) -- access to errno
-* [CMP] [float.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/float.h) -- floating-point constants
-* [CMP] [iso646.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/iso646.h) -- alternative operators
-* [CMP] [limits.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/limits.h) -- various scalar constants
-* [CMP] [locale.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/locale.h) -- localization settings
+* [assert.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/assert.h) -- assertion routine
+* [ctype.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/ctype.h) -- check character types
+* [errno.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/errno.h) -- access to errno
+* [float.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/float.h) -- floating-point constants
+* [iso646.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/iso646.h) -- alternative operators
+* [limits.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/limits.h) -- various scalar constants
+* [locale.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/locale.h) -- localization settings
 * [WIP] [math.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/math.h) -- math routines
-* [CMP] [setjmp.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/setjmp.h) -- set/long jump macros
-* [CMP] [signal.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/signal.h) -- signal handling
-* [CMP] [stdarg.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdarg.h) -- macros for handling variadics
-* [CMP] [stdbool.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdbool.h) *(C99)* -- boolean type definition
-* [CMP] [stddef.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stddef.h) -- alternative scalar type definitions
+* [setjmp.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/setjmp.h) -- set/long jump macros
+* [signal.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/signal.h) -- signal handling
+* [stdarg.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdarg.h) -- macros for handling variadics
+* [stdbool.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdbool.h) *(C99)* -- boolean type definition
+* [stddef.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stddef.h) -- alternative scalar type definitions
 * [WIP] [stdio.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdio.h) -- io routines
-* [CMP] [stdint.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdint.h) *(C99)* -- various scalar type definitions
+* [stdint.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdint.h) *(C99)* -- various scalar type definitions
 * [WIP] [stdlib.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/stdlib.h) -- various routines
-* [CMP] [string.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/string.h) -- string handling routines
-* [CMP] [time.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/time.h) -- time routines
+* [string.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/string.h) -- string handling routines
+* [time.h](https://github.com/majestic53/libstdc/blob/master/src/lib/include/time.h) -- time routines
 
 Table of Contents
 =================
