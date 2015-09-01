@@ -33,7 +33,6 @@
 #define LOG_10 10.0
 #define LOG_DOM_MIN 1.0
 #define SQRT_DOM_MIN 0.0
-#define SQRT_ERR 0.0001
 
 // floating-point class flags
 #define FP_FIN 0x1
@@ -160,7 +159,7 @@ exit:
 }
 
 double 
-acos(
+(acos) (
 	__in double x
 	)
 {
@@ -169,7 +168,7 @@ acos(
 }
 
 double 
-asin(
+(asin) (
 	__in double x
 	)
 {
@@ -178,7 +177,7 @@ asin(
 }
 
 double 
-atan(
+(atan) (
 	__in double x
 	)
 {
@@ -187,7 +186,7 @@ atan(
 }
 
 double 
-atan2(
+(atan2) (
 	__in double y,
 	__in double x
 	)
@@ -197,7 +196,7 @@ atan2(
 }
 
 double 
-ceil(
+(ceil) (
 	__in double x
 	)
 {
@@ -207,7 +206,7 @@ ceil(
 }
 
 double 
-cos(
+(cos) (
 	__in double x
 	)
 {
@@ -290,7 +289,7 @@ exit:
 }
 
 double 
-cosh(
+(cosh) (
 	__in double x
 	)
 {
@@ -299,7 +298,7 @@ cosh(
 }
 
 double 
-exp(
+(exp) (
 	__in double x
 	)
 {
@@ -374,7 +373,7 @@ exit:
 }
 
 double 
-fabs(
+(fabs) (
 	__in double x
 	)
 {
@@ -400,7 +399,7 @@ fabs(
 }
 
 double 
-floor(
+(floor) (
 	__in double x
 	)
 {
@@ -410,7 +409,7 @@ floor(
 }
 
 double 
-fmod(
+(fmod) (
 	__in double numer,
 	__in double denom
 	)
@@ -477,7 +476,7 @@ exit:
 }
 
 double 
-frexp(
+(frexp) (
 	__in double x, 
 	__inout int *exp
 	)
@@ -556,7 +555,7 @@ exit:
 }
 
 double 
-ldexp(
+(ldexp) (
 	__in double sig,
 	__in int exp
 	)
@@ -613,7 +612,7 @@ exit:
 }
 
 double 
-log(
+(log) (
 	__in double x
 	)
 {
@@ -700,7 +699,7 @@ exit:
 }
 
 double 
-log10(
+(log10) (
 	__in double x
 	)
 {
@@ -778,7 +777,7 @@ exit:
 }
 
 double 
-modf(
+(modf) (
 	__in double x,
 	__inout double *ipart
 	)
@@ -828,7 +827,7 @@ exit:
 }
 
 double 
-pow(
+(pow) (
 	__in double base,
 	__in double exp
 	)
@@ -890,7 +889,7 @@ exit:
 }
 
 double 
-sin(
+(sin) (
 	__in double x
 	)
 {
@@ -972,7 +971,7 @@ exit:
 }
 
 double 
-sinh(
+(sinh) (
 	__in double x
 	)
 {
@@ -981,7 +980,7 @@ sinh(
 }
 
 double 
-sqrt(
+(sqrt) (
 	__in double x
 	)
 {
@@ -1031,7 +1030,7 @@ sqrt(
 			errno = 0;
 
 			// check if error bound has been reached
-			if(fabs(prev - result) < SQRT_ERR) {
+			if(fabs(prev - result) < ERR_BOUND) {
 				break;
 			}
 
@@ -1061,7 +1060,7 @@ exit:
 }
 
 double 
-tan(
+(tan) (
 	__in double x
 	)
 {
@@ -1107,7 +1106,7 @@ exit:
 }
 
 double 
-tanh(
+(tanh) (
 	__in double x
 	)
 {

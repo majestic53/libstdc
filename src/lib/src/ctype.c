@@ -314,7 +314,8 @@ static const char CTYPE_TYPE[] = {
 	((((_CH_) < 'a') || ((_CH_) > 'z')) ? (_CH_) : \
 	((((_CH_) - 'a') + 'A') % 0xff))
 
-int isalnum(
+int 
+(isalnum) (
 	__in int ch
 	)
 {
@@ -326,7 +327,8 @@ int isalnum(
 	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA | C_DIGIT);
 }
 
-int isalpha(
+int 
+(isalpha) (
 	__in int ch
 	)
 {
@@ -338,7 +340,8 @@ int isalpha(
 	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA);
 }
 
-int iscntrl(
+int 
+(iscntrl) (
 	__in int ch
 	)
 {
@@ -350,7 +353,8 @@ int iscntrl(
 	return CTYPE_CHKTYPE(ch & 0xff, C_CNTRL);
 }
 
-int isdigit(
+int 
+(isdigit) (
 	__in int ch
 	)
 {
@@ -362,7 +366,8 @@ int isdigit(
 	return CTYPE_CHKTYPE(ch & 0xff, C_DIGIT);
 }
 
-int isgraph(
+int 
+(isgraph) (
 	__in int ch
 	)
 {
@@ -374,7 +379,8 @@ int isgraph(
 	return CTYPE_CHKTYPE(ch & 0xff, C_GRAPH);
 }
 
-int islower(
+int 
+(islower) (
 	__in int ch
 	)
 {
@@ -386,7 +392,8 @@ int islower(
 	return CTYPE_CHKTYPE(ch & 0xff, C_LOWER);
 }
 
-int isprint(
+int 
+(isprint) (
 	__in int ch
 	)
 {
@@ -398,7 +405,8 @@ int isprint(
 	return CTYPE_CHKTYPE(ch & 0xff, C_ALPHA | C_DIGIT | C_PUNCT | C_SPACE);
 }
 
-int ispunct(
+int 
+(ispunct) (
 	__in int ch
 	)
 {
@@ -410,7 +418,8 @@ int ispunct(
 	return CTYPE_CHKTYPE(ch & 0xff, C_PUNCT);
 }
 
-int isspace(
+int 
+(isspace) (
 	__in int ch
 	)
 {
@@ -422,7 +431,8 @@ int isspace(
 	return CTYPE_CHKTYPE(ch & 0xff, C_SPACE);
 }
 
-int isupper(
+int 
+(isupper) (
 	__in int ch
 	)
 {
@@ -434,7 +444,8 @@ int isupper(
 	return CTYPE_CHKTYPE(ch & 0xff, C_UPPER);
 }
 
-int isxdigit(
+int 
+(isxdigit) (
 	__in int ch
 	)
 {
@@ -446,14 +457,16 @@ int isxdigit(
 	return CTYPE_CHKTYPE(ch & 0xff, C_XDIGIT);
 }
 
-int tolower(
+int 
+(tolower) (
 	__in int ch
 	)
 {
 	return CTYPE_TOLOWER(ch & 0xff);
 }
 
-int toupper(
+int 
+(toupper) (
 	__in int ch
 	)
 {

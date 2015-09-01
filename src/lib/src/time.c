@@ -183,27 +183,42 @@ _wday(
 
 _tm 
 _week_num(
+	__in _tm year,
 	__in _tm yday,
-	__in _tm wday
+	__in _tm wday,
+	__in _tm first
 	)
 {
-	_tm result = ((yday - wday) + 10) / 7;
+	_tm result = 0;
 
-	/*
-	 * Calculate week number: wnum(yday, wday) = ((yday - wday) + 10) / 7,
-	 *	if wnum < 1, wnum = 52; if wnum > 52, wnum = 1
-	 */
-	if(result < TM_WEEK_MIN) {
-		result = TM_WEEK_MAX;
-	} else if(result > TM_WEEK_MAX) {
-		result = TM_WEEK_MIN;
+	if(first <= (TM_WDAY_MIN + 1)) {
+
+		/*
+		 * Calculate week number: count number of weeks starting with specified day
+		 */
+		while(yday > (TM_WDAY_MAX + 1)) {
+			result += (_wday(year, yday) == first) ? 1 : 0;
+			yday -= (TM_WDAY_MAX + 1);
+		}
+	} else {
+
+		/*
+		 * Calculate week number: wnum(yday, wday) = ((yday - wday) + 10) / 7,
+		 * 	if wnum < 1, wnum = 52; if wnum > 52, wnum = 1
+		 */
+		result = ((yday - wday) + 10) / 7;
+		if(result < TM_WEEK_MIN) {
+			result = TM_WEEK_MAX;
+		} else if(result > TM_WEEK_MAX) {
+			result = TM_WEEK_MIN;
+		}
 	}
 
 	return result;
 }
 
 char *
-asctime(
+(asctime) (
 	__in const struct tm *timeptr
 	)
 {
@@ -221,13 +236,13 @@ asctime(
 }
 
 clock_t 
-clock(void)
+(clock) (void)
 {
 	return (clock_t) time(NULL);
 }
 
 char *
-ctime(
+(ctime) (
 	__in const time_t *timer
 	)
 {
@@ -235,7 +250,7 @@ ctime(
 }
 
 double 
-difftime(
+(difftime) (
 	__in time_t next,
 	__in time_t prev
 	)
@@ -244,7 +259,7 @@ difftime(
 }
 
 struct tm *
-gmtime(
+(gmtime) (
 	__in const time_t *timer
 	)
 {
@@ -309,7 +324,7 @@ exit:
 }
 
 struct tm *
-localtime(
+(localtime) (
 	__in const time_t *timer
 	)
 {
@@ -322,7 +337,7 @@ localtime(
 }
 
 time_t 
-mktime(
+(mktime) (
 	__inout struct tm *timeptr
 	)
 {
@@ -361,7 +376,7 @@ mktime(
 }
 
 size_t 
-strftime(
+(strftime) (
 	__inout char *buf,
 	__in size_t maxsize,
 	__in const char *format,
@@ -468,12 +483,12 @@ strftime(
 					strcpy(buf, TM_WDAY_STRING_FULL(timeptr->tm_wday));
 					break;
 				case TM_TAG_WMONDAY: // 'W'
-					/*sprintf(buf, "%02u", _week_num(timeptr->tm_yday, 
-						timeptr->tm_wday));*/
+					/*sprintf(buf, "%02u", _week_num(timeptr->tm_year, timeptr->tm_yday, 
+						timeptr->tm_wday, TM_WDAY_MIN + 1));*/
 					break;
 				case TM_TAG_WSUNDAY: // 'U'
-					/*sprintf(buf, "%02u", _week_num(timeptr->tm_yday, 
-						timeptr->tm_wday));*/
+					/*sprintf(buf, "%02u", _week_num(timeptr->tm_year, timeptr->tm_yday, 
+						timeptr->tm_wday, TM_WDAY_MIN));*/
 					break;
 				case TM_TAG_YCENT: // 'y'
 					//sprintf(buf, "%02u", (timeptr->tm_year + TM_YEAR_MIN) % 100);
@@ -514,7 +529,7 @@ exit:
 }
 
 time_t 
-time(
+(time) (
 	__inout time_t *timer
 	)
 {

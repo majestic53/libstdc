@@ -31,7 +31,7 @@ static char *strerr = NULL;
 static char *token = NULL;
 
 void *
-memchr(
+(memchr) (
 	__in const void *src,
 	__in int byte,
 	__in size_t max
@@ -52,7 +52,7 @@ memchr(
 }
 
 int 
-memcmp(
+(memcmp) (
 	__in const void *src1,
 	__in const void *src2,
 	__in size_t max
@@ -75,7 +75,7 @@ memcmp(
 }
 
 void *
-memcpy(
+(memcpy) (
 	__inout void *dest,
 	__in const void *src,
 	__in size_t max
@@ -92,7 +92,7 @@ memcpy(
 }
 
 void *
-memmove(
+(memmove) (
 	__inout void *dest,
 	__in const void *src,
 	__in size_t max
@@ -109,7 +109,7 @@ memmove(
 }
 
 void *
-memset(
+(memset) (
 	__inout void *dest,
 	__in int byte,
 	__in size_t max
@@ -126,7 +126,7 @@ memset(
 }
 
 char *
-strcat(
+(strcat) (
 	__inout char *dest,
 	__in const char *src
 	)
@@ -151,7 +151,7 @@ strcat(
 }
 
 char *
-strchr(
+(strchr) (
 	__in const char *src,
 	__in int ch
 	)
@@ -169,7 +169,7 @@ strchr(
 }
 
 size_t 
-strcspn(
+(strcspn) (
 	__in const char *src1,
 	__in const char *src2
 	)
@@ -199,7 +199,7 @@ exit:
 }
 
 int 
-strcmp(
+(strcmp) (
 	__in const char *src1,
 	__in const char *src2
 	)
@@ -223,7 +223,7 @@ strcmp(
 }
 
 char *
-strcpy(
+(strcpy) (
 	__inout char *dest,
 	__in const char *src
 	)
@@ -240,7 +240,7 @@ strcpy(
 }
 
 int 
-strcoll(
+(strcoll) (
 	__in const char *src1,
 	__in const char *src2
 	)
@@ -249,7 +249,7 @@ strcoll(
 }
 
 char *
-strerror(
+(strerror) (
 	__in int err
 	)
 {
@@ -275,7 +275,7 @@ strerror(
 }
 
 size_t 
-strlen(
+(strlen) (
 	__in const char *src
 	)
 {
@@ -291,7 +291,7 @@ strlen(
 }
 
 char *
-strncat(
+(strncat) (
 	__inout char *dest,
 	__in const char *src,
 	__in size_t max
@@ -321,7 +321,7 @@ strncat(
 }
 
 int 
-strncmp(
+(strncmp) (
 	__in const char *src1,
 	__in const char *src2,
 	__in size_t max
@@ -347,7 +347,7 @@ strncmp(
 }
 
 char *
-strncpy(
+(strncpy) (
 	__inout char *dest,
 	__in const char *src,
 	__in size_t max
@@ -372,7 +372,7 @@ strncpy(
 }
 
 char *
-strpbrk(
+(strpbrk) (
 	__in const char *src1,
 	__in const char *src2
 	)
@@ -400,7 +400,7 @@ exit:
 }
 
 char *
-strrchr(
+(strrchr) (
 	__in const char *src,
 	__in int ch
 	)
@@ -421,7 +421,7 @@ strrchr(
 }
 
 size_t 
-strspn(
+(strspn) (
 	__in const char *src1,
 	__in const char *src2
 	)
@@ -455,7 +455,7 @@ exit:
 }
 
 char *
-strstr(
+(strstr) (
 	__in const char *src1,
 	__in const char *src2
 	)
@@ -493,7 +493,7 @@ exit:
 }
 
 char *
-strtok(
+(strtok) (
 	__inout char *src,
 	__in const char *delim
 	)
@@ -525,7 +525,7 @@ exit:
 }
 
 size_t 
-strxfrm(
+(strxfrm) (
 	__inout char *dest,
 	__in const char *src,
 	__in size_t max

@@ -176,13 +176,13 @@ exit:
 }
 
 struct lconv *
-localeconv(void)
+(localeconv) (void)
 {
 	return (struct lconv *) &locale.conv;
 }
 
 char *
-setlocale(
+(setlocale) (
 	__in int category,
 	__in const char *locale
 	)

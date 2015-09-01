@@ -142,8 +142,8 @@ size_t strcspn(
  * @param src1 valid pointer to first string
  * @param src2 valid pointer to second string
  * @return 0 if both strings are equal, else return non-zero:
- * 	<0 if non-matching byte s1[N] < s2[N]
- * 	>0 if non-matching byte s1[N] > s2[N]
+ * 	<0 if non-matching character s1[N] < s2[N]
+ * 	>0 if non-matching character s1[N] > s2[N]
  */
 int strcmp(
 	__in const char *src1,
@@ -166,8 +166,8 @@ char *strcpy(
  * @param src1 valid pointer to first string
  * @param src2 valid pointer to second string
  * @return 0 if both strings are equal, else return non-zero:
- * 	<0 if non-matching byte s1[N] < s2[N]
- * 	>0 if non-matching byte s1[N] > s2[N]
+ * 	<0 if non-matching character s1[N] < s2[N]
+ * 	>0 if non-matching character s1[N] > s2[N]
  */
 int strcoll(
 	__in const char *src1,
@@ -211,8 +211,8 @@ char *strncat(
  * @param src2 valid pointer to second string
  * @param max maximum number of character to compare, up to terminating character
  * @return 0 if both strings are equal, else return non-zero:
- * 	<0 if non-matching byte s1[N] < s2[N]
- * 	>0 if non-matching byte s1[N] > s2[N]
+ * 	<0 if non-matching character s1[N] < s2[N]
+ * 	>0 if non-matching character s1[N] > s2[N]
  */
 int strncmp(
 	__in const char *src1,

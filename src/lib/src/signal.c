@@ -26,7 +26,7 @@
 static sig_hdl_t _sig[SIGMAX + 1] = { (sig_hdl_t) SIG_DFL };
 
 int 
-raise(
+(raise) (
 	__in int sig
 	)
 {
@@ -82,7 +82,7 @@ exit:
 }
 
 sig_hdl_t 
-signal(
+(signal) (
 	__in int sig,
 	__in sig_hdl_t funct
 	)
