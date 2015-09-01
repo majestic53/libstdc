@@ -72,8 +72,8 @@ extern "C" {
 // library version
 #define _LIB_MAJ 0
 #define _LIB_MIN 1
-#define _LIB_REV 9
-#define _LIB_WK 1535
+#define _LIB_REV 1
+#define _LIB_WK 1536
 
 // library version string
 #define _LIB_VER \

@@ -32,6 +32,11 @@ Table of Contents
 Changelog
 =========
 
+##Version 0.1.1536
+*Updated: 8/31/2015*
+
+* Implemented additional math routines
+
 ##Version 0.1.1535
 *Updated: 8/30/2015*
 

@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../lib/include/libdef.h"
 #include "../lib/include/assert.h"
 #include "../lib/include/ctype.h"
 #include "../lib/include/errdef.h"
@@ -43,7 +44,7 @@ int
 main(void)
 {
 	int result = 0;
-
+	
 	// TODO
 
 	return result;

@@ -25,7 +25,7 @@
  * 	used by a variety of routines to control precision
  */
 #ifndef ERR_BOUND
-#define ERR_BOUND 0.000000000001
+#define ERR_BOUND 0.000000000000001
 #endif // ERR_BOUND
 
 // math routine internal constants
@@ -115,30 +115,47 @@ _fact(
 				errno = ERANGE;
 				result = INFINITY;
 			}
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
-			break;
-		default:
-
-			if(result < FACT_DOM_MIN) {
-				errno = EDOM;
-				result = NAN;
-			} else if(result <= _FACT_TBL_MAX) {
-
-				// lookup fact(0 - 30)
-				result = fact_val[(long) x];
-			} else {
-				result = fact_val[_FACT_TBL_MAX];
-
-				// calculate fact(31) and beyond
-				for(iter = (_FACT_TBL_MAX + 1); iter <= x; ++iter) {
-					result *= iter;
-				}
-			}
-			break;
+			goto exit;
 	}
 
+	if(result < FACT_DOM_MIN) {
+		errno = EDOM;
+		result = NAN;
+	} else if(result <= _FACT_TBL_MAX) {
+
+		// lookup fact(0 - 30)
+		result = fact_val[(long) x];
+	} else {
+		result = fact_val[_FACT_TBL_MAX];
+
+		// calculate fact(31) and beyond
+		for(iter = (_FACT_TBL_MAX + 1); iter <= x; ++iter) {
+			result *= iter;
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+
+				if(result < FACT_DOM_MIN) {
+					errno = EDOM;
+					result = NAN;
+				} else {
+					errno = ERANGE;
+					result = INFINITY;
+				}
+				goto exit;
+			case FP_NAN:
+				errno = EDOM;
+				goto exit;
+		}
+	}
+
+exit:
 	return result;
 }
 
@@ -202,59 +219,70 @@ cos(
 		case FP_INF:
 			errno = ERANGE;
 			result = ((x < 0.0) ? -INFINITY : INFINITY);
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
 			result = NAN;
-			break;
-		default:
+			goto exit;
+	}
 
-			// no work if x == 0.0
-			if((x < 0.0) || (x > 0.0)) {
-				result = 0.0;
+	// no work if x == 0.0
+	if((x < 0.0) || (x > 0.0)) {
+		result = 0.0;
 
-				/*
-				 * Calculating cos(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
-				 * 	where -INF < x < INF && x != NaN && 0.0 <= n <= M
-				 */
-				for(;; ++iter) {
-					errno = 0;
-					numer = pow(-1.0, iter);
+		/*
+		 * Calculating cos(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
+		 * 	where -INF < x < INF && x != NaN && 0.0 <= n <= M
+		 */
+		for(;; ++iter) {
+			errno = 0;
+			numer = pow(-1.0, iter);
 
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					errno = 0;
-					numer *= pow(x, 2.0 * iter);
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					errno = 0;
-					denom = _fact(2.0 * iter);
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					next = (numer / denom);
-					result += next;
-
-					// check if error bound has been reached
-					if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
-						break;
-					}
-				}
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
 			}
-			break;
+
+			errno = 0;
+			numer *= pow(x, 2.0 * iter);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			errno = 0;
+			denom = _fact(2.0 * iter);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			next = (numer / denom);
+			result += next;
+
+			// check if error bound has been reached
+			if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
+				break;
+			}
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+				errno = ERANGE;
+				result = ((result < 0.0) ? -INFINITY : INFINITY);
+				goto exit;
+			case FP_NAN:
+				errno = EDOM;
+				result = NAN;
+				goto exit;
+		}
 	}
 
 exit:
@@ -283,51 +311,62 @@ exp(
 		case FP_INF:
 			errno = ERANGE;
 			result = ((result < 0.0) ? -INFINITY : INFINITY);
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
-			break;
-		default:
+			goto exit;
+	}
 
-			if(result == 0.0) {
-				result = 1.0;
-			} else {
-				result += 1.0;
-				next = result;
+	if(result == 0.0) {
+		result = 1.0;
+	} else {
+		result += 1.0;
+		next = result;
 
-				/*
-				 * Calculate exp(x) = e^x = 1 + sum((x ^ n) / fact(n)),
-				 *	where -INF < x < INF && x != NaN && 2.0 <= n <= M
-				 */
-				for(;; ++iter) {
-					errno = 0;
-					numer = pow(x, iter);
+		/*
+		 * Calculate exp(x) = e^x = 1 + sum((x ^ n) / fact(n)),
+		 *	where -INF < x < INF && x != NaN && 2.0 <= n <= M
+		 */
+		for(;; ++iter) {
+			errno = 0;
+			numer = pow(x, iter);
 
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					errno = 0;
-					denom = _fact(iter);
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					next = (numer / denom);
-					result += next;
-
-					// check if error bound has been reached
-					if(next < ERR_BOUND) {
-						break;
-					}
-				}
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
 			}
-			break;
+
+			errno = 0;
+			denom = _fact(iter);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			next = (numer / denom);
+			result += next;
+
+			// check if error bound has been reached
+			if(next < ERR_BOUND) {
+				break;
+			}
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+				errno = ERANGE;
+				result = ((result < 0.0) ? -INFINITY : INFINITY);
+				goto exit;
+			case FP_NAN:
+				errno = EDOM;
+				result = NAN;
+				goto exit;
+		}
 	}
 
 exit:
@@ -376,8 +415,65 @@ fmod(
 	__in double denom
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double result;
+
+	// check for valid numerator
+	valid = _fp_valid(numer, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((numer < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+	// check for valid denominator
+	valid = _fp_valid(denom, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = 0.0;
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+	result = (numer / denom);
+
+	// perform round towards zero
+	if(result < 0.0) {
+		result = ceil(result);
+	} else {
+		result = floor(result);
+	}
+
+	/*
+	 * Calculate fmod(x, y) = x - (round(x / y) * y)
+	 * 	where round is towards zero
+	 */
+	result = (numer - (result * denom));
+
+	// check for valid result
+	valid = _fp_valid(result, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((result < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+exit:
+	return result;
 }
 
 double 
@@ -386,8 +482,77 @@ frexp(
 	__inout int *exp
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double expon = 1.0, result = x;
+
+	if(!exp) {
+		errno = EINVAL;
+		result = x;
+		goto exit;
+	}
+
+	if(x == 0.0) {
+
+		if(exp) {
+			*exp = 0;
+		}
+
+		goto exit;
+	}
+
+	// check for valid input
+	valid = _fp_valid(result, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((result < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+	*exp = 0;
+
+	// iterate (2 ^ exp) until exceeds input
+	while(expon <= result) {
+		expon = pow(2.0, ++*exp);
+	}
+
+	// check for valid exponent
+	valid = _fp_valid(expon, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((expon < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+	/*
+	 * Calculate sig = (x / (2 ^ exp))
+	 */
+	result /= expon;
+
+	// check for valid result
+	valid = _fp_valid(result, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((result < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+exit:
+	return result;
 }
 
 double 
@@ -396,8 +561,55 @@ ldexp(
 	__in int exp
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double expon, result = sig;
+
+	// check for valid significant
+	valid = _fp_valid(result, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((result < 0.0) ?  -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+	errno = 0;
+	expon = pow(2.0, exp);
+
+	// check for valid exponent
+	switch(errno) {
+		case EDOM:
+			result = NAN;
+			goto exit;
+		case ERANGE:
+			result = ((expon < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+	}
+
+	/*
+	 * Calculate ldepx(sig, exp) = sig * (2 ^ exp)
+	 */
+	result *= expon;
+
+	// check for valid result
+	valid = _fp_valid(result, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((expon < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+exit:
+	return result;
 }
 
 double 
@@ -419,53 +631,68 @@ log(
 				errno = ERANGE;
 				result = INFINITY;
 			}
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
-			break;
-		default:
+			goto exit;
+	}
 
-			if(result == LOG_DOM_MIN) {
-				result = 0.0;
-			} else if(result < LOG_DOM_MIN) {
-				errno = EDOM;
-				result = NAN;
-			} else {
-				result = ((x - LOG_DOM_MIN) / x);
-				next = result;
+	if(result == LOG_DOM_MIN) {
+		result = 0.0;
+	} else if(result < LOG_DOM_MIN) {
+		errno = EDOM;
+		result = NAN;
+	} else {
+		result = ((x - LOG_DOM_MIN) / x);
+		next = result;
 
-				/*
-				 * Calculating ln(x) = sum((((x - 1) / x) ^ n) / n),
-				 * 	where 0.0 <= x < INF && x != NaN && 2.0 <= n <= M
-				 */
-				for(;; ++iter) {
-					prev = next;
-					errno = 0;
-					next = (pow(((x - LOG_DOM_MIN) / x), iter) / iter);
+		/*
+		 * Calculating ln(x) = sum((((x - 1) / x) ^ n) / n),
+		 * 	where 0.0 <= x < INF && x != NaN && 2.0 <= n <= M
+		 */
+		for(;; ++iter) {
+			prev = next;
+			errno = 0;
+			next = (pow(((x - LOG_DOM_MIN) / x), iter) / iter);
 
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					result += next;
-
-					errno = 0;
-
-					// check if error bound has been reached
-					if(fabs(prev - next) < ERR_BOUND) {
-						break;
-					}
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-				}
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
 			}
-			break;
+
+			result += next;
+			errno = 0;
+
+			// check if error bound has been reached
+			if(fabs(prev - next) < ERR_BOUND) {
+				break;
+			}
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+
+				if(result < LOG_DOM_MIN) {
+					errno = EDOM;
+					result = NAN;
+				} else {
+					errno = ERANGE;
+					result = INFINITY;
+				}
+				goto exit;
+			case FP_NAN:
+				errno = EDOM;
+				goto exit;
+		}
 	}
 
 exit:
@@ -491,43 +718,59 @@ log10(
 				errno = ERANGE;
 				result = INFINITY;
 			}
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
-			break;
-		default:
+			goto exit;
+	}
 
-			if(result == LOG_DOM_MIN) {
-				result = 0.0;
-			} else if(result < LOG_DOM_MIN) {
+	if(result == LOG_DOM_MIN) {
+		result = 0.0;
+	} else if(result < LOG_DOM_MIN) {
+		errno = EDOM;
+		result = NAN;
+	} else {
+
+		/*
+		 * Calculating log(x) = ln(x) / ln(10)
+		 */
+		errno = 0;
+		numer = log(x);
+
+		switch(errno) {
+			case EDOM:
+			case ERANGE:
+				goto exit;
+		}
+
+		errno = 0;
+		denom = log(LOG_10);
+
+		switch(errno) {
+			case EDOM:
+			case ERANGE:
+				goto exit;
+		}
+
+		result = (numer / denom);
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+
+				if(result < LOG_DOM_MIN) {
+					errno = EDOM;
+					result = NAN;
+				} else {
+					errno = ERANGE;
+					result = INFINITY;
+				}
+				goto exit;
+			case FP_NAN:
 				errno = EDOM;
-				result = NAN;
-			} else {
-
-				/*
-				 * Calculating log(x) = ln(x) / ln(10)
-				 */
-				errno = 0;
-				numer = log(x);
-
-				switch(errno) {
-					case EDOM:
-					case ERANGE:
-						goto exit;
-				}
-
-				errno = 0;
-				denom = log(LOG_10);
-
-				switch(errno) {
-					case EDOM:
-					case ERANGE:
-						goto exit;
-				}
-
-				result = (numer / denom);
-			}
-			break;
+				goto exit;
+		}
 	}
 
 exit:
@@ -564,6 +807,19 @@ modf(
 
 			// set fractional part
 			result -= *ipart;
+
+			// check for valid result
+			valid = _fp_valid(result, FP_INF | FP_NAN);
+			switch(valid) {
+				case FP_INF:
+					errno = ERANGE;
+					result = ((result < 0.0) ? -INFINITY : INFINITY);
+					goto exit;
+				case FP_NAN:
+					errno = EDOM;
+					result = NAN;
+					goto exit;
+			}
 			break;
 	}
 
@@ -646,58 +902,69 @@ sin(
 		case FP_INF:
 			errno = ERANGE;
 			result = ((x < 0.0) ? -INFINITY : INFINITY);
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
 			result = NAN;
-			break;
-		default:
+			goto exit;
+	}
 
-			// no work if x == 0.0
-			if((x < 0.0) || (x > 0.0)) {
+	// no work if x == 0.0
+	if((x < 0.0) || (x > 0.0)) {
 
-				/*
-				 * Calculating sin(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
-				 * 	where -INF < x < INF && x != NaN && 0.0 <= n <= M
-				 */
-				for(;; ++iter) {
-					errno = 0;
-					numer = pow(-1.0, iter);
+		/*
+		 * Calculating sin(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
+		 * 	where -INF < x < INF && x != NaN && 0.0 <= n <= M
+		 */
+		for(;; ++iter) {
+			errno = 0;
+			numer = pow(-1.0, iter);
 
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					errno = 0;
-					numer *= pow(x, (2.0 * iter) + 1.0);
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					errno = 0;
-					denom = _fact((2.0 * iter) + 1.0);
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					next = (numer / denom);
-					result += next;
-
-					// check if error bound has been reached
-					if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
-						break;
-					}
-				}
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
 			}
-			break;
+
+			errno = 0;
+			numer *= pow(x, (2.0 * iter) + 1.0);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			errno = 0;
+			denom = _fact((2.0 * iter) + 1.0);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			next = (numer / denom);
+			result += next;
+
+			// check if error bound has been reached
+			if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
+				break;
+			}
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+				errno = ERANGE;
+				result = ((result < 0.0) ? -INFINITY : INFINITY);
+				goto exit;
+			case FP_NAN:
+				errno = EDOM;
+				result = NAN;
+				goto exit;
+		}
 	}
 
 exit:
@@ -732,50 +999,61 @@ sqrt(
 				errno = ERANGE;
 				result = INFINITY;
 			}
-			break;
+			goto exit;
 		case FP_NAN:
 			errno = EDOM;
-			break;
-		default:
+			goto exit;
+	}
 
-			if(result == SQRT_DOM_MIN) {
+	if(result == SQRT_DOM_MIN) {
+		goto exit;
+	} else if(result < SQRT_DOM_MIN) {
+		errno = EDOM;
+		result = NAN;
+	} else {
+		result = 1.0;
+
+		/*
+		 * Calculate sqrt(x) = sum((n^2 - x) / (2n)) -- (Newton's method),
+		 * 	where 0.0 <= x > INF && x != NaN && 0.0 <= n <= M
+		 */ 
+		for(;;) {
+			prev = result;
+			errno = 0;
+			result = (result - ((pow(result, 2.0) - x) / (2.0 * result)));
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			errno = 0;
+
+			// check if error bound has been reached
+			if(fabs(prev - result) < SQRT_ERR) {
+				break;
+			}
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+				errno = ERANGE;
+				result = ((result < 0.0) ? -INFINITY : INFINITY);
 				goto exit;
-			} else if(result < SQRT_DOM_MIN) {
+			case FP_NAN:
 				errno = EDOM;
 				result = NAN;
-			} else {
-				result = 1.0;
-
-				/*
- 				 * Calculate sqrt(x) = sum((n^2 - x) / (2n)) -- (Newton's method),
-				 * 	where 0.0 <= x > INF && x != NaN && 0.0 <= n <= M
-				 */ 
-				for(;;) {
-					prev = result;
-					errno = 0;
-					result = (result - ((pow(result, 2.0) - x) / (2.0 * result)));
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-
-					errno = 0;
-
-					// check if error bound has been reached
-					if(fabs(prev - result) < SQRT_ERR) {
-						break;
-					}
-
-					switch(errno) {
-						case EDOM:
-						case ERANGE:
-							goto exit;
-					}
-				}
-			}
-			break;
+				goto exit;
+		}
 	}
 
 exit:
@@ -787,8 +1065,45 @@ tan(
 	__in double x
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double result = x;
+
+	errno = 0;
+	result = sin(x);
+
+	switch(errno) {
+		case EDOM:
+		case ERANGE:
+			goto exit;
+	}
+
+	/*
+	 * Calculate tan(x) = sin(x) / cos(x)
+	 */
+	errno = 0;
+	result /= cos(x);
+
+	switch(errno) {
+		case EDOM:
+		case ERANGE:
+			goto exit;
+	}
+
+	// check for valid result
+	valid = _fp_valid(result, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((result < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+exit:
+	return result;
 }
 
 double 
