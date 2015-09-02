@@ -181,8 +181,73 @@ double
 	__in double x
 	)
 {
-	// TODO
-	return 0.0;
+	int valid;
+	double denom, iter = 0.0, next, numer, result = 0.0;
+
+	valid = _fp_valid(x, FP_INF | FP_NAN);
+	switch(valid) {
+		case FP_INF:
+			errno = ERANGE;
+			result = ((x < 0.0) ? -INFINITY : INFINITY);
+			goto exit;
+		case FP_NAN:
+			errno = EDOM;
+			result = NAN;
+			goto exit;
+	}
+
+	// no work if x == 0.0
+	if((x < 0.0) || (x > 0.0)) {
+
+		/*
+		 * Calculating arctan(x) = sum((((-1) ^ n) * (x ^ (2n + 1))) / (2n + 1)),
+		 * 	where -1 < x < 1 && x != NaN && 0.0 <= n <= M
+		 */
+		for(;; ++iter) {
+			errno = 0;
+			numer = pow(-1.0, iter);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			errno = 0;
+			denom = ((2.0 * iter) + 1.0);
+			numer *= pow(x, denom);
+
+			switch(errno) {
+				case EDOM:
+				case ERANGE:
+					goto exit;
+			}
+
+			next = (numer / denom);
+			result += next;
+
+			// check if error bound has been reached
+			if((next < ERR_BOUND) && (next > -ERR_BOUND)) {
+				break;
+			}
+		}
+
+		// check for valid result
+		valid = _fp_valid(result, FP_INF | FP_NAN);
+		switch(valid) {
+			case FP_INF:
+				errno = ERANGE;
+				result = ((result < 0.0) ? -INFINITY : INFINITY);
+				goto exit;
+			case FP_NAN:
+				errno = EDOM;
+				result = NAN;
+				goto exit;
+		}
+	}
+
+exit:
+	return result;
 }
 
 double 
@@ -228,6 +293,16 @@ double
 	// no work if x == 0.0
 	if((x < 0.0) || (x > 0.0)) {
 		result = 0.0;
+
+		// scale x value to [-2PI, 2PI]
+		errno = 0;
+		x = fmod(x, (x < 0.0) ? -M_2_PI : M_2_PI);
+
+		switch(errno) {
+			case EDOM:
+			case ERANGE:
+				goto exit;
+		}
 
 		/*
 		 * Calculating cos(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),
@@ -910,6 +985,16 @@ double
 
 	// no work if x == 0.0
 	if((x < 0.0) || (x > 0.0)) {
+
+		// scale x value to [-2PI, 2PI]
+		errno = 0;
+		x = fmod(x, (x < 0.0) ? -M_2_PI : M_2_PI);
+
+		switch(errno) {
+			case EDOM:
+			case ERANGE:
+				goto exit;
+		}
 
 		/*
 		 * Calculating sin(x) = sum((((-1) ^ n) / fact(2n)) * x ^ (2n)),

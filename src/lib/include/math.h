@@ -38,6 +38,8 @@ extern "C" {
 
 // pi constant definition
 #define M_PI 3.14159265358979323846
+#define M_2_PI (2.0 * M_PI)
+#define M_PI_2 (M_PI / 2.0)
 
 // not-a-number definition
 #define NAN (0.0 / 0.0)

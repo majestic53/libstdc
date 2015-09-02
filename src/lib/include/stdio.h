@@ -28,6 +28,9 @@
 extern "C" {
 #endif // __cplusplus
 
+// end of file definition
+#define EOF _EOF
+
 // TODO
 
 #ifdef __cplusplus

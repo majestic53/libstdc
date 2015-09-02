@@ -19,10 +19,8 @@
 
 #include "../include/errdef.h"
 #include "../include/stdint.h"
+#include "../include/stdio.h"
 #include "../include/string.h"
-
-// end of file (NUL) definition
-#define EOF _EOF
 
 // global string error string
 static char *strerr = NULL;

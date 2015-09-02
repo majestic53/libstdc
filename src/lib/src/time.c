@@ -25,9 +25,6 @@
 #include "../include/time.h"
 #include "../include/timedef.h"
 
-// end of file (NUL) definition
-#define EOF _EOF
-
 _tm 
 _mday(
 	__in _tm year,

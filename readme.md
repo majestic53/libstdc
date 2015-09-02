@@ -33,6 +33,10 @@ Changelog
 =========
 
 ##Version 0.1.1536
+*Updated:9/1/2015*
+
+* Implemented additional math routines
+
 *Updated: 8/31/2015*
 
 * Implemented additional math routines
